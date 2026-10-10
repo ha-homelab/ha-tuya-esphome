@@ -45,9 +45,23 @@ omitted; keep an exact operational record outside Git.
   update. Home Assistant history records press/release events and corresponding
   software switch changes. The earlier report of relay clicks was superseded:
   the operator observed only LED changes, no mechanical clicks and no switched
-  power to a load that works directly from the wall. GPIO12 remains unverified
-  as a relay output. Physical output/restart checks and Matter export are blocked
-  until a correct mapping is established; no completed plug conversion is claimed.
+  power to a load that works directly from the wall. GPIO12 was therefore rejected
+  as the relay output. Matter export was held until a correct mapping and physical
+  output test were established.
+- The operator then identified the enclosure marking as XS-SSA01. The official
+  Tasmota catalog includes a variant with GPIO13 button, GPIO12 inverted LED and
+  GPIO15 relay, matching the observed input and LED behavior. A corresponding
+  ESPHome profile compiled on the Mac in 24.54 seconds and was installed through
+  encrypted OTA. The operator then confirmed mechanical clicks and actual load
+  switching in both directions using the physical button. This verifies the
+  GPIO15 relay and GPIO13 button for this unit, not every XS-SSA01 variant.
+- Home Assistant successfully commanded the verified relay on, restarted the
+  ESPHome device, and observed a fresh off state afterward. A separate physical
+  power-cycle test remains pending.
+- Added exactly the verified relay entity to the existing Matter Hub. The include
+  filter count and device count each increased from seven to eight. Both existing
+  fabrics, prior filters, exclusions, bridge name, port and running state were
+  preserved. No factory reset or new bridge was used.
 - Removing the first conversion container left the Broadcom radio inaccessible.
   Reloading its driver restored it. An explicit numeric-PHY return before
   container removal then passed a live namespace round-trip check; the launcher
@@ -71,7 +85,9 @@ tags mean builds are not promised to be byte-for-byte identical.
 ## Still pending
 
 The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
-OTA. Its initial output test failed; physical relay mapping and Google Home/Alexa
-control remain pending. No successful load test is claimed. Existing bridge fabrics and household entity
-selection were not reset or published. A functioning server process is not a
-completed end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).
+OTA. Its initial GPIO12 output test failed; a model-specific GPIO15 profile is now
+installed and has passed a physical load/button test and an HA-controlled
+software-restart check. Physical power-cycle and Google Home/Alexa control checks
+remain pending. Existing bridge fabrics were preserved, and household entity
+identifiers were not published. A functioning server process is not a completed
+end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).

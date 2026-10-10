@@ -4,9 +4,11 @@
 
 The operator has old, unboxed, not-yet-commissioned Wi-Fi plugs. They look like
 previously converted units and are reported to contain ESP8266/“ESP-01” hardware.
-The first unit reports 1 MB flash and now runs ESPHome, but its relay GPIO map
-remains unverified after the first output test failed. Do not infer an exact model
-from the enclosure alone.
+The first unit reports 1 MB flash, runs ESPHome, and is marked XS-SSA01. Its
+GPIO13 button and GPIO12 indicator match a documented GPIO15-relay variant.
+The operator confirmed mechanical clicks and actual load switching with that
+profile; see [GPIO identification](gpio.md).
+Do not infer a board revision from the enclosure or model marking alone.
 
 The previous ESPHome configuration used `board: esp01_1m` for an AWP04L-style
 plug. This board identifier selects an ESP8266 build layout; it does **not** prove

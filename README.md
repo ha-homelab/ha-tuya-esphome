@@ -7,13 +7,16 @@ Amazon Alexa.
 
 The current batch consists of old, unboxed plugs reported by the owner to use
 ESP8266/“ESP-01” hardware. Similar-looking plugs were converted previously.
-The first unit reports 1 MB flash, but its exact model and relay pin assignments
-remain unverified. A historical AWP04L configuration is a candidate, not proof.
+The first unit reports 1 MB flash and is marked **XS-SSA01**. Its observed button
+and LED match the GPIO15-relay variant in the official Tasmota catalog. Identical
+markings and similar enclosures can still hide different board revisions.
 
-**Current hardware blocker:** the first unit's LED and software switch state
-change, but its output-power test failed. GPIO12 is not a verified relay mapping.
-See [the investigation](https://github.com/ha-homelab/ha-tuya-esphome/issues/1)
-before using either GPIO example. This unit has not been exported through Matter.
+**First unit physically verified:** the XS-SSA01 profile uses GPIO15 for the relay,
+GPIO13 for the button and inverted GPIO12 for the indicator. The operator confirmed
+mechanical clicks and actual load switching in both directions. The earlier GPIO12
+relay candidate drove only the LED; [the investigation](https://github.com/ha-homelab/ha-tuya-esphome/issues/1)
+records that correction. See [the deployment record](docs/deployment-record.md) for
+restart and ecosystem acceptance results.
 
 ```mermaid
 flowchart LR

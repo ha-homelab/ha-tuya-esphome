@@ -13,20 +13,22 @@
 
 ## First unit
 
-Current blocker: GPIO13 button events are visible, but the GPIO12 candidate only
-produces an LED change; a known-working load did not turn on. Correct the output
-mapping before calling this a working plug or exporting it through Matter.
+The first unit is marked XS-SSA01. GPIO12 proved to be the indicator; the matching
+GPIO15-relay/GPIO13-button profile now switches a known-working load in both
+directions, confirmed by the operator. Each remaining unit still needs its own
+hardware check.
 
 - [x] First unit: fast-blinking pairing, successful loader connection, flash-size identification.
 - [x] Direct ESPHome flash, with stock backup download disabled by owner choice.
 - [x] Stable Wi-Fi and encrypted Home Assistant API; successful subsequent OTA.
-- [ ] Confirm relay GPIO, inversion and off-at-boot behavior without a load.
-- [ ] Confirm physical button and status reporting.
-- [ ] Save a sanitized, verified model profile; do not generalize from appearance.
+- [x] Confirm relay GPIO, inversion, HA control and off state after software restart.
+- [ ] Confirm off state after physically removing and restoring power.
+- [x] Confirm physical button and actual load switching.
+- [x] Save a sanitized, verified model profile; do not generalize from appearance.
 
 ## Ecosystems
 
-- [ ] Select only the verified relay entity in the existing Matter Hub.
+- [x] Select only the verified relay entity in the existing Matter Hub.
 - [ ] Confirm or add Google Home commissioning without resetting existing fabrics.
 - [ ] Confirm or add Alexa commissioning; use the intended bridge on UDP 5540.
 - [ ] Round-trip state/control checks in HA, Google, Alexa and the physical button.

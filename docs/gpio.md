@@ -18,35 +18,45 @@ This map is a **reference for identification**, not a configuration approved for
 every unit. Do not copy the old unit's current/voltage calibration coefficients.
 They do not establish the new unit's accuracy or even its metering chip.
 
-## First observed unit
+## XS-SSA01: first observed unit
 
-The initial report of relay clicks was superseded by a direct output check:
-pressing the button changes the LED, but there is no mechanical relay click and
-a known-working load does not turn on. **GPIO12 is not a verified relay pin on
-this unit.** Home Assistant's switch state only confirms the commanded GPIO
-state; it is not feedback from the relay contacts.
+The operator read **XS-SSA01** on the enclosure. The first GPIO12 attempt changed
+only an LED: a known-working load stayed off and there was no mechanical click.
+Home Assistant history confirmed that the physical button is on GPIO13.
 
-Home Assistant history does show GPIO13 button press/release events, paired with
-software switch changes. That verifies the input path, not the mains output or
-the retail model. The relay map remains unresolved and this unit is not selected
-for Matter export. Do not infer a different output pin without further evidence.
+The [official Tasmota template catalog](https://github.com/arendst/Tasmota/blob/63e278de74d14dab7c78a16e763bce6f3484c1b7/TEMPLATES.md)
+contains an XS-SSA01 variant matching those observations:
 
-Optional packages are provided as
-[`relay-gpio12-candidate.yaml`](../examples/relay-gpio12-candidate.yaml) and
-[`button-gpio13-candidate.yaml`](../examples/button-gpio13-candidate.yaml).
-Copy them into the private build directory and add them to that unit's YAML:
+- Relay: GPIO15, active high.
+- Button: GPIO13, active low with pull-up.
+- Indicator: GPIO12, active low.
+
+The catalog also contains an XS-SSA01 v2 with its button on GPIO1, and a Martin
+Jerry XS-SSA01 with a GPIO14 relay. The marking alone does not identify the board
+revision. Match observed behavior and verify physical output before reusing a
+profile. Do not apply the historical AWP04L LED assignment to this plug: its
+GPIO15 is the relay output.
+
+The matching package is [`xs-ssa01-gpio15.yaml`](../examples/xs-ssa01-gpio15.yaml).
+Copy it into the private build directory beside the GPIO-neutral base YAML and
+include it in that unit's configuration:
 
 ```yaml
 packages:
-  relay_candidate: !include relay-gpio12-candidate.yaml
-  button_candidate: !include button-gpio13-candidate.yaml
+  hardware: !include xs-ssa01-gpio15.yaml
 ```
 
-These packages document the attempted mapping; they are not a working profile
-for the first unit. Start with the relay package alone only when model-specific
-evidence supports it. Keep the original GPIO-neutral YAML and image for unknown plugs.
-The restart button permits a controlled software-restart test; it does not replace
-a separate power-cycle check. LEDs and metering are intentionally absent.
+The package uses `ALWAYS_OFF`, a debounced local button, an internal LED following
+the commanded relay state, and a diagnostic restart button. Neither the LED nor
+the HA switch state is feedback from the relay contacts. The operator confirmed
+mechanical clicks and actual load switching in both directions from the physical button with this GPIO15 profile. See
+[the deployment record](deployment-record.md) for restart and ecosystem checks.
+
+Keep the original GPIO-neutral YAML and image for unknown plugs. The historical
+[`relay-gpio12-candidate.yaml`](../examples/relay-gpio12-candidate.yaml) and
+[`button-gpio13-candidate.yaml`](../examples/button-gpio13-candidate.yaml) describe
+the initial attempt; do not combine them with the XS-SSA01 package. GPIO12 is not
+a relay output for this observed variant.
 
 ## Verification sequence
 

@@ -5,8 +5,8 @@
 The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
-responded successfully. This project did not deploy another instance, reset a
-bridge, or alter existing Matter fabrics.
+responded successfully. This project reused that instance, added one exact relay
+entity filter, and preserved both existing Matter fabrics. No new bridge or factory reset was used.
 
 Use the current hub's private Web UI endpoint and persistent storage. An older
 Portainer stack or a dormant alternative manifest is not evidence that it is the

@@ -102,10 +102,11 @@ an unsupported metering chip, or an invalid GPIO map requires a new local YAML.
 
 An LED changing or HA showing `on` is not proof that the output is energized.
 For the first unit, GPIO13 input events and GPIO12 state changes were visible,
-but the physical output test failed. Retract the mapping's verified status,
-keep it out of the Matter bridge, and identify the actual model/output circuit
-before another output test. A load that also fails directly from the wall cannot
-be used to establish a plug failure; check that distinction separately.
+but the physical output test failed. The XS-SSA01 marking then led to a matching
+variant with a GPIO15 relay and an inverted GPIO12 indicator. Retract an incorrect
+mapping's verified status and identify the model/output circuit before another
+output test. Keep the unit out of Matter until physical switching passes. A load
+that also fails directly from the wall cannot be used to establish a plug failure; check that distinction separately.
 
 ## HA works but Google/Alexa does not
 
