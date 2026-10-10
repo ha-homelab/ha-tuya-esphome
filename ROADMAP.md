@@ -36,6 +36,9 @@ hardware check.
 
 ## Remaining batch
 
+The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
+Rapid-blink mode could not be established; its GPIO variant is unverified.
+
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.
 - [ ] Validate each apparent model variant before reusing a GPIO profile.

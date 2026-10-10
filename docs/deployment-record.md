@@ -67,6 +67,16 @@ omitted; keep an exact operational record outside Git.
   container removal then passed a live namespace round-trip check; the launcher
   now performs that return during cleanup.
 
+## Second unit: pairing blocked before flashing
+
+The next unit is marked YM-WS-1. An isolated conversion AP was started and the
+phone connected, but the plug did not associate during the initial pairing
+attempt. The operator then reported being unable to obtain rapid blinking.
+The unit never reached the intermediate loader and no replacement firmware was
+written. The session was stopped cleanly and the radio returned to host managed
+mode. Model-specific diagnosis remains open; do not classify this as a bricked
+unit or assume the first plug's GPIO map applies.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.

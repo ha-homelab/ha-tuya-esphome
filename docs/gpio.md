@@ -58,6 +58,20 @@ Keep the original GPIO-neutral YAML and image for unknown plugs. The historical
 the initial attempt; do not combine them with the XS-SSA01 package. GPIO12 is not
 a relay output for this observed variant.
 
+## YM-WS-1: a separate, unverified unit
+
+The next unit is marked YM-WS-1. Its first pairing attempt ended before it joined
+the conversion AP; no replacement firmware was written. The operator could not
+restore rapid blinking. That is a pairing-stage blocker, not evidence of a
+failed flash or incompatible firmware.
+
+Upstream first-hand reports describe different boards under this marking:
+[Geekbes YM-WS-1](https://github.com/ct-Open-Source/tuya-convert/issues/56) uses a
+GPIO14 relay, while [ANIKUV YM-WS-1](https://github.com/ct-Open-Source/tuya-convert/issues/95)
+uses GPIO15 relay, GPIO13 button and inverted GPIO12 LED. Neither report proves
+the current unit's mapping. Do not flash the XS-SSA01 hardware package onto this
+unit based only on its similar appearance.
+
 ## Verification sequence
 
 1. Confirm stable Wi-Fi, API and OTA first.
