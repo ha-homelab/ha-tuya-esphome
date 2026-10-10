@@ -29,7 +29,7 @@ hardware check.
 ## Ecosystems
 
 - [x] Select only the verified relay entity in the existing Matter Hub.
-- [ ] Confirm or add Google Home commissioning without resetting existing fabrics.
+- [x] Confirm Google Home discovers the new plug through the existing fabric and switches its load.
 - [ ] Confirm or add Alexa commissioning; use the intended bridge on UDP 5540.
 - [ ] Round-trip state/control checks in HA, Google, Alexa and the physical button.
 - [ ] Restart checks for the plug and bridge; record results separately.

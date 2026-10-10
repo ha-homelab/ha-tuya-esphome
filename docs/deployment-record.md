@@ -61,7 +61,10 @@ omitted; keep an exact operational record outside Git.
 - Added exactly the verified relay entity to the existing Matter Hub. The include
   filter count and device count each increased from seven to eight. Both existing
   fabrics, prior filters, exclusions, bridge name, port and running state were
-  preserved. No factory reset or new bridge was used.
+  preserved. No factory reset or new bridge was used. The endpoint tree identifies
+  the new device as an OnOffPlugInUnit.
+- The operator confirmed that Google Home discovered the plug and switched its
+  connected load from the app through the existing Google fabric.
 - Removing the first conversion container left the Broadcom radio inaccessible.
   Reloading its driver restored it. An explicit numeric-PHY return before
   container removal then passed a live namespace round-trip check; the launcher
@@ -72,8 +75,8 @@ omitted; keep an exact operational record outside Git.
 The next unit is marked YM-WS-1. An isolated conversion AP was started and the
 phone connected, but the plug did not associate during the initial pairing
 attempt. The operator then reported being unable to obtain rapid blinking.
-The unit never reached the intermediate loader and no replacement firmware was
-written. The session was stopped cleanly and the radio returned to host managed
+The indicator remained steadily lit after a long button press. The unit never
+reached the intermediate loader and no replacement firmware was written. The session was stopped cleanly and the radio returned to host managed
 mode. Model-specific diagnosis remains open; do not classify this as a bricked
 unit or assume the first plug's GPIO map applies.
 
@@ -97,7 +100,8 @@ tags mean builds are not promised to be byte-for-byte identical.
 The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
 OTA. Its initial GPIO12 output test failed; a model-specific GPIO15 profile is now
 installed and has passed a physical load/button test and an HA-controlled
-software-restart check. Physical power-cycle and Google Home/Alexa control checks
-remain pending. Existing bridge fabrics were preserved, and household entity
+software-restart check. Google Home app control also passed. Physical power-cycle,
+Alexa commissioning/control and the full button-to-controller round trip remain
+pending. Existing bridge fabrics were preserved, and household entity
 identifiers were not published. A functioning server process is not a completed
 end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).
