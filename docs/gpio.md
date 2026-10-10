@@ -3,6 +3,10 @@
 Do not infer a pin map from a plastic enclosure. The batch's first image is
 GPIO-neutral specifically because the operator cannot distinguish the unboxed
 models. `esp01_1m` is a compiler board selection, not a verified hardware model.
+GPIO-neutral means that firmware does not assign the relay pin; it does not
+guarantee that the outlet is electrically off. The WP5 operator observed a powered
+load while the input-only diagnostic firmware was running. Connect a test load
+only for the controlled output checks below.
 
 ## Historical AWP04L candidate
 
@@ -71,6 +75,26 @@ GPIO14 relay, while [ANIKUV YM-WS-1](https://github.com/ct-Open-Source/tuya-conv
 uses GPIO15 relay, GPIO13 button and inverted GPIO12 LED. Neither report proves
 the current unit's mapping. Do not flash the XS-SSA01 hardware package onto this
 unit based only on its similar appearance.
+
+## WP5: identify the variant before assigning outputs
+
+The replacement unit is marked WP5. The
+[official Tasmota catalog](https://github.com/arendst/Tasmota/blob/63e278de74d14dab7c78a16e763bce6f3484c1b7/TEMPLATES.md)
+records both a generic WP5 (GPIO13 button, GPIO15 relay, inverted LEDs on GPIO0
+and GPIO2) and a Gosund WP5 (GPIO4 button, GPIO14 relay, inverted LEDs on GPIO12
+and GPIO13). The marking alone does not select one of these maps.
+
+After the GPIO-neutral conversion, use
+[`wp5-button-probe.yaml`](../examples/wp5-button-probe.yaml) to observe the
+documented button candidates as inputs before assigning a relay output. A controlled button press identifies the
+responding input; physical relay/load testing is still required afterward. Do
+not copy a GPIO15 output test onto an unidentified Gosund variant or enable both
+relay candidates simultaneously.
+
+On the observed WP5, repeated controlled button presses produced GPIO13
+press/release events, while GPIO4 stayed inactive. A matching GPIO15-relay,
+inverted-GPIO2-indicator candidate was then built. GPIO0 is left unused. Physical
+output testing is still required before treating this candidate as verified.
 
 ## Verification sequence
 

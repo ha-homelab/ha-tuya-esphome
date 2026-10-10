@@ -90,8 +90,14 @@ The replacement joined the home LAN and answered the encrypted ESPHome 2026.9.1
 API. It was also adopted in Home Assistant after checking its encrypted API
 identity. The AP was stopped and the radio returned to the host normally.
 
-This is a successful firmware installation, not yet a verified working outlet:
-its model, relay and button mapping still need identification. It has not been
+The operator identified the replacement as WP5. Input-only diagnostics recorded
+repeated GPIO13 button presses; the alternative GPIO4 input stayed inactive.
+The operator also observed that the outlet supplied power during diagnostics:
+unassigned GPIOs do not guarantee an off output. A matching candidate with a
+GPIO15 relay, GPIO13 button and inverted GPIO2 indicator compiled on the Mac in
+28.97 seconds and was installed through encrypted OTA. Home Assistant reports
+the new firmware and an off switch state. Actual load/button checks are pending;
+software state alone does not verify the relay contacts. The WP5 has not been
 exported through Matter. The failed pairing attempt and this replacement retain
 separate private inventory records.
 
