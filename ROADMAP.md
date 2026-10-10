@@ -52,6 +52,14 @@ verified relay is now exported through the existing three-fabric Matter bridge.
 The operator deferred post-migration Google Home/Alexa acceptance.
 Complete state round-trip checks remain pending.
 
+A fourth successful conversion, a second XS-SSA01, passed its own input probe,
+encrypted OTA, physical button/load test and HA software-restart check. Its
+GPIO15 relay, GPIO13 button and inverted GPIO12 indicator match the first verified
+XS-SSA01 profile. The count of four excludes the unflashed YM-WS-1 pairing attempt.
+The fourth plug's verified relay replaced three legacy LocalTuya
+devices under one stable role, with curtain automations and persisted desktop
+bindings migrated, and was added to the existing Matter bridge.
+
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.
 - [ ] Validate each apparent model variant before reusing a GPIO profile.

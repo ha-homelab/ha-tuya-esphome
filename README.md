@@ -24,11 +24,13 @@ is different; use the [variant identification procedure](docs/gpio.md) before
 applying either profile. A separate YM-WS-1 attempt stopped at pairing without
 writing firmware.
 
-The first two converted plugs passed actual load switching from Google Home and
-Amazon Alexa through the existing Matter Hub. A third WP5 has now passed its
-per-unit button/load, red-indicator and HA software-restart checks and is exported
-through Matter. The operator deferred post-migration controller checks. The original controller fabrics were
-preserved when Alexa was added. See the deployment record for remaining checks.
+Four plugs have now been converted: two XS-SSA01 units and two WP5 units. Each
+passed its own physical button/load test and HA software-restart check; both WP5
+units also passed their independent red-indicator check. The first two converted
+plugs passed actual load switching from Google Home and Amazon Alexa through the
+existing Matter Hub. The operator deferred later controller checks. The original
+controller fabrics were preserved when Alexa was added. See the deployment
+record for migration results and remaining checks.
 
 ```mermaid
 flowchart LR

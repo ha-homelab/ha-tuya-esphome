@@ -6,9 +6,9 @@ The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
 responded successfully. This project reused that instance, added an exact relay
-entity filter for each of three physically verified plugs. The original two
+entity filter for each of four physically verified plugs. The original two
 fabrics were preserved when Alexa was commissioned, and all three were preserved
-when the third plug was added. No new bridge or factory reset was used.
+when later plugs were added. No new bridge or factory reset was used.
 
 Use the current hub's private Web UI endpoint and persistent storage. An older
 Portainer stack or a dormant alternative manifest is not evidence that it is the
@@ -48,6 +48,15 @@ active automation, scene, dashboard, floorplan and customization references, plu
 external clients and their saved deployment inputs. A change from a `light` to a
 `switch` also needs the correct service domain in explicit service calls. Check
 that a later deployment or application restart cannot restore the old references.
+
+When several numbered legacy devices are being consolidated into one role,
+confirm the complete retirement list with the operator. Inspect the behavior of
+every referring automation before changing its target: an old motion-triggered
+outlet action must not silently become a command to the replacement curtain
+power outlet. Remove obsolete actions explicitly while preserving unrelated
+actions, schedule times, delays and conditions. Consolidate duplicate client
+controls as well as entity IDs, then verify the saved settings after a normal
+save and application restart.
 
 If a plug is already exported, inspect the installed Hub's identity-preserving
 rename behavior before changing its HA ID or filter. Record and compare its

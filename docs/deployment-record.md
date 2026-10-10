@@ -173,6 +173,42 @@ save and two client restarts. Credentials and private configurations were not
 published. Post-migration Google Home/Alexa load tests were deferred by the
 operator.
 
+## Fourth successful ESPHome installation: another XS-SSA01
+
+A second XS-SSA01 reached the intermediate loader, which reported 1 MB flash,
+DOUT and 40 MHz. Its identity was checked against all three working plugs. The
+validated 424,448-byte input-only probe installed in 11.637 seconds without a
+stock backup. The plug joined the home LAN and answered the encrypted ESPHome
+API; the conversion session was stopped and the radio restored to managed mode.
+
+Three GPIO13 press/release cycles were recorded while GPIO4 remained inactive.
+The matching XS-SSA01 profile uses GPIO15 for the relay, GPIO13 for the button
+and inverted GPIO12 for its internal indicator. Its final 440,480-byte image
+passed checksum and flash-header checks and was uploaded through encrypted OTA
+using an explicit file path and digest check. The native API reported the
+expected final configuration hash. Two further button presses changed the relay
+state, and the operator confirmed mechanical clicks and actual load switching
+in both directions. This is per-unit verification, not a guarantee about every
+plug with the same marking.
+
+Home Assistant adopted the final firmware, commanded its relay on, restarted the
+device and observed a fresh off state afterward. The relay was left off.
+
+At the operator's request, this plug replaces three numbered legacy LocalTuya
+devices with one stable household role. All three old devices were removed after
+identity checks. Morning/evening curtain references were updated while retaining
+their schedules, delays and conditions. An obsolete action in a separate motion
+automation was removed instead of retargeting it to the new curtain power outlet.
+The replacement relay was added to the existing Matter bridge as one
+OnOffPlugInUnit; all prior endpoints and three controller fabrics were preserved.
+
+The installed desktop client picked up the canonical entity and its off state
+without another client restart. Exactly one unnumbered control remained, and all
+six saved client/deployment configuration sources were checked for stale bindings.
+No curtain or load was activated during migration verification.
+HA completed a restart and loaded both updated startup-only curtain profiles;
+the replacement relay remained off.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -194,8 +230,9 @@ The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
 OTA. Its initial GPIO12 output test failed; a model-specific GPIO15 profile is now
 installed and has passed a physical load/button test and an HA-controlled
 software-restart check. Google Home and Alexa app control passed on the first two
-converted plugs. The third plug passed physical button/load, red-indicator and HA
-software-restart checks and is exported through Matter. The operator deferred
+converted plugs. The third and fourth plugs passed their own physical button/load
+and HA software-restart checks and are exported through Matter; the third also
+passed its independent red-indicator check. The operator deferred
 post-migration controller checks. Physical power-cycle and the full
 button-to-controller round trip also remain pending. Existing bridge fabrics were preserved, and household entity
 identifiers were not published. A functioning server process is not a completed
