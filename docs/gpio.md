@@ -62,7 +62,7 @@ Keep the original GPIO-neutral YAML and image for unknown plugs. The historical
 the initial attempt; do not combine them with the XS-SSA01 package. GPIO12 is not
 a relay output for this observed variant.
 
-## YM-WS-1: a separate, unverified unit
+## YM-WS-1: different reported boards, one observed GPIO15 variant
 
 The next unit is marked YM-WS-1. Its first pairing attempt ended before it joined
 the conversion AP; no replacement firmware was written. The operator could not
@@ -73,8 +73,21 @@ Upstream first-hand reports describe different boards under this marking:
 [Geekbes YM-WS-1](https://github.com/ct-Open-Source/tuya-convert/issues/56) uses a
 GPIO14 relay, while [ANIKUV YM-WS-1](https://github.com/ct-Open-Source/tuya-convert/issues/95)
 uses GPIO15 relay, GPIO13 button and inverted GPIO12 LED. Neither report proves
-the current unit's mapping. Do not flash the XS-SSA01 hardware package onto this
-unit based only on its similar appearance.
+every unit's mapping. Do not select the XS-SSA01 hardware package based only on
+a similar enclosure.
+
+A later YM-WS-1 selected from an existing LocalTuya role reached the loader and
+was converted. The [ESPHome device entry](https://devices.esphome.io/devices/geekbes-ym-ws-1/)
+also describes GPIO15 relay, GPIO13 button and inverted GPIO12 indicator. After
+installing a GPIO-neutral image, that candidate was applied through encrypted
+OTA. The operator confirmed that its physical button switches a real load on
+and off and the indicator follows. This validates that mapping for the later
+unit, not the contradictory variants above.
+
+Use [`ym-ws1-gpio15.yaml`](../examples/ym-ws1-gpio15.yaml) with the GPIO-neutral
+base after matching the hardware. It provides a local debounced button,
+`ALWAYS_OFF` relay and internal indicator, and a diagnostic restart button.
+Do not combine it with another GPIO package.
 
 ## WP5: identify the variant before assigning outputs
 

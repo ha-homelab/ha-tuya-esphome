@@ -41,7 +41,7 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the six successful conversions.
+uninstalled candidate separate from the seven successful firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
@@ -80,6 +80,13 @@ A sixth conversion uses the existing WP5 profile. The operator explicitly waived
 repeat physical/button/indicator and restart testing for this same-model unit.
 Its firmware transfer and encrypted API were verified; those results are not
 recorded as physical acceptance.
+
+A seventh conversion, YM-WS-1, reached the ordinary loader, with its physical
+identity matched to the old LocalTuya role. A GPIO-neutral installation was
+followed by encrypted OTA of the GPIO15-relay/GPIO13-button/inverted-GPIO12 LED
+profile. The operator confirmed button, load and indicator behavior. HA restart
+validation and migration are being completed separately; this success does not
+retroactively change the earlier YM-WS-1 pairing-only record.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.

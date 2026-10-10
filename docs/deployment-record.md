@@ -297,6 +297,27 @@ next plug before replacement-key authentication or firmware-format validation.
 No HA, client or Matter migration was performed. See the
 [experimental procedure](awp02l-n-psk02.md); it is not a verified conversion recipe.
 
+## Later YM-WS-1: seventh ESPHome installation
+
+A YM-WS-1 selected from an existing LocalTuya role reached VTRUST-FLASH 1.5 using
+the ordinary conversion path. The loader MAC matched the intended old device
+and differed from all previously converted units. It reported 1,024 KiB flash,
+DOUT at 40 MHz and active user1. This success is recorded separately from the
+earlier YM-WS-1 attempt that never reached the loader.
+
+The 420,800-byte GPIO-neutral image installed in 26,208 ms, with the factory
+backup step disabled. After encrypted API identity verification, a 440,480-byte
+YM-WS-1 candidate was installed through encrypted OTA. It uses GPIO15 relay,
+GPIO13 active-low button with pull-up/debounce and an inverted GPIO12 internal
+indicator. The operator confirmed actual load switching in both directions
+using the button, with the indicator following. The encrypted API reported the
+final firmware and expected entities, and HA accepted a new ESPHome entry.
+HA command/restart verification and production role migration remain pending.
+
+The conversion container was removed and a privileged radio inspection confirmed
+that the Wi-Fi interface had returned to managed mode. No device identities,
+household role names, credentials or firmware are published here.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -315,7 +336,8 @@ tags mean builds are not promised to be byte-for-byte identical.
 ## Still pending
 
 Five converted plugs passed per-unit physical button/load and HA software-restart
-checks. The sixth uses a previously verified WP5 profile with repeated physical
+checks; the seventh has passed its physical test, with HA verification pending.
+The sixth uses a previously verified WP5 profile with repeated physical
 and restart checks explicitly waived by the operator; its transfer and encrypted
 API were verified separately. Google Home and Alexa app control passed on the
 first two converted plugs. Later controller checks were deferred. Physical
