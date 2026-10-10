@@ -4,7 +4,7 @@ import argparse
 import hashlib
 import os
 from pathlib import Path
-import shutil
+import tempfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument("firmware", type=Path)
@@ -18,7 +18,15 @@ if data[0] != 0xE9:
 destination = args.root / "tuya-convert/files/esphome-initial.bin"
 if not destination.parent.is_dir():
     raise SystemExit("Run workbench setup first.")
-shutil.copyfile(args.firmware, destination)
-destination.chmod(0o600)
+temporary = None
+try:
+    # Create privately from the first byte, then replace the staged image atomically.
+    with tempfile.NamedTemporaryFile(dir=destination.parent, prefix=".firmware-", delete=False) as stream:
+        temporary = Path(stream.name)
+        stream.write(data)
+    os.replace(temporary, destination)
+finally:
+    if temporary is not None:
+        temporary.unlink(missing_ok=True)
 print(f"Staged ESP image: {len(data)} bytes, SHA-256 {hashlib.sha256(data).hexdigest()}")
 print("Chip/flash layout must still match the actual unit. The image contains private credentials.")

@@ -6,6 +6,11 @@ Use [the workbench setup](workbench.md), generate private secrets, and review th
 local copy of `tuya-plug.yaml`. Each device adds its MAC suffix to its ESPHome
 hostname so the same initial image can be used for a batch.
 
+Reusing that image also shares its API/OTA key across those units. For separate
+keys, generate and stage a separate image before converting each stock unit.
+Renaming a YAML file does not rotate credentials. Preserve deployed keys and
+check the installed ESPHome version's key-rotation limitations before changing them.
+
 ```sh
 /opt/tuya-workbench/bin/esphome config tuya-plug.yaml
 /opt/tuya-workbench/bin/esphome compile tuya-plug.yaml
@@ -23,6 +28,11 @@ or a larger binary to this path. See the
 
 The compiled binary contains private Wi-Fi and API credentials. It belongs only
 on the private workbench, never in Git or a public GitHub release.
+
+The template requires encrypted subsequent ESPHome OTA uploads using the API key.
+Use the pinned, current uploader and preserve that key in the device's local YAML.
+This does not encrypt the legacy Tuya-Convert transfer itself. See ESPHome's
+[OTA encryption documentation](https://esphome.io/components/ota/esphome/#encryption).
 
 ## Pair and flash
 
