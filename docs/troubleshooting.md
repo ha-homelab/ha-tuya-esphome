@@ -85,7 +85,11 @@ not be confused with the experimental branch's upgrade-image format.
 Treat this as a candidate for firmware-specific investigation, not a confirmed
 conversion path. Match the stock firmware and memory layout before adapting
 the exploit, and preserve the existing HA/client bindings until an actual
-replacement is verified. No experimental payload has been sent in this batch.
+replacement is verified. An explicitly accepted trial sent one experimental
+packet to the identified unit in AP mode. Its connection dropped; that does not
+establish successful key replacement. Authentication and conversion remain
+unverified. Follow the [detailed AWP02L-N procedure](awp02l-n-psk02.md) for isolation,
+identity checks, milestone evidence, image-format constraints and cleanup.
 
 A separate [recovery anecdote](https://github.com/ct-Open-Source/tuya-convert/discussions/1177)
 reports success after `vtrust-recovery` and `/undo`, but its author could not

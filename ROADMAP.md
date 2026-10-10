@@ -46,7 +46,8 @@ uninstalled candidate separate from the six successful conversions.
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
       compatibility and a usable conversion profile are not yet established.
-      See [research findings](docs/troubleshooting.md#experimental-esp8266-alternative-to-tuya-convert).
+      One experimental packet was sent; replacement-key authentication and
+      conversion are unverified. See [the procedure](docs/awp02l-n-psk02.md).
 
 The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
 Rapid-blink mode could not be established; its GPIO variant is unverified.

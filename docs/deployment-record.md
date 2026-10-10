@@ -286,6 +286,17 @@ desktop/deployment configuration sources remained unchanged; the proposed new
 role was recorded only in the private migration plan. The converted total stays
 at six.
 
+An explicitly accepted follow-up used the experimental ESP8266 CloudCutter
+revision `defb7ba92a228dc8149599a54aadcd37e0e862c6`. The dedicated radio joined
+the unit's slow-blinking AP inside an isolated namespace. Its BSSID and gateway
+neighbor were checked against the private target identity. One 256-byte
+experimental UDP packet was sent; no firmware image was sent. The station
+connection subsequently dropped and a rescan found no matching AP. This is a
+reaction, not proof of key replacement. The investigation was set aside for the
+next plug before replacement-key authentication or firmware-format validation.
+No HA, client or Matter migration was performed. See the
+[experimental procedure](awp02l-n-psk02.md); it is not a verified conversion recipe.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
