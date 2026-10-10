@@ -2,8 +2,9 @@
 
 ## Current batch
 
-The operator has old, unboxed, not-yet-commissioned Wi-Fi plugs. They look like
-previously converted units and are reported to contain ESP8266/“ESP-01” hardware.
+The batch includes old, unboxed, not-yet-commissioned Wi-Fi plugs and later units
+previously managed through LocalTuya. They look like previously converted units
+and are reported to contain ESP8266/“ESP-01” hardware.
 The first unit reports 1 MB flash, runs ESPHome, and is marked XS-SSA01. Its
 GPIO13 button and GPIO12 indicator match a documented GPIO15-relay variant.
 The operator confirmed mechanical clicks and actual load switching with that
@@ -15,7 +16,7 @@ plug. This board identifier selects an ESP8266 build layout; it does **not** pro
 that a physical eight-pin ESP-01 module is inside. A literal ESP-01 does not expose
 the same pins as every ESP8266-based plug board.
 
-The first image deliberately contains no GPIO outputs, UART logger output,
+For unidentified variants, the first image contains no GPIO outputs, UART logger output,
 metering driver, or assumed relay pin. It supplies Wi-Fi, encrypted API, OTA,
 fallback provisioning and diagnostic entities. Confirm the actual memory layout
 from the conversion loader's report before selecting the final image.

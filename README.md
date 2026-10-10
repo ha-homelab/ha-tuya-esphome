@@ -1,7 +1,7 @@
 # Tuya plugs to ESPHome
 
-An English-language field guide and reproducible workbench for converting old,
-uncommissioned Tuya Wi-Fi plugs to ESPHome, then exposing their Home Assistant
+An English-language field guide and reproducible workbench for converting old
+Tuya Wi-Fi plugs to ESPHome, then exposing their Home Assistant
 entities through an **existing Home Assistant Matter Hub** to Google Home and
 Amazon Alexa.
 
@@ -24,13 +24,15 @@ is different; use the [variant identification procedure](docs/gpio.md) before
 applying either profile. A separate YM-WS-1 attempt stopped at pairing without
 writing firmware.
 
-Four plugs have now been converted: two XS-SSA01 units and two WP5 units. Each
-passed its own physical button/load test and HA software-restart check; both WP5
-units also passed their independent red-indicator check. The first two converted
-plugs passed actual load switching from Google Home and Amazon Alexa through the
-existing Matter Hub. The operator deferred later controller checks. The original
-controller fabrics were preserved when Alexa was added. See the deployment
-record for migration results and remaining checks.
+Six plugs have now been converted: two XS-SSA01 units, three WP5 units and one
+KMC 30137. Five passed their own physical button/load test and HA software-restart
+check; the first two WP5 units also passed their independent red-indicator check.
+For the latest WP5, the operator chose the existing profile and waived repeated
+physical and restart tests. The first two converted plugs passed actual load
+switching from Google Home and Amazon Alexa through the existing Matter Hub.
+The operator deferred later controller checks. The original controller fabrics
+were preserved when Alexa was added. See the deployment record for migration
+results and remaining checks.
 
 ```mermaid
 flowchart LR
@@ -63,8 +65,9 @@ entities.
 - The owner explicitly chose **no factory-firmware backups** and accepts retiring
   unsuccessful units rather than spending time on serial recovery. The container
   disables the upstream download step; session logs and metadata are still local.
-- Start with a GPIO-neutral ESPHome image. A working Wi-Fi/API connection and a
-  functional mains relay are different milestones.
+- Start unidentified variants with a GPIO-neutral ESPHome image. Record an
+  operator's explicit choice to reuse a same-model profile without repeated tests.
+  A working Wi-Fi/API connection and a functional mains relay are different milestones.
 - Keep Wi-Fi settings, API keys, actual addresses, device identifiers, logs,
   compiled firmware and Matter commissioning data out of this repository.
 

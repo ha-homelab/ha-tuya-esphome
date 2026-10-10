@@ -6,6 +6,12 @@ Use [the workbench setup](workbench.md), generate private secrets, and review th
 local copy of `tuya-plug.yaml`. Each device adds its MAC suffix to its ESPHome
 hostname so the same initial image can be used for a batch.
 
+For an unidentified hardware variant, use the GPIO-neutral base or a documented
+input-only probe. For a repeated model whose existing profile the operator has
+explicitly chosen to reuse, the first image can instead include that final
+hardware package. Record any waived per-unit tests separately from successful
+checks. The same image-size, credential and device-identity requirements apply.
+
 Reusing that image also shares its API/OTA key across those units. For separate
 keys, generate and stage a separate image before converting each stock unit.
 Renaming a YAML file does not rotate credentials. Preserve deployed keys and
@@ -63,8 +69,10 @@ metadata go to `/opt/tuya-workbench/logs/<timestamp>/`; no stock dump is request
 
 Add the discovered ESPHome device under Settings → Devices & services, supplying
 its local API encryption key. If discovery is unavailable, use its DHCP address.
-Only diagnostic entities exist at this stage. Continue with [GPIO identification](gpio.md)
-before expecting a controllable plug entity or exposing it through Matter.
+With the GPIO-neutral image, only diagnostic entities exist at this stage.
+Continue with [GPIO identification](gpio.md) before expecting a controllable plug
+entity or exposing it through Matter. A deliberately reused final profile already
+contains its relay entities; preserve the recorded operator acceptance decision.
 
 For a subsequent device-specific image, keep a separate local YAML named for that
 unit. YAML filenames alone do not isolate build output: configurations in the
@@ -81,6 +89,7 @@ esphome upload unit.yaml --device <verified-unit-address> \
 ```
 
 Check the saved digest, matching configuration/credentials, and the target's
-encrypted API identity before uploading. Reuse a final GPIO profile only after
-checking that unit's hardware variant. Preserve the unit's local credentials and
-stable identity. Return to Tuya-Convert only for a still-stock unit.
+encrypted API identity before uploading. Record whether a final GPIO profile was
+selected from this unit's hardware check or from the operator's explicit choice
+to reuse an existing same-model profile. Preserve the unit's local credentials
+and stable identity. Return to Tuya-Convert only for a still-stock unit.

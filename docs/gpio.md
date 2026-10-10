@@ -104,6 +104,29 @@ only the relay is exported through Matter. The matching package is
 package with this hardware package after identifying a matching unit; do not
 include both because they would assign GPIO13 twice.
 
+## KMC 30137: separate GPIO1-button variant
+
+The operator identified the manufacturer as KMC and the model as 30137. The
+[archived official Tasmota template](https://github.com/arendst/Tasmota/blob/36c8ae98da6f706b07f72aebd8dd1b770ca94cb3/TEMPLATES-PRE9.md)
+provides a different map from either verified profile above:
+
+- Button: GPIO1, active low with pull-up.
+- Relay: GPIO14, active high.
+- Indicator: GPIO13, active low.
+
+The [`kmc-30137-button-probe.yaml`](../examples/kmc-30137-button-probe.yaml)
+package observes GPIO1 without assigning an output. UART logging must stay
+disabled (`logger.baud_rate: 0`) because GPIO1 is also the UART TX pin. Three
+controlled press/release cycles were observed on this input for the current
+unit. Replace the probe with
+[`kmc-30137-gpio14.yaml`](../examples/kmc-30137-gpio14.yaml) only after matching
+the input; verify physical relay/load behavior separately. Never include both
+packages or copy the GPIO15 relay from the other models.
+
+On the observed unit, the operator confirmed mechanical relay clicks, actual
+lamp switching in both directions and the indicator following that state. This
+verifies the profile for this unit; check each additional unit independently.
+
 ## Verification sequence
 
 1. Confirm stable Wi-Fi, API and OTA first.
@@ -123,3 +146,9 @@ include both because they would assign GPIO13 twice.
 Physical validation remains necessary: successful compilation says nothing about
 which pin controls a real relay. The owner chose to retire unsuccessful units;
 serial recovery and live-board probing are not part of this project.
+
+For a later WP5 in this batch, the operator explicitly chose to reuse the
+previously verified profile and skip repeated button, load, indicator and restart
+tests. Record that as an operator waiver for the individual unit, not a passed
+physical test. Firmware identity, transfer completion and API availability can
+still be recorded separately; they do not establish that unit's physical output.

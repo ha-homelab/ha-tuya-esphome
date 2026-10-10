@@ -60,6 +60,16 @@ The fourth plug's verified relay replaced three legacy LocalTuya
 devices under one stable role, with curtain automations and persisted desktop
 bindings migrated, and was added to the existing Matter bridge.
 
+A fifth conversion, KMC 30137, passed a GPIO1 input probe and physical button,
+lamp and indicator checks with its GPIO14-relay/GPIO13-indicator profile. HA
+command dispatch initially failed despite working native API control; recreating
+only the new ESPHome entry restored it, and the HA software-restart check passed.
+
+A sixth conversion uses the existing WP5 profile. The operator explicitly waived
+repeat physical/button/indicator and restart testing for this same-model unit.
+Its firmware transfer and encrypted API were verified; those results are not
+recorded as physical acceptance.
+
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.
 - [ ] Validate each apparent model variant before reusing a GPIO profile.

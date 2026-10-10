@@ -108,6 +108,21 @@ mapping's verified status and identify the model/output circuit before another
 output test. Keep the unit out of Matter until physical switching passes. A load
 that also fails directly from the wall cannot be used to establish a plug failure; check that distinction separately.
 
+## Native ESPHome control works, but HA commands have no effect
+
+For the KMC unit, the physical button and a direct encrypted ESPHome command
+worked, while HA accepted `switch.turn_on` without changing the relay state.
+The device was online. Its address, MAC and relay command key matched a fresh
+native API response, and the event log showed no automation reversing the
+command. Reloading that one ESPHome entry did not help.
+
+Before migrating the household role, removing and re-adding only the new
+ESPHome entry restored HA control. An independent native API connection then
+confirmed the HA-commanded off/on/off transitions. The exact underlying cause
+was not established. Record the replacement config-entry/entity identifiers in
+the private inventory; preserve the original role until control works. Do not
+respond to this symptom by guessing new GPIOs or resetting the Matter bridge.
+
 ## HA works but Google/Alexa does not
 
 Check in order: relay works in HA; entity appears in the existing bridge's selected

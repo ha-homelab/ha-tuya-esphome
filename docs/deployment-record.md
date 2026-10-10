@@ -209,6 +209,64 @@ No curtain or load was activated during migration verification.
 HA completed a restart and loaded both updated startup-only curtain profiles;
 the replacement relay remained off.
 
+## Fifth successful ESPHome installation: KMC 30137
+
+The next unit was identified by the operator as KMC 30137. The first pairing
+attempt timed out without a plug association or loader connection; no firmware
+had been written at that point. The operator initially reported no visible LED
+response, then obtained rapid blinking. A second attempt reached the loader,
+which confirmed a distinct device with 1 MB flash and DOUT at 40 MHz.
+
+A separate GPIO1-only input probe was used because the documented KMC mapping
+differs from the earlier plugs. The 424,224-byte probe installed in 16.216 seconds
+without a stock backup. Its encrypted API and identity were checked, then the
+conversion AP was stopped and the radio restored to managed mode. Three controlled
+GPIO1 press/release cycles were observed. A 440,480-byte final candidate with
+GPIO14 relay, GPIO1 button and inverted GPIO13 indicator was installed through
+encrypted OTA. The final encrypted API became available after startup and
+reported the expected entities. Home Assistant adopted the final firmware and
+reported the relay off. The operator then confirmed mechanical clicks, actual
+lamp switching in both directions and the indicator changing with the relay.
+
+The first HA entry accepted switch commands without changing the output, despite
+working direct native API commands. Its address, identity and relay key matched.
+Reloading the entry did not resolve it; removing and re-adding only this new
+ESPHome entry restored control. An HA-commanded on/off sequence was observed
+through a separate native API connection, and the final HA software-restart
+check returned the relay to a fresh off state. The exact cause of the first
+entry's command failure was not established.
+
+## Sixth successful ESPHome installation: WP5 with profile reuse
+
+For the next WP5, the operator explicitly requested the existing working profile
+without repeated button, load, indicator or restart tests. The loader's identity
+was checked against all earlier converted units. It reported 1 MB flash and QIO
+at 40 MHz; the replacement image uses the established DOUT/1 MB/40 MHz layout.
+The staged input-only image was replaced before any ESPHome flash started, so
+the 440,688-byte final WP5 image was installed directly in 17.171 seconds.
+
+The encrypted native API confirmed the new device and the final relay, separate
+red indicator and diagnostic entities. Passive state observation found both
+relay and red indicator off. No commands were sent to toggle outputs or restart
+this unit. The conversion AP was stopped and the radio returned to managed mode.
+Its private record explicitly distinguishes inherited profile evidence from
+waived per-unit physical acceptance. No separate OTA update was needed.
+
+An earlier converted WP5 also had a stale LocalTuya entry under a former heater
+role. Matching the physical device identity established that it was the same
+plug. The stale entry, its dashboard control and four obsolete heater automations
+were removed. Shared energy-management rules retained their other participants.
+The active replacement and the separately retained old-role device were preserved;
+183 active configuration files were checked for the retired references.
+
+The KMC and latest WP5 then replaced existing HA roles under stable, unnumbered
+entity IDs. Their old LocalTuya entries were removed, active automation and
+dashboard/floorplan references updated, and only the relay entities were added
+to the existing Matter bridge. Prior endpoints and all three controller fabrics
+were preserved. Both replacements were saved across all six desktop/deployment
+configuration sources, and the installed client showed both canonical controls
+available and off. No repeated physical test was performed on the latest WP5.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -226,14 +284,12 @@ tags mean builds are not promised to be byte-for-byte identical.
 
 ## Still pending
 
-The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
-OTA. Its initial GPIO12 output test failed; a model-specific GPIO15 profile is now
-installed and has passed a physical load/button test and an HA-controlled
-software-restart check. Google Home and Alexa app control passed on the first two
-converted plugs. The third and fourth plugs passed their own physical button/load
-and HA software-restart checks and are exported through Matter; the third also
-passed its independent red-indicator check. The operator deferred
-post-migration controller checks. Physical power-cycle and the full
-button-to-controller round trip also remain pending. Existing bridge fabrics were preserved, and household entity
-identifiers were not published. A functioning server process is not a completed
-end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).
+Five converted plugs passed per-unit physical button/load and HA software-restart
+checks. The sixth uses a previously verified WP5 profile with repeated physical
+and restart checks explicitly waived by the operator; its transfer and encrypted
+API were verified separately. Google Home and Alexa app control passed on the
+first two converted plugs. Later controller checks were deferred. Physical
+power-cycle tests and the full button-to-controller round trip remain pending.
+Existing bridge fabrics were preserved, and household entity identifiers were
+not published. A functioning server process is not a completed end-to-end
+acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).
