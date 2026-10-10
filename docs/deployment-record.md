@@ -531,6 +531,87 @@ increased from 18 to 19, with the new OnOffPlugInUnit reachable, every prior
 endpoint identity preserved and all three controller fabrics unchanged. No
 additional controller or physical load test was performed.
 
+## Another YM-WS-1: twelfth Tuya conversion
+
+The next YM-WS-1 reused the established GPIO15 relay, GPIO13 button and inverted
+GPIO12 indicator profile. The operator renamed its role during the first write
+attempt. That request stalled without a recorded final-image download, so the
+outstanding HTTP client was stopped instead of issuing another blind write.
+A fresh read later confirmed the same device still running the intermediate
+loader. One bounded retry installed the already rebuilt final-name image in
+11,689 ms. The 440,480-byte ESPHome 2026.9.1 image passed header and checksum
+checks; encrypted API readback matched the physical identity, final role and
+compilation timestamp. The API also remained reachable after the operator's
+reported power interruption; no relay transition was tested during that event.
+
+The complete verified model profile was reused without repeated physical or
+restart testing. The conversion container was removed, both radios returned
+to managed mode, and the existing DNS reservation retained its MAC/address
+while adopting the new name. Forward and reverse DNS checks passed.
+
+The new HA relay replaced the exact old LocalTuya device. Eight references in
+six power-management automations and customization were migrated; estimated
+load, conditions, thresholds, ordering and delays were preserved. An active-file
+audit found no old references. Dashboard content, unrelated devices and manual
+override states were unchanged. Final firmware source and separate device
+secret references were saved in both active ESPHome configuration locations.
+Client/deployment configuration inspection found no old references to replace.
+After the migration, the operator requested a dashboard control beside an
+existing appliance. One switch row was added to that entities card; API and
+persisted-storage readback confirmed that all prior rows and manual overrides
+were preserved. This later UI change is separate from the migration baseline.
+
+## Existing Tasmota SP20: metered ESPHome maintenance
+
+A TECKIN SP20 already running Tasmota 13.4.0 was handled separately from the
+Tuya conversion workflow. Its live template identified GPIO4 relay, GPIO13
+button, GPIO0/GPIO2 indicators and BL0937/HJL metering with inverted GPIO12
+selection, GPIO5 CF and GPIO14 CF1. Actual calibration values and existing
+lifetime, daily and prior-day counters were read privately before the handover.
+
+An isolated ESPHome 2026.9.1 build produced a 455,312-byte ESP8266 image; its
+325,877-byte gzip upload fit the reported free sketch space. The existing
+Tasmota web updater accepted it in 11.14 seconds. Encrypted API readback matched
+the original MAC/address, version and relay state. All ten metering fields
+became available with finite values, and cumulative energy continued from the
+source counters. Calibration was transferred mathematically from the installed
+driver; an independent measurement calibration was not performed.
+
+The source used restore-prior-state behavior and was on immediately before the
+upload. The replacement deliberately used a first-boot ON fallback and then
+ESPHome's own persistent relay state. It did not reinterpret Tasmota's flash
+bytes as ESPHome preferences. No manual relay toggle or extra restart test was
+performed. The [reusable procedure](tasmota-sp20-migration.md),
+[profile](../examples/teckin-sp20-metered.yaml) and counter helper keep deployment
+values in private secrets. Native tests cover cumulative increments, invalid
+readings, daily rollover, clock reversal and reboot baselines.
+
+The HA handover kept the canonical relay and ten metering entity IDs. The old
+Tasmota-owned device was removed through HA's supported device-removal hook,
+which cleared only its retained discovery information. The shared integration
+and unrelated devices were preserved. Units, device/state classes, the original
+counter-start value and effective numeric display precision matched the source.
+All eight existing statistic metadata records and the inspected historical data
+remained unchanged. Solar-control references, the dashboard and manual-override
+states were preserved without an HA restart or manual load commands.
+
+The final YAML and its local counter header were saved in both active ESPHome
+configuration locations, with the build-machine-only path removed and private
+secret references resolved. DNS adopted the normalized name while retaining
+the original reservation. Forward and reverse lookups passed.
+
+## Latest Matter additions: verification still open
+
+The twelfth converted plug and the separate metered SP20 received exact relay
+filters in one additive update. Its client timed out, but independent readback
+confirmed that both filters were saved. Prior endpoint identities and all three
+controller fabrics were unchanged. The latest graph had 20 devices, with the
+SP20 relay reachable; discovery of the other new relay remained pending.
+The hub logged repeated HA registry request timeouts. A supported HA refresh
+was requested once and a bridge refresh acknowledged. No factory reset or
+recommissioning was performed. Final two-relay and controller acceptance checks
+remain open; the working native HA entities do not establish Matter completion.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -553,8 +634,9 @@ HA software-restart evidence; the seventh conversion's restart began already off
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
 The sixth and ninth use a previously verified WP5 profile, the tenth reuses
-the established YM-WS-1 profile, and the eleventh reuses the corrected JH-G01U
-profile, with repeated physical and restart checks waived by the operator.
+the established YM-WS-1 profile, the eleventh reuses the corrected JH-G01U
+profile, and the twelfth reuses the YM-WS-1 profile. Repeated physical and restart
+checks were waived by the operator for those units.
 Their transfers and encrypted APIs were verified separately.
 Google Home and Alexa app control passed on the
 first two converted plugs. Later controller checks were deferred. Physical

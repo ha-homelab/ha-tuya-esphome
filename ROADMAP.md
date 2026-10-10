@@ -41,7 +41,7 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the eleven successful firmware conversions.
+uninstalled candidate separate from the twelve successful Tuya firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
@@ -137,6 +137,30 @@ separate evening-off rule, which is installed and verified with six isolated HA
 runtime tests. Unrelated curtain controls and manual overrides remain unchanged.
 Its relay is exposed through the existing Matter bridge, which now reports 19
 devices with prior endpoints and fabrics preserved.
+
+A twelfth conversion reused the established YM-WS-1 profile. Its initial final-image
+request stalled without a recorded image download. A fresh read confirmed that
+the same device still ran the intermediate loader; one bounded retry installed
+the complete profile with its new role name. The final encrypted API, identity
+and compilation time were verified. Repeated physical and restart tests remain
+waived under the standing same-model policy. HA references and DNS now use the
+new role; the exact old LocalTuya device was removed, with automation logic and
+manual overrides preserved. No corresponding client references were found.
+
+A separate TECKIN SP20 moved from Tasmota to ESPHome through its existing web
+updater, without using the conversion AP. The live template selected BL0937
+metering; its actual calibration and energy counters were transferred, with all
+ten meter fields verified through the encrypted API. This is a maintenance
+migration, not an additional Tuya conversion or physical load test. The HA
+handover preserved its relay and ten meter entity IDs, eight statistic metadata
+records, inspected history, solar rules, dashboard and manual overrides. The
+exact old Tasmota device was retired through its supported removal hook.
+
+Both new relays have exact filters saved in the existing Matter bridge. All
+prior endpoint identities and three fabrics were preserved, but the latest
+graph still had 20 devices: the SP20 was reachable and discovery of the twelfth
+converted plug remained pending during HA registry request timeouts.
+- [ ] Verify both new relay endpoints after the hub's HA registry refresh completes.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.

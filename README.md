@@ -32,12 +32,12 @@ packet was sent to the identified unit in AP mode; its connection dropped, but
 replacement-key authentication and conversion remain unverified. See the
 [AWP02L-N experimental procedure](docs/awp02l-n-psk02.md).
 
-Eleven plugs have now been converted: two XS-SSA01 units, four WP5 units, one
-KMC 30137, two YM-WS-1 units and two JH-G01U units. Seven passed their own physical
+Twelve plugs have now been converted: two XS-SSA01 units, four WP5 units, one
+KMC 30137, three YM-WS-1 units and two JH-G01U units. Seven passed their own physical
 button/load test; the first two WP5 units also passed their independent
 red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
-For two WP5 units, the second YM-WS-1 and the second JH-G01U, the operator
+For two WP5 units, the second and third YM-WS-1 units and the second JH-G01U, the operator
 chose the existing model profile and waived repeated physical and restart tests.
 The first two converted plugs passed actual load switching from Google Home and
 Amazon Alexa through the existing Matter Hub.
@@ -79,6 +79,11 @@ entities.
 6. Use [troubleshooting](docs/troubleshooting.md) and record progress in the
    [task list](ROADMAP.md).
 
+A separate TECKIN SP20 was migrated from Tasmota to ESPHome with its metering
+calibration and cumulative counters carried across. This maintenance migration
+is separate from the twelve Tuya conversions. For an already converted plug,
+use the [metered SP20 procedure](docs/tasmota-sp20-migration.md).
+
 ## Project policy
 
 - Convert one disconnected-load plug at a time.
@@ -99,6 +104,7 @@ entities.
 - An isolated-radio launcher that preserves the Ethernet management connection.
 - A minimal ESPHome 2026.9.1 configuration targeting `esp01_1m`.
 - Local secret generation, binary size validation, and operating procedures.
+- A metered Tasmota migration example with persistent energy-counter tests.
 - An anonymized [deployment record](docs/deployment-record.md).
 
 Repository provisioning is managed by

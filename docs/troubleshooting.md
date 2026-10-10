@@ -120,6 +120,26 @@ declined at its confirmation prompt. Inspect the refreshed names and choose
 `esphome-initial.bin`; never assume that an old numeric choice still means the
 same file. Keep the plug powered while it is waiting in the loader.
 
+## Final upload stalls after the loader was identified
+
+A YM-WS-1 reached the correct loader, but its first final-image HTTP request
+stalled. The web log had no recorded final-image download and the native
+ESPHome API was absent. Those observations alone did not prove which bytes
+had reached flash, so no automatic write retry was issued.
+
+Stop an abandoned client request and retain its outcome as unconfirmed. Check
+the native API, DHCP and loader with bounded read-only requests. Do not reset
+the device while an active transfer is making progress. A fresh loader response
+must match the same MAC and expected flash size before using its supported
+retry path. If ESPHome already responds, verify that image and use normal OTA
+for any remaining change instead of repeating the conversion write.
+
+In this case a fresh read confirmed the original intermediate loader. The
+staged final image's digest was checked again and one bounded retry completed
+successfully. Encrypted API identity and compilation time then confirmed the
+intended final image. Keep each write intent and result separate in private
+records; a client timeout is neither success nor proof that another write is safe.
+
 ## ESPHome binary is rejected or the device disappears
 
 Confirm size, ESP header, architecture and flash layout. Keep the first image

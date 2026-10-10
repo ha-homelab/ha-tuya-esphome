@@ -6,8 +6,8 @@ The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
 responded successfully. This project reused that instance, added an exact relay
-entity filter for each of eleven converted plugs. Seven passed per-unit physical
-checks; two WP5 units, the second YM-WS-1 and the second JH-G01U reused existing
+entity filter for each of twelve converted plugs. Seven passed per-unit physical
+checks; two WP5 units, the second and third YM-WS-1 and the second JH-G01U reused existing
 profiles with those checks explicitly waived by the operator. The original two
 fabrics were preserved when Alexa was commissioned, and all three were preserved
 when later plugs were added. No new bridge or factory reset was used.
@@ -24,6 +24,15 @@ bringing the bridge to 19 devices. The exact new filter preserved every prior
 endpoint and all three fabrics. Its former HA role and night-shutdown trigger
 are treated separately; exposing the relay does not imply that every old
 automation has been restored.
+
+The twelfth conversion and a separate Tasmota-to-ESPHome metered SP20 migration
+have now received exact relay filters. Readback confirmed both saved filters,
+all prior endpoint identities and all three fabrics. The latest graph showed
+20 devices: the SP20 relay was reachable, while discovery of the twelfth converted
+plug was still pending. The hub's HA registry requests were timing out. A
+supported registry refresh was requested and a bridge refresh acknowledged;
+the final two-relay acceptance check remains open. Do not treat saved filters
+as proof that both controls have reached Google Home or Alexa.
 
 Use the current hub's private Web UI endpoint and persistent storage. An older
 Portainer stack or a dormant alternative manifest is not evidence that it is the

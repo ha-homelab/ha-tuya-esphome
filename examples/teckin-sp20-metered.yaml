@@ -1,0 +1,231 @@
+# Observed SP20 layout from live Tasmota; inspect the source template first.
+# Replace all metering secrets from the source before migration.
+# Explicitly choose the first-boot relay default for the actual source state.
+esphome:
+  name: sp20-metered
+  friendly_name: Metered Plug
+  min_version: 2026.9.1
+  compile_process_limit: 6
+  includes:
+    - <energy_state.h>
+    - energy_state.h
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+
+preferences:
+  flash_write_interval: 60s
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    password: !secret fallback_password
+
+captive_portal:
+logger:
+  baud_rate: 0
+api:
+  encryption:
+    key: !secret api_encryption_key
+  reboot_timeout: 0s
+ota:
+  - platform: esphome
+    encryption:
+
+time:
+  - platform: homeassistant
+    id: local_time
+    timezone: Etc/UTC
+  - platform: sntp
+    id: fallback_time
+    timezone: Etc/UTC
+
+globals:
+  - id: energy_totals
+    type: EnergyTotals
+    restore_value: true
+    initial_value: !secret sp20_energy_seed
+  - id: previous_raw_wh
+    type: double
+    initial_value: '0.0'
+
+interval:
+  - interval: 10s
+    then:
+      - lambda: |-
+          auto now = id(local_time).now();
+          if (!now.is_valid()) now = id(fallback_time).now();
+          if (now.is_valid()) {
+            now.recalc_timestamp_utc(false);
+            update_energy_day(id(energy_totals), now.timestamp / 86400);
+          }
+
+sensor:
+  - platform: hlw8012
+    model: BL0937
+    sel_pin:
+      number: GPIO12
+      inverted: true
+    cf_pin: GPIO5
+    cf1_pin: GPIO14
+    current_resistor: !secret sp20_current_resistor
+    voltage_divider: !secret sp20_voltage_divider
+    update_interval: 10s
+    change_mode_every: 2
+    initial_mode: voltage
+    current:
+      id: measured_current
+      name: Energy Current
+      accuracy_decimals: 3
+      filters:
+        - multiply: !secret sp20_current_multiply
+        - lambda: "return id(relay).state ? x : 0.0f;"
+    voltage:
+      id: measured_voltage
+      name: Energy Voltage
+      accuracy_decimals: 1
+    power:
+      id: measured_power
+      name: Energy Power
+      accuracy_decimals: 1
+      filters:
+        - lambda: "return id(relay).state ? x : 0.0f;"
+    energy:
+      id: raw_energy
+      internal: true
+      on_value:
+        then:
+          - lambda: |-
+              auto now = id(local_time).now();
+              if (!now.is_valid()) now = id(fallback_time).now();
+              if (now.is_valid()) {
+                now.recalc_timestamp_utc(false);
+                update_energy_day(id(energy_totals), now.timestamp / 86400);
+              }
+              add_energy_sample(id(energy_totals), x, id(previous_raw_wh));
+  - platform: template
+    id: energy_total
+    name: Energy Total
+    device_class: energy
+    state_class: total
+    unit_of_measurement: kWh
+    accuracy_decimals: 3
+    update_interval: 30s
+    lambda: return id(energy_totals).total_kwh;
+  - platform: template
+    name: Energy Today
+    device_class: energy
+    state_class: total_increasing
+    unit_of_measurement: kWh
+    accuracy_decimals: 3
+    update_interval: 30s
+    lambda: return id(energy_totals).today_kwh;
+  - platform: template
+    name: Energy Yesterday
+    device_class: energy
+    unit_of_measurement: kWh
+    accuracy_decimals: 3
+    update_interval: 30s
+    lambda: return id(energy_totals).yesterday_kwh;
+  - platform: template
+    id: apparent_power
+    name: Energy ApparentPower
+    device_class: apparent_power
+    state_class: measurement
+    unit_of_measurement: VA
+    accuracy_decimals: 1
+    update_interval: 30s
+    lambda: |-
+      if (!id(relay).state) return 0.0f;
+      if (!std::isfinite(id(measured_voltage).state) || !std::isfinite(id(measured_current).state)) return NAN;
+      return id(measured_voltage).state * id(measured_current).state;
+  - platform: template
+    name: Energy ReactivePower
+    device_class: reactive_power
+    state_class: measurement
+    unit_of_measurement: var
+    accuracy_decimals: 1
+    update_interval: 30s
+    lambda: |-
+      if (!id(relay).state) return 0.0f;
+      float s = id(apparent_power).state, p = id(measured_power).state;
+      if (!std::isfinite(s) || !std::isfinite(p)) return NAN;
+      return std::sqrt(std::max(0.0f, s*s-p*p));
+  - platform: template
+    name: Energy Factor
+    device_class: power_factor
+    state_class: measurement
+    accuracy_decimals: 2
+    update_interval: 30s
+    lambda: |-
+      if (!id(relay).state) return 0.0f;
+      float s=id(apparent_power).state,p=id(measured_power).state;
+      if (!std::isfinite(s) || !std::isfinite(p)) return NAN;
+      return s > 0.0f ? std::min(1.0f, p/s) : 0.0f;
+  - platform: wifi_signal
+    name: WiFi Signal
+    update_interval: 60s
+  - platform: uptime
+    name: Uptime
+
+text_sensor:
+  - platform: version
+    name: ESPHome Version
+  - platform: wifi_info
+    ip_address:
+      name: IP
+    ssid:
+      name: SSID
+  - platform: template
+    name: Energy TotalStartTime
+    lambda: !secret sp20_total_start_lambda
+    update_interval: 30s
+
+binary_sensor:
+  - platform: gpio
+    name: Physical Button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 40ms
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: Status
+
+switch:
+  - platform: gpio
+    id: relay
+    name: Relay
+    pin: GPIO4
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - light.turn_on: relay_indicator
+    on_turn_off:
+      - light.turn_off: relay_indicator
+
+output:
+  - platform: gpio
+    id: blue_led
+    pin:
+      number: GPIO2
+      inverted: true
+light:
+  - platform: binary
+    id: relay_indicator
+    output: blue_led
+    internal: true
+    restore_mode: ALWAYS_OFF
+status_led:
+  pin:
+    number: GPIO0
+    inverted: true
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic
