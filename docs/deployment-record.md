@@ -103,8 +103,8 @@ also turned the relay on, restarted the device, and observed a fresh off state.
 Only its verified relay was then added to the existing Matter Hub with an exact
 entity filter. Filter/device counts increased from eight to nine, both existing
 fabrics and all prior filters were preserved, and the endpoint reports
-OnOffPlugInUnit. Google Home discovery/control of this second plug remains
-pending. The failed pairing attempt and this replacement retain separate
+OnOffPlugInUnit. The operator confirmed that Google Home discovered this second
+plug and controlled its connected load. The failed pairing attempt and this replacement retain separate
 private inventory records.
 
 At the operator's request, the catalog's second inverted LED channel, GPIO0, was
