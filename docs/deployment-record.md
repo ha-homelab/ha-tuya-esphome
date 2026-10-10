@@ -80,6 +80,21 @@ reached the intermediate loader and no replacement firmware was written. The ses
 mode. Model-specific diagnosis remains open; do not classify this as a bricked
 unit or assume the first plug's GPIO map applies.
 
+## Replacement unit: second successful ESPHome installation
+
+After setting aside the YM-WS-1, a different plug reached the intermediate loader.
+The loader confirmed 1 MB flash, DOUT and 40 MHz. Its identity was checked against
+the first plug to prevent targeting the wrong unit. The same validated 420,800-byte
+GPIO-neutral image installed in about 12.3 seconds, without a stock backup.
+The replacement joined the home LAN and answered the encrypted ESPHome 2026.9.1
+API. It was also adopted in Home Assistant after checking its encrypted API
+identity. The AP was stopped and the radio returned to the host normally.
+
+This is a successful firmware installation, not yet a verified working outlet:
+its model, relay and button mapping still need identification. It has not been
+exported through Matter. The failed pairing attempt and this replacement retain
+separate private inventory records.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
