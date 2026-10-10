@@ -27,6 +27,8 @@ writing firmware.
 A later AWP02L-N attempt reached the conversion Wi-Fi but presented patched
 Tuya PSK identity version `02`. It never reached the intermediate loader and
 received no firmware. Its existing HA and client bindings were retained.
+Follow-up research found an experimental ESP8266 CloudCutter port; compatibility
+with this unit remains unverified. See [PSK 02 alternatives](docs/troubleshooting.md#experimental-esp8266-alternative-to-tuya-convert).
 
 Six plugs have now been converted: two XS-SSA01 units, three WP5 units and one
 KMC 30137. Five passed their own physical button/load test and HA software-restart

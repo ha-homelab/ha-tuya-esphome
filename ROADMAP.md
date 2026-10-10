@@ -43,6 +43,11 @@ identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
 uninstalled candidate separate from the six successful conversions.
 
+- [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
+      actual stock firmware. A research implementation exists; this unit's
+      compatibility and a usable conversion profile are not yet established.
+      See [research findings](docs/troubleshooting.md#experimental-esp8266-alternative-to-tuya-convert).
+
 The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
 Rapid-blink mode could not be established; its GPIO variant is unverified.
 A replacement WP5 has booted ESPHome with encrypted API access. Diagnostics

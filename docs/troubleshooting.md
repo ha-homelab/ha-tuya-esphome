@@ -66,6 +66,31 @@ method. A DHCP association alone is not loader success. Stop the attempt,
 retain the existing HA/client configuration, and record that no firmware was
 written. Do not publish complete PSK identities or keys from the diagnostic log.
 
+## Experimental ESP8266 alternative to Tuya-Convert
+
+PSK 02 blocking Tuya-Convert does not establish that every wireless route is
+impossible. Research checked on 2026-10-10 found Jeremy Salwen's
+[ESP8266 CloudCutter write-up](https://github.com/jeremysalwen/cloudcutter-esp8266).
+It describes a different vulnerability chain that replaces the device's stored
+authentication keys, enabling subsequent server impersonation and conversion.
+
+The upstream CloudCutter `esp8266` branch contains an
+[initial implementation dated 2026-01-30](https://github.com/tuya-cloudcutter/tuya-cloudcutter/commit/defb7ba92a228dc8149599a54aadcd37e0e862c6).
+That revision is explicitly marked as not ready for public use. Its exploit
+contains fixed payload addresses; it is not a universal replacement for the
+normal conversion command. No matching AWP02L-N profile or successful test on
+this batch's unit has been established. The prepared ESPHome image also must
+not be confused with the experimental branch's upgrade-image format.
+
+Treat this as a candidate for firmware-specific investigation, not a confirmed
+conversion path. Match the stock firmware and memory layout before adapting
+the exploit, and preserve the existing HA/client bindings until an actual
+replacement is verified. No experimental payload has been sent in this batch.
+
+A separate [recovery anecdote](https://github.com/ct-Open-Source/tuya-convert/discussions/1177)
+reports success after `vtrust-recovery` and `/undo`, but its author could not
+reproduce it on other units. It does not establish a general PSK 02 bypass.
+
 ## TLS or Python exception before any flash
 
 The container pins Python3.11 and the legacy MQTT API. Its patch imports
