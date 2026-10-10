@@ -145,6 +145,21 @@ mapping's verified status and identify the model/output circuit before another
 output test. Keep the unit out of Matter until physical switching passes. A load
 that also fails directly from the wall cannot be used to establish a plug failure; check that distinction separately.
 
+## The button switches the load, but the indicator stays dark
+
+Check both the hardware pin and the action path. An existing ESPHome plug later
+identified as YM-WS-1 had a historical GPIO2 PWM indicator in its configuration,
+while the matching observed variant uses an inverted GPIO12 output. Its LED
+actions also lived only in a template switch, so a physical button that toggled
+the underlying GPIO relay bypassed those actions completely.
+
+The correction uses an internal binary indicator on GPIO12 and attaches its
+`light.turn_on` / `light.turn_off` actions to the GPIO relay's `on_turn_on` /
+`on_turn_off` triggers. This makes both button and API control follow the same
+relay state. Preserve the working relay/button pins and exposed entity identity.
+Successful compilation, OTA and API readback do not establish that the corrected
+LED is visibly working; record that observation separately.
+
 ## Native ESPHome control works, but HA commands have no effect
 
 For the KMC unit, the physical button and a direct encrypted ESPHome command

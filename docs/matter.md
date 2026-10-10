@@ -6,11 +6,18 @@ The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
 responded successfully. This project reused that instance, added an exact relay
-entity filter for each of nine converted plugs. Seven passed per-unit physical
-checks; two WP5 units reused the established profile with those checks explicitly
-waived by the operator. The original two fabrics were preserved when Alexa was
-commissioned, and all three were preserved when later plugs were added. No new
-bridge or factory reset was used.
+entity filter for each of ten converted plugs. Seven passed per-unit physical
+checks; two WP5 units and the second YM-WS-1 reused established profiles with
+those checks explicitly waived by the operator. The original two fabrics were
+preserved when Alexa was commissioned, and all three were preserved when later
+plugs were added. No new bridge or factory reset was used.
+
+A separate, previously converted ESPHome plug was upgraded, renamed and added
+to the same bridge. Its button, load and corrected indicator were confirmed by
+the operator. The tenth conversion and this maintenance unit were added together;
+the bridge now reports 18 devices. Both new relay endpoints are reachable
+OnOffPlugInUnits. Existing endpoints and all three fabrics were preserved;
+new controller load tests remain deferred.
 
 Use the current hub's private Web UI endpoint and persistent storage. An older
 Portainer stack or a dormant alternative manifest is not evidence that it is the
@@ -97,6 +104,24 @@ To add a second ecosystem, use the bridge's additional-controller commissioning
 or Matter sharing/multi-admin flow. Preserve the first ecosystem's fabric. A code
 from an expired window or a factory QR is not automatically valid for every later
 pairing. Keep all QR codes, manual codes and fabric identifiers private.
+
+## Slow management API and uncertain writes
+
+Ready pods do not prove that the management API will answer promptly. In this
+deployment, short HTTP and container-exec probes timed out while a longer,
+bounded request from the wired workbench succeeded. The NAS worker also showed
+heavy CPU contention, but that observation alone does not establish the cause
+of every timeout. Check the actual service path before restarting anything.
+
+A filter update subsequently timed out at the client, yet an independent GET
+confirmed that both requested exact filters had been saved. Do not repeat an
+uncertain write blindly. Read back the complete filter configuration, compare
+existing endpoint identities and commissioned fabrics, and then refresh the
+HA registry and bridge through the installed version's supported API. Verify
+that each new endpoint maps to the intended relay and is reachable. A saved
+filter, a discovered endpoint and a successful controller load test are separate
+milestones. Keep all raw responses private because bridge responses include
+commissioning material.
 
 ## Network and acceptance checks
 

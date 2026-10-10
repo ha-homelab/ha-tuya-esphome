@@ -400,6 +400,95 @@ result. Those web deployments were already not ready before the change, so
 running web-application adoption is not claimed. No workloads or plugs were
 restarted for this client update.
 
+## Another YM-WS-1: tenth ESPHome installation
+
+The next YM-WS-1 reused the established GPIO15 relay, GPIO13 active-low button
+and inverted GPIO12 internal relay indicator. The operator's standing same-model
+reuse instruction waived repeated physical/load/indicator and restart checks.
+The exact old LocalTuya identity matched both the intermediate loader and final
+encrypted ESPHome API; no diagnostic-only firmware was needed.
+
+The complete 440,480-byte image was written in 11,754 ms. ESPHome 2026.9.1 returned
+the expected relay, button, status and diagnostic entities. The conversion
+container was removed and its radio returned to host managed mode. No physical
+acceptance result or restart behavior is inferred from the successful API check.
+
+The HA migration removed the exact old LocalTuya device and updated the existing
+dashboard row, two automations and two shared away-scene references. The original
+one-minute power-restoration delay and its helper condition were preserved.
+Natural automation activity is not counted as a requested physical test. A scan
+of 2,427 active files found no retired entity or legacy device-alias references.
+No HA restart was required. Router DNS was normalized while retaining the address.
+The installed client, six saved configurations, two server configurations and
+three client projects had no old-role references, so no new client control was
+added and no client configuration change was needed.
+
+Matter management initially timed out through both service and LAN endpoints;
+bounded container-exec and node-proxy health requests also timed out despite
+ready pod/node status. Longer bounded requests from the wired workbench restored
+management visibility. The filter update timed out, but independent readback
+confirmed it had been applied, so it was not repeated. The relay was added with
+the maintenance unit below; both appeared as reachable OnOffPlugInUnits. The
+bridge count increased from 16 to 18 while existing endpoints and all three
+fabrics were preserved. No bridge reset or recreation was needed. Controller
+load checks remain deferred.
+
+## Maintaining an existing ESPHome plug
+
+A separate plug already running ESPHome was updated from 2026.8.0 to
+[2026.9.1](https://github.com/esphome/esphome/releases/tag/2026.9.1) and given a new
+household role. It is not counted as an eleventh Tuya conversion. Its identity,
+reserved address and existing API/OTA authentication mode were preserved. The
+native API on this older installation is unencrypted; the encrypted-API claims
+for newly converted plugs do not apply to this maintenance operation.
+
+The first update preserved the historical GPIO configuration. The operator then
+identified the hardware as YM-WS-1 and confirmed working physical button/load
+control but a dark indicator. Inspection found two configuration problems:
+the inherited LED used GPIO2 rather than the matching variant's inverted GPIO12,
+and its actions were attached only to a template switch, bypassed by the physical
+button's direct relay toggle.
+
+A 409,376-byte corrective image installed in 8.76 seconds. It keeps the GPIO15
+relay, GPIO13 button and `ALWAYS_OFF` behavior, but uses an internal binary LED
+on inverted GPIO12 with actions on the underlying relay state changes. A fresh
+native API connection confirmed the exact device, new compilation timestamp,
+version and unchanged exposed switch identity. The operator's prior load/button
+result is recorded separately. The operator subsequently confirmed that the
+corrected indicator works, completing the button/load/indicator acceptance for
+this existing device. No extra load or restart test was performed.
+
+Both active source trees now contain the renamed, corrected YAML and no old
+duplicate source. Shared includes and secrets were unchanged. The source requires
+ESPHome 2026.9.1; the existing dashboard runtime is still 2026.8.2 and must be
+upgraded before it can build this configuration. A firmware update does not
+implicitly upgrade the dashboard service.
+
+HA retained the original device and integration entry while assigning the new
+canonical relay entity and updating its dashboard card. The relay was added to
+the destination room's existing motion-on and motion-off rules; their sensors,
+five-minute timeout, daylight conditions, manual-override helper and other
+targets were retained. Obsolete sole-target rules from the former room were
+removed, along with exact old references in shared rules and the shutdown
+script. The old room's manual-override helper, its current state, button and
+helper-control rules were explicitly preserved. A separate similarly named
+device was not part of this migration.
+
+A scan of 2,425 active files found no retired lamp references. HA required no
+restart. The renamed firmware-update diagnostic initially remained unavailable
+because its setup had captured the cached old node name. Once the cache and
+dashboard filename matched the new node, reloading only that integration entry
+restored the diagnostic. The relay and firmware entity were available again
+after the operator moved the plug back to its installed position. Router DNS was
+updated without changing the reservation. Client/deployment inspection found no
+old bindings to replace.
+
+The existing 3D floor-lamp object was bound to the canonical switch through a
+narrow inventory update. Its geometry, placement and other objects were
+preserved, and a full inventory readback matched the intended change. Control
+uses the switch domain without implying dimming or color capabilities. No
+physical load command or HA restart was needed for that binding.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -421,9 +510,10 @@ Seven converted plugs passed per-unit physical button/load checks. Six also have
 HA software-restart evidence; the seventh conversion's restart began already off,
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
-The sixth and ninth use a previously verified WP5 profile with repeated physical
-and restart checks explicitly waived by the operator; their transfers and encrypted
-APIs were verified separately. Google Home and Alexa app control passed on the
+The sixth and ninth use a previously verified WP5 profile, and the tenth reuses
+the established YM-WS-1 profile, with repeated physical and restart checks waived
+by the operator. Their transfers and encrypted APIs were verified separately.
+Google Home and Alexa app control passed on the
 first two converted plugs. Later controller checks were deferred. Physical
 power-cycle tests and the full button-to-controller round trip remain pending.
 Existing bridge fabrics were preserved, and household entity identifiers were

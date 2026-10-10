@@ -32,13 +32,15 @@ packet was sent to the identified unit in AP mode; its connection dropped, but
 replacement-key authentication and conversion remain unverified. See the
 [AWP02L-N experimental procedure](docs/awp02l-n-psk02.md).
 
-Nine plugs have now been converted: two XS-SSA01 units, four WP5 units, one
-KMC 30137, one YM-WS-1 and one JH-G01U. Seven passed their own physical button/load test;
-the first two WP5 units also passed their independent red-indicator check.
+Ten plugs have now been converted: two XS-SSA01 units, four WP5 units, one
+KMC 30137, two YM-WS-1 units and one JH-G01U. Seven passed their own physical
+button/load test; the first two WP5 units also passed their independent
+red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
-For two WP5 units, the operator chose the existing profile and waived repeated
-physical and restart tests. The first two converted plugs passed actual load
-switching from Google Home and Amazon Alexa through the existing Matter Hub.
+For two WP5 units and the second YM-WS-1, the operator chose the existing model
+profile and waived repeated physical and restart tests. The first two converted
+plugs passed actual load switching from Google Home and Amazon Alexa through
+the existing Matter Hub.
 The operator deferred later controller checks. The original controller fabrics
 were preserved when Alexa was added. See the deployment record for migration
 results and remaining checks.
