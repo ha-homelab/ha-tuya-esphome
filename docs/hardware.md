@@ -4,8 +4,9 @@
 
 The operator has old, unboxed, not-yet-commissioned Wi-Fi plugs. They look like
 previously converted units and are reported to contain ESP8266/“ESP-01” hardware.
-No new unit has yet supplied a verified firmware version, flash-size report, or
-GPIO map. Do not infer an exact model from the enclosure alone.
+The first unit reports 1 MB flash and now runs ESPHome, but its relay GPIO map
+remains unverified after the first output test failed. Do not infer an exact model
+from the enclosure alone.
 
 The previous ESPHome configuration used `board: esp01_1m` for an AWP04L-style
 plug. This board identifier selects an ESP8266 build layout; it does **not** prove

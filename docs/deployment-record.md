@@ -41,9 +41,13 @@ omitted; keep an exact operational record outside Git.
   uploaded successfully through encrypted ESPHome OTA in about 27.5 seconds.
   The API and Home Assistant report the relay entity, with state changes observed
   over the API. Physical switching is a separate acceptance gate.
-- The operator subsequently confirmed two physical clicks during the GPIO12
-  on/off pulse. A GPIO13 button candidate was installed by another successful
-  encrypted OTA update; physical button and restart checks remain pending.
+- A GPIO13 button candidate was installed by another successful encrypted OTA
+  update. Home Assistant history records press/release events and corresponding
+  software switch changes. The earlier report of relay clicks was superseded:
+  the operator observed only LED changes, no mechanical clicks and no switched
+  power to a load that works directly from the wall. GPIO12 remains unverified
+  as a relay output. Physical output/restart checks and Matter export are blocked
+  until a correct mapping is established; no completed plug conversion is claimed.
 - Removing the first conversion container left the Broadcom radio inaccessible.
   Reloading its driver restored it. An explicit numeric-PHY return before
   container removal then passed a live namespace round-trip check; the launcher
@@ -67,7 +71,7 @@ tags mean builds are not promised to be byte-for-byte identical.
 ## Still pending
 
 The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
-OTA. Physical GPIO verification and Google Home/Alexa control remain pending. No load test is
-claimed. Existing bridge fabrics and household entity
+OTA. Its initial output test failed; physical relay mapping and Google Home/Alexa
+control remain pending. No successful load test is claimed. Existing bridge fabrics and household entity
 selection were not reset or published. A functioning server process is not a
 completed end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).

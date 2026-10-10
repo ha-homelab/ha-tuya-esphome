@@ -20,25 +20,31 @@ They do not establish the new unit's accuracy or even its metering chip.
 
 ## First observed unit
 
-The operator confirmed two physical relay clicks during an on/off pulse using
-non-inverted GPIO12. Home Assistant and the encrypted native API both report its
-relay state. This establishes that output for the tested unit, not its retail
-model or the rest of the batch. GPIO13 with an inverted pull-up input is installed
-as a button candidate; its physical test is still pending.
+The initial report of relay clicks was superseded by a direct output check:
+pressing the button changes the LED, but there is no mechanical relay click and
+a known-working load does not turn on. **GPIO12 is not a verified relay pin on
+this unit.** Home Assistant's switch state only confirms the commanded GPIO
+state; it is not feedback from the relay contacts.
+
+Home Assistant history does show GPIO13 button press/release events, paired with
+software switch changes. That verifies the input path, not the mains output or
+the retail model. The relay map remains unresolved and this unit is not selected
+for Matter export. Do not infer a different output pin without further evidence.
 
 Optional packages are provided as
-[`relay-gpio12.yaml`](../examples/relay-gpio12.yaml) and
+[`relay-gpio12-candidate.yaml`](../examples/relay-gpio12-candidate.yaml) and
 [`button-gpio13-candidate.yaml`](../examples/button-gpio13-candidate.yaml).
 Copy them into the private build directory and add them to that unit's YAML:
 
 ```yaml
 packages:
-  relay_hardware: !include relay-gpio12.yaml
+  relay_candidate: !include relay-gpio12-candidate.yaml
   button_candidate: !include button-gpio13-candidate.yaml
 ```
 
-Start with the relay package alone; add the candidate button only while checking
-that unit. Keep the original GPIO-neutral YAML and image for other unknown plugs.
+These packages document the attempted mapping; they are not a working profile
+for the first unit. Start with the relay package alone only when model-specific
+evidence supports it. Keep the original GPIO-neutral YAML and image for unknown plugs.
 The restart button permits a controlled software-restart test; it does not replace
 a separate power-cycle check. LEDs and metering are intentionally absent.
 

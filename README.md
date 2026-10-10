@@ -7,8 +7,13 @@ Amazon Alexa.
 
 The current batch consists of old, unboxed plugs reported by the owner to use
 ESP8266/“ESP-01” hardware. Similar-looking plugs were converted previously.
-The exact model, module, flash capacity and pin assignments of this batch are
-not yet verified. A historical AWP04L configuration is a candidate, not proof.
+The first unit reports 1 MB flash, but its exact model and relay pin assignments
+remain unverified. A historical AWP04L configuration is a candidate, not proof.
+
+**Current hardware blocker:** the first unit's LED and software switch state
+change, but its output-power test failed. GPIO12 is not a verified relay mapping.
+See [the investigation](https://github.com/ha-homelab/ha-tuya-esphome/issues/1)
+before using either GPIO example. This unit has not been exported through Matter.
 
 ```mermaid
 flowchart LR

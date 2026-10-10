@@ -13,6 +13,10 @@
 
 ## First unit
 
+Current blocker: GPIO13 button events are visible, but the GPIO12 candidate only
+produces an LED change; a known-working load did not turn on. Correct the output
+mapping before calling this a working plug or exporting it through Matter.
+
 - [x] First unit: fast-blinking pairing, successful loader connection, flash-size identification.
 - [x] Direct ESPHome flash, with stock backup download disabled by owner choice.
 - [x] Stable Wi-Fi and encrypted Home Assistant API; successful subsequent OTA.

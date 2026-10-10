@@ -100,6 +100,13 @@ The first image deliberately defines no relay. Finish [GPIO identification](gpio
 Do not label a diagnostics-only node as a completed conversion. Wrong inversion,
 an unsupported metering chip, or an invalid GPIO map requires a new local YAML.
 
+An LED changing or HA showing `on` is not proof that the output is energized.
+For the first unit, GPIO13 input events and GPIO12 state changes were visible,
+but the physical output test failed. Retract the mapping's verified status,
+keep it out of the Matter bridge, and identify the actual model/output circuit
+before another output test. A load that also fails directly from the wall cannot
+be used to establish a plug failure; check that distinction separately.
+
 ## HA works but Google/Alexa does not
 
 Check in order: relay works in HA; entity appears in the existing bridge's selected

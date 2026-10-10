@@ -1,5 +1,6 @@
 # Candidate only: verify the physical button on each unknown model.
-# Requires the relay id from relay-gpio12.yaml. This is not a model identifier.
+# Requires the relay id from relay-gpio12-candidate.yaml.
+# GPIO13 button events are observed, but toggling GPIO12 does not prove relay control.
 binary_sensor:
   - platform: gpio
     name: Physical Button
