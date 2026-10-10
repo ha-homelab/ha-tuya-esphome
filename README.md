@@ -24,6 +24,10 @@ is different; use the [variant identification procedure](docs/gpio.md) before
 applying either profile. A separate YM-WS-1 attempt stopped at pairing without
 writing firmware.
 
+Both converted plugs passed actual load switching from Google Home and Amazon
+Alexa through the existing Matter Hub. The original controller fabrics were
+preserved when Alexa was added. See the deployment record for remaining checks.
+
 ```mermaid
 flowchart LR
   T[Old Tuya ESP8266 plug] -->|one-time tuya-convert| E[ESPHome over Wi-Fi]

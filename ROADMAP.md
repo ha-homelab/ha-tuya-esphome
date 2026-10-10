@@ -32,7 +32,7 @@ hardware check.
 - [x] Confirm Google Home discovers the new plug through the existing fabric and switches its load.
 - [x] Confirm or add Alexa commissioning; use the intended bridge on UDP 5540.
 - [x] Confirm Alexa discovers all selected devices, including both converted plugs.
-- [ ] Confirm actual load control from Alexa on both plugs.
+- [x] Confirm actual load control from Alexa on both plugs.
 - [ ] Round-trip state/control checks in HA, Google, Alexa and the physical button.
 - [ ] Restart checks for the plug and bridge; record results separately.
 
@@ -44,8 +44,9 @@ A replacement WP5 has booted ESPHome with encrypted API access. Diagnostics
 confirmed its GPIO13 button. The matching GPIO15-relay profile is installed,
 physical button/load and HA software-restart checks passed, and its relay is
 exported through the existing Matter Hub. Google Home discovery and actual load
-control passed for this second plug as well. Alexa commissioning/discovery passed;
-Alexa load control and complete state round-trip checks remain pending.
+control passed for this second plug as well. Alexa commissioning, discovery and
+actual load control also passed on both plugs. Complete state round-trip checks
+remain pending.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.
