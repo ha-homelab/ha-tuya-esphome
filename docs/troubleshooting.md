@@ -117,6 +117,21 @@ Matter Hub. Do not reset working fabrics as an initial troubleshooting action.
 If only Alexa commissioning fails, verify the bridge's 5540 port and current
 commissioning window. See [the Matter guide](matter.md).
 
+### Alexa still displays “connecting”
+
+An added fabric is an intermediate step; confirm that the bridge also completed
+commissioning. In the observed run, the bridge logged a successful
+`generalCommissioning.commissioningComplete` response with `errorCode: 0` while
+the Alexa app still displayed its connection screen. The operator subsequently
+confirmed that all nine selected devices appeared. Once successful completion
+is established, check Alexa's device list before repeating pairing or changing
+the bridge. Device discovery and actual load control are separate checks.
+
+Read the final protocol outcome rather than treating an isolated earlier log
+line as proof of failure. This run included a country-code validation error
+before successful commissioning. Keep the full logs private: they can contain
+certificates, identifiers and commissioning material.
+
 ## Reporting a problem
 
 Report software versions, stage, sanitized error class and the checks already

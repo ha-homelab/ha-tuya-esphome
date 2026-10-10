@@ -114,6 +114,15 @@ operator confirmed the red color with the relay off. The indicator is not
 included in the Matter filter. A software-restart check of this final firmware
 confirmed that both the relay and the previously lit red indicator return off.
 
+## Alexa commissioning and discovery
+
+An additional-controller commissioning window was opened on the existing bridge.
+The operator scanned its private code in Alexa. The bridge accepted the Amazon
+fabric and reported a successful `commissioningComplete` response. Both earlier
+fabrics remained present, increasing the total from two to three. The operator
+then confirmed that Alexa discovered all nine selected devices, including both
+converted plugs. Actual relay/load control from Alexa remains a separate check.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -135,7 +144,7 @@ The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
 OTA. Its initial GPIO12 output test failed; a model-specific GPIO15 profile is now
 installed and has passed a physical load/button test and an HA-controlled
 software-restart check. Google Home app control also passed. Physical power-cycle,
-Alexa commissioning/control and the full button-to-controller round trip remain
+Alexa load control and the full button-to-controller round trip remain
 pending. Existing bridge fabrics were preserved, and household entity
 identifiers were not published. A functioning server process is not a completed
 end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).
