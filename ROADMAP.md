@@ -8,14 +8,14 @@
 - [x] Install Docker and basic Linux tooling.
 - [x] Locate the existing NAS Matter Hub/Server without redeploying either.
 - [x] Finish the container build and real binary-identity TLS test.
-- [ ] Compile the GPIO-neutral ESPHome image and verify the loader size limit.
+- [x] Compile the GPIO-neutral ESPHome image and verify the loader size limit.
 - [x] Verify an actual AP startup and save the result in the deployment record.
 
 ## First unit
 
-- [ ] Fast-blinking pairing, successful loader connection, flash-size identification.
-- [ ] Direct ESPHome flash, with stock backup download disabled by owner choice.
-- [ ] Stable Wi-Fi and encrypted Home Assistant API; successful subsequent OTA.
+- [x] First unit: fast-blinking pairing, successful loader connection, flash-size identification.
+- [x] Direct ESPHome flash, with stock backup download disabled by owner choice.
+- [x] Stable Wi-Fi and encrypted Home Assistant API; successful subsequent OTA.
 - [ ] Confirm relay GPIO, inversion and off-at-boot behavior without a load.
 - [ ] Confirm physical button and status reporting.
 - [ ] Save a sanitized, verified model profile; do not generalize from appearance.

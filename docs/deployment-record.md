@@ -17,6 +17,9 @@ omitted; keep an exact operational record outside Git.
 - The existing NAS-backed k3s deployment has one running Matter Hub and one
   running Matter Server in `ha-infra`. Hub uses `net1`; its health endpoint returned
   HTTP 200. The obsolete alternative deployment was not enabled.
+- The active Hub reports version 2.0.56, a running bridge on port 5540, and
+  existing commissioned fabrics. The connected Home Assistant API reports
+  version 2026.10.0. Household filters and commissioning data are not published.
 - Wi-Fi credentials were imported privately from the existing ESPHome setup;
   new initial API/OTA/fallback credentials were generated on the workbench.
 - The compatibility container built successfully. A real TLS 1.2 handshake with
@@ -24,6 +27,24 @@ omitted; keep an exact operational record outside Git.
 - The reference radio reached `AP-ENABLED` in the isolated container. DHCP, DNS,
   HTTP, MQTT, TLS-PSK and Tuya discovery listeners started while wired SSH stayed
   reachable. The launcher reached its pre-pairing prompt without starting a flash.
+- The first physical unit subsequently reached VTRUST-FLASH 1.5. The loader
+  reported 1,024 KiB flash and DOUT at 40 MHz. The stock backup download was
+  skipped. Exact chip identifiers, MAC address and raw output remain private.
+- A native Apple Silicon Mac build used ESPHome 2026.9.1, Python 3.12 and eight
+  compile workers. Actual compilation took 28.17 seconds after toolchain downloads.
+  The GPIO-neutral image was 420,800 bytes; inspection confirmed an ESP8266 image,
+  valid checksum, 1 MB flash, DOUT and 40 MHz.
+- The loader confirmed successful ESPHome installation in about 14.6 seconds.
+  The unit joined the home LAN, answered its encrypted native API, and was added
+  to Home Assistant. It initially exposed only status, Wi-Fi signal and version.
+- A subsequent candidate-relay image compiled on the Mac in 25.73 seconds and
+  uploaded successfully through encrypted ESPHome OTA in about 27.5 seconds.
+  The API and Home Assistant report the relay entity, with state changes observed
+  over the API. Physical switching is a separate acceptance gate.
+- Removing the first conversion container left the Broadcom radio inaccessible.
+  Reloading its driver restored it. An explicit numeric-PHY return before
+  container removal then passed a live namespace round-trip check; the launcher
+  now performs that return during cleanup.
 
 ## Software provenance
 
@@ -42,7 +63,8 @@ tags mean builds are not promised to be byte-for-byte identical.
 
 ## Still pending
 
-No physical plug in this batch has yet been converted, mapped, load-tested or
-commissioned into Google Home/Alexa. Existing bridge fabrics and household entity
+The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
+OTA. Physical GPIO verification and Google Home/Alexa control remain pending. No load test is
+claimed. Existing bridge fabrics and household entity
 selection were not reset or published. A functioning server process is not a
 completed end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).

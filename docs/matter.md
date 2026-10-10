@@ -30,6 +30,10 @@ for that label, preserving unrelated rules. Check the resulting entity list befo
 saving. Reload/restart the bridge as required by the installed version after label
 changes. Avoid broad filters that unexpectedly publish every household entity.
 
+For a single verified unit, an exact `pattern` filter containing only its relay
+entity ID is also suitable. Preserve the existing filters and add that one entry;
+do not replace the filter list with a broad `switch.*` rule.
+
 For Alexa, keep the intended bridge on UDP **5540**; the maintained project's
 guide identifies this as the reliable port. Do not create a second bridge on an
 already-bound address/port. Follow the version-specific

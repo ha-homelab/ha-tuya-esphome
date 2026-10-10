@@ -31,6 +31,15 @@ After an interrupted session, inspect the named workbench container before
 stopping it; a live flash must not be interrupted accidentally. Once its namespace
 is destroyed, verify that the radio has returned with `sudo iw dev`.
 
+The reference Broadcom radio once disappeared when the container was removed
+without explicitly returning its PHY first. The launcher now lowers the interface
+and uses `nsenter` plus a numeric `phy#<index>` selector to return it to the host
+before removal. Numeric selection matters because the host's sysfs view can hide
+the moved radio even after entering its network namespace. If an old launcher
+already stranded this specific radio, and no flash is running, reloading
+`brcmfmac` restored it over the wired management connection. Do not unload an
+arbitrary active Wi-Fi driver while management depends on it.
+
 If hostapd rejects a channel, verify the real country/regulatory configuration
 and use an allowed 2.4 GHz channel. Do not copy another country's regulatory
 settings or broaden the radio's permitted channels.
@@ -57,10 +66,27 @@ container: it establishes a real loopback TLS1.2 session using a non-UTF-8 ident
 A passing import check alone would not establish compatibility. Do not casually
 upgrade Python or the PSK dependency in this path.
 
+## Compilation is slow
+
+The small reference Atom host is suitable for the AP and flashing services, but
+compilation can take much longer there. Use the [Mac builder workflow](workbench.md#build-on-a-faster-mac),
+retain its private PlatformIO cache, and transfer only the finished image to the
+Linux workbench. Keep the pinned ESPHome version and device configuration the
+same. Initial toolchain downloads are separate from actual compilation time.
+
+## ESPHome image is missing from an already open menu
+
+Stage the image before starting a conversion when possible. If the loader menu
+was already open before the image arrived, its displayed choices can be stale.
+The pinned upstream script rebuilds the file list when a firmware selection is
+declined at its confirmation prompt. Inspect the refreshed names and choose
+`esphome-initial.bin`; never assume that an old numeric choice still means the
+same file. Keep the plug powered while it is waiting in the loader.
+
 ## ESPHome binary is rejected or the device disappears
 
 Confirm size, ESP header, architecture and flash layout. Keep the first image
-below512KiB. Check private Wi-Fi credentials, 2.4GHz availability, router leases,
+at or below 512 KiB. Check private Wi-Fi credentials, 2.4 GHz availability, router leases,
 fallback AP presence and the OTA/API keys. Compilation is not proof of successful
 flashing. A new hostname with a MAC suffix is expected. Never post the binary
 publicly: it contains the credentials compiled into it.
@@ -80,7 +106,7 @@ Check in order: relay works in HA; entity appears in the existing bridge's selec
 list; bridge is paired to the intended ecosystem; controller is online; IPv6/mDNS
 and the bridge UDP port are reachable. A running Matter Server does not replace
 Matter Hub. Do not reset working fabrics as an initial troubleshooting action.
-If only Alexa commissioning fails, verify the bridge's5540 port and current
+If only Alexa commissioning fails, verify the bridge's 5540 port and current
 commissioning window. See [the Matter guide](matter.md).
 
 ## Reporting a problem

@@ -10,6 +10,8 @@ Reusing that image also shares its API/OTA key across those units. For separate
 keys, generate and stage a separate image before converting each stock unit.
 Renaming a YAML file does not rotate credentials. Preserve deployed keys and
 check the installed ESPHome version's key-rotation limitations before changing them.
+Keep per-unit keys under unique secret names, or in separate private configuration
+directories with their own `secrets.yaml`; retain those mappings for later uploads.
 
 ```sh
 /opt/tuya-workbench/bin/esphome config tuya-plug.yaml

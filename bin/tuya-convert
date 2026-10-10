@@ -25,6 +25,17 @@ cleanup() {
     docker cp "$container:/usr/bin/tuya-convert/scripts/smarthack-$log.log" \
       "$session/" >/dev/null 2>&1 || true
   done
+  # Return the physical radio before destroying its network namespace. Some
+  # drivers leave it inaccessible if the namespace simply disappears.
+  local live_pid
+  live_pid=$(docker inspect -f '{{.State.Pid}}' "$container" 2>/dev/null) || live_pid=0
+  if [[ "$live_pid" =~ ^[0-9]+$ ]] && (( live_pid > 0 )); then
+    nsenter -t "$live_pid" -n ip link set "$interface" down 2>/dev/null || true
+    # Numeric PHY selection avoids the host's sysfs view after entering netns.
+    if ! nsenter -t "$live_pid" -n iw "phy#${phy#phy}" set netns 1 2>/dev/null; then
+      echo "Could not return $phy to the host; inspect the radio after cleanup." >&2
+    fi
+  fi
   docker rm -f "$container" >/dev/null 2>&1 || true
   chown -R "${SUDO_UID:-0}:${SUDO_GID:-0}" "$session"
 }

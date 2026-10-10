@@ -3,7 +3,7 @@ esphome:
   name: tuya-plug
   friendly_name: Tuya Plug
   name_add_mac_suffix: true
-  compile_process_limit: 1
+  compile_process_limit: 2
 
 esp8266:
   board: esp01_1m
