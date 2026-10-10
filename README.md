@@ -24,6 +24,10 @@ is different; use the [variant identification procedure](docs/gpio.md) before
 applying either profile. A separate YM-WS-1 attempt stopped at pairing without
 writing firmware.
 
+A later AWP02L-N attempt reached the conversion Wi-Fi but presented patched
+Tuya PSK identity version `02`. It never reached the intermediate loader and
+received no firmware. Its existing HA and client bindings were retained.
+
 Six plugs have now been converted: two XS-SSA01 units, three WP5 units and one
 KMC 30137. Five passed their own physical button/load test and HA software-restart
 check; the first two WP5 units also passed their independent red-indicator check.

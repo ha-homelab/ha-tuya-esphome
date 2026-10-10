@@ -267,6 +267,25 @@ were preserved. Both replacements were saved across all six desktop/deployment
 configuration sources, and the installed client showed both canonical controls
 available and off. No repeated physical test was performed on the latest WP5.
 
+## Later AWP02L-N attempt: patched stock firmware
+
+An AWP02L-N previously managed through LocalTuya joined the conversion AP.
+Ten observed TLS attempts presented PSK identity version `02` and failed with
+`DECRYPTION_FAILED_OR_BAD_RECORD_MAC`, consistent with the unsupported patched
+firmware described by Tuya-Convert. The intermediate loader was never reached.
+The attempt was stopped; no stock backup or replacement firmware was written.
+The conversion container was removed and the Wi-Fi radio restored to managed
+mode.
+
+A private 428,224-byte ESPHome candidate was compiled for the planned replacement
+role but was not installed. Published AWP02L-N variants agree on GPIO15 for the
+relay and GPIO13 for the button but differ in their indicator wiring. This unit
+therefore provides no physical pinout validation or new reusable verified profile.
+The existing LocalTuya entity and automation references were retained. The six
+desktop/deployment configuration sources remained unchanged; the proposed new
+role was recorded only in the private migration plan. The converted total stays
+at six.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.

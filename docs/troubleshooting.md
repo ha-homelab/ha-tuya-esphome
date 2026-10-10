@@ -58,6 +58,14 @@ enclosure matches an earlier successful unit. The
 limitations. Under this batch's policy, retire a persistently failing unit and
 continue; do not initiate a new Tuya cloud registration to diagnose it.
 
+An AWP02L-N in this batch joined the conversion AP but repeatedly presented
+PSK identity version `02` with `DECRYPTION_FAILED_OR_BAD_RECORD_MAC`. The
+[upstream compatibility notice](https://github.com/ct-Open-Source/tuya-convert#newer-devices)
+identifies that version as patched firmware unsupported by this conversion
+method. A DHCP association alone is not loader success. Stop the attempt,
+retain the existing HA/client configuration, and record that no firmware was
+written. Do not publish complete PSK identities or keys from the diagnostic log.
+
 ## TLS or Python exception before any flash
 
 The container pins Python3.11 and the legacy MQTT API. Its patch imports

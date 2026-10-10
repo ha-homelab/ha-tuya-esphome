@@ -38,6 +38,11 @@ hardware check.
 
 ## Remaining batch
 
+An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
+identity version `02`. No loader or firmware write occurred. Its migration was
+deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
+uninstalled candidate separate from the six successful conversions.
+
 The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
 Rapid-blink mode could not be established; its GPIO variant is unverified.
 A replacement WP5 has booted ESPHome with encrypted API access. Diagnostics
