@@ -32,8 +32,8 @@ packet was sent to the identified unit in AP mode; its connection dropped, but
 replacement-key authentication and conversion remain unverified. See the
 [AWP02L-N experimental procedure](docs/awp02l-n-psk02.md).
 
-Seven plugs have now been converted: two XS-SSA01 units, three WP5 units, one
-KMC 30137 and one YM-WS-1. Six passed their own physical button/load test;
+Eight plugs have now been converted: two XS-SSA01 units, three WP5 units, one
+KMC 30137, one YM-WS-1 and one JH-G01U. Seven passed their own physical button/load test;
 the first two WP5 units also passed their independent red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
 For the latest WP5, the operator chose the existing profile and waived repeated
@@ -47,6 +47,11 @@ The later YM-WS-1 reached the ordinary conversion loader and now runs ESPHome.
 Its GPIO15 relay, GPIO13 button and inverted GPIO12 indicator passed the
 operator's load test. This success is recorded separately from the earlier
 unflashed pairing attempt; the marking alone still does not select a variant.
+
+The JH-G01U uses GPIO4 for its verified relay and GPIO5 for its verified button.
+Its GPIO12 indicator initially ran opposite to the load. Active-low polarity was
+then installed through encrypted OTA and the API checked again; the corrected
+indicator has not yet been visually rechecked. See [GPIO details](docs/gpio.md).
 
 ```mermaid
 flowchart LR

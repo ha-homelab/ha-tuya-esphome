@@ -6,7 +6,7 @@ The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
 responded successfully. This project reused that instance, added an exact relay
-entity filter for each of six converted plugs. Five passed per-unit physical
+entity filter for each of eight converted plugs. Seven passed per-unit physical
 checks; the latest WP5 reused the established profile with those checks explicitly
 waived by the operator. The original two fabrics were preserved when Alexa was
 commissioned, and all three were preserved when later plugs were added. No new

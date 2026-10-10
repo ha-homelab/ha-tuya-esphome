@@ -312,11 +312,51 @@ GPIO13 active-low button with pull-up/debounce and an inverted GPIO12 internal
 indicator. The operator confirmed actual load switching in both directions
 using the button, with the indicator following. The encrypted API reported the
 final firmware and expected entities, and HA accepted a new ESPHome entry.
-HA command/restart verification and production role migration remain pending.
+HA control and production role migration were subsequently completed. A software
+restart started with the relay already off and it returned off; this did not test
+restoration from an on state. The exact old LocalTuya entry was removed, active
+references migrated, and the canonical relay was verified in the existing Matter
+bridge. All three fabrics and existing endpoint identities and filters remained
+intact. A bridge write response timed out, but readback proved it had applied;
+the mutation was not repeated. Controller-app acceptance remains deferred.
 
 The conversion container was removed and a privileged radio inspection confirmed
 that the Wi-Fi interface had returned to managed mode. No device identities,
 household role names, credentials or firmware are published here.
+
+## JH-G01U: eighth ESPHome installation
+
+A second AP-capable USB Wi-Fi adapter allowed the ordinary conversion to run in
+its own container/network namespace while the AWP02L-N experiment retained the
+first radio. Neither workflow changed the other's radio or wired management.
+The JH-G01U loader identity matched the intended old LocalTuya device and reported
+1,024 KiB flash, QIO at 40 MHz and active user2.
+
+The 420,800-byte GPIO-neutral image eventually completed in 259,898 ms. Transfer
+had stalled around 30 KiB while the target remained associated. A live TX bitrate
+limit to legacy 1/2 Mbps was applied to that AP interface; the transfer then
+completed without a power cycle or another flash request. This observation does
+not establish that the bitrate change alone caused recovery. Inspect association,
+TCP progress and logs before interrupting a slow write.
+
+After encrypted API identity verification, a 440,480-byte JH-G01U candidate was
+installed through encrypted OTA. The operator confirmed button-driven load
+switching with GPIO4 relay and GPIO5 button. GPIO12 initially lit the indicator
+opposite to the load; its active-low correction was compiled, uploaded and checked
+through the API. A fresh visual LED check and separate restart/power-cycle tests
+have not been performed. See the provisional [GPIO package](gpio.md#jh-g01u-gpio4-relay-and-active-low-gpio12-indicator).
+
+HA migration uses a canonical switch entity. The requested existing light card
+was changed to an on/off switch button in the same dashboard position; the
+unrelated Matter light device was retained. The old room card and floorplan
+binding were removed instead of retaining the plug at its previous location.
+Two old motion rules targeting only this lamp were retired; applicable global
+off and notification rules were migrated. Final readback found the new ESPHome
+switch available and off, the exact old LocalTuya identity removed, and no old
+references in 1,970 active files. The canonical switch was reachable as an
+OnOffPlugInUnit through the existing Matter bridge; all three fabrics and the
+previous endpoints were preserved. No extra load cycles or restarts were used
+for this migration. Controller-app acceptance remains deferred.
 
 ## Software provenance
 
@@ -335,8 +375,10 @@ tags mean builds are not promised to be byte-for-byte identical.
 
 ## Still pending
 
-Five converted plugs passed per-unit physical button/load and HA software-restart
-checks; the seventh has passed its physical test, with HA verification pending.
+Seven converted plugs passed per-unit physical button/load checks. Six also have
+HA software-restart evidence; the seventh conversion's restart began already off,
+so it does not prove on-to-off restoration. The eighth has no separate restart
+test and its corrected indicator has not been visually rechecked.
 The sixth uses a previously verified WP5 profile with repeated physical
 and restart checks explicitly waived by the operator; its transfer and encrypted
 API were verified separately. Google Home and Alexa app control passed on the

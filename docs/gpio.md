@@ -140,6 +140,26 @@ On the observed unit, the operator confirmed mechanical relay clicks, actual
 lamp switching in both directions and the indicator following that state. This
 verifies the profile for this unit; check each additional unit independently.
 
+## JH-G01U: GPIO4 relay and active-low GPIO12 indicator
+
+The observed unit reached the ordinary conversion loader and booted the
+GPIO-neutral image. Its model-specific candidate used GPIO4 relay, GPIO5 button
+with an inverted pull-up input, and GPIO12 indicator. The operator confirmed
+that the physical button switches an actual load in both directions.
+
+The first non-inverted GPIO12 configuration lit the indicator while the load was
+off and extinguished it while the load was on. This identifies active-low LED
+polarity for the observed unit. The corrected `inverted: true` firmware was
+compiled, installed through encrypted OTA, and checked through the encrypted
+API. The corrected LED has not been visually rechecked, and no separate
+software-restart or power-cycle acceptance test was performed for this unit.
+
+The provisional package is
+[`jh-g01u-gpio4.yaml`](../examples/jh-g01u-gpio4.yaml). Include it with the
+GPIO-neutral base only after matching the unit. It has a debounced local button,
+an `ALWAYS_OFF` relay, an internal indicator following relay commands, and a
+diagnostic restart button. Do not combine it with another GPIO package.
+
 ## Verification sequence
 
 1. Confirm stable Wi-Fi, API and OTA first.
