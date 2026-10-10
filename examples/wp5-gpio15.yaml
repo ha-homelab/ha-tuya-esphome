@@ -1,0 +1,56 @@
+# Observed WP5 variant: GPIO13 button and GPIO15 relay, physically verified.
+# Inverted GPIO2 indicator follows the commanded state.
+# GPIO0 is the physically confirmed inverted red LED, exposed as Red Indicator.
+# Gosund WP5 uses a different map. Identify each unit before applying this.
+# Include with the GPIO-neutral base; remove the input-only probe package.
+switch:
+  - platform: gpio
+    id: relay
+    name: Relay
+    pin: GPIO15
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - light.turn_on: relay_indicator
+    on_turn_off:
+      - light.turn_off: relay_indicator
+
+binary_sensor:
+  - platform: gpio
+    name: Physical Button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - switch.toggle: relay
+
+output:
+  - platform: gpio
+    id: indicator_output
+    pin:
+      number: GPIO2
+      inverted: true
+  - platform: gpio
+    id: red_indicator_output
+    pin:
+      number: GPIO0
+      inverted: true
+
+light:
+  - platform: binary
+    id: relay_indicator
+    output: indicator_output
+    internal: true
+    restore_mode: ALWAYS_OFF
+  - platform: binary
+    id: red_indicator
+    name: Red Indicator
+    output: red_indicator_output
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic

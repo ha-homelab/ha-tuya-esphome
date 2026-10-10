@@ -18,6 +18,12 @@ relay candidate drove only the LED; [the investigation](https://github.com/ha-ho
 records that correction. See [the deployment record](docs/deployment-record.md) for
 restart and ecosystem acceptance results.
 
+**Second successful conversion:** a WP5 replacement also passed the physical
+button/load test with GPIO13 button and GPIO15 relay. The similar Gosund WP5 map
+is different; use the [variant identification procedure](docs/gpio.md) before
+applying either profile. A separate YM-WS-1 attempt stopped at pairing without
+writing firmware.
+
 ```mermaid
 flowchart LR
   T[Old Tuya ESP8266 plug] -->|one-time tuya-convert| E[ESPHome over Wi-Fi]

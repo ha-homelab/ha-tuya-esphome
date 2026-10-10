@@ -39,8 +39,9 @@ hardware check.
 The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
 Rapid-blink mode could not be established; its GPIO variant is unverified.
 A replacement WP5 has booted ESPHome with encrypted API access. Diagnostics
-confirmed its GPIO13 button. A matching GPIO15-relay profile is installed;
-physical output validation and Matter export are still pending.
+confirmed its GPIO13 button. The matching GPIO15-relay profile is installed,
+physical button/load and HA software-restart checks passed, and its relay is
+exported through the existing Matter Hub. Controller-side checks remain pending.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.

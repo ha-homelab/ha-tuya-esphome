@@ -96,10 +96,23 @@ The operator also observed that the outlet supplied power during diagnostics:
 unassigned GPIOs do not guarantee an off output. A matching candidate with a
 GPIO15 relay, GPIO13 button and inverted GPIO2 indicator compiled on the Mac in
 28.97 seconds and was installed through encrypted OTA. Home Assistant reports
-the new firmware and an off switch state. Actual load/button checks are pending;
-software state alone does not verify the relay contacts. The WP5 has not been
-exported through Matter. The failed pairing attempt and this replacement retain
-separate private inventory records.
+the new firmware and an off switch state. The operator subsequently confirmed
+actual load switching in both directions using the physical button. This
+verifies the GPIO15 relay and GPIO13 button for the observed unit. Home Assistant
+also turned the relay on, restarted the device, and observed a fresh off state.
+Only its verified relay was then added to the existing Matter Hub with an exact
+entity filter. Filter/device counts increased from eight to nine, both existing
+fabrics and all prior filters were preserved, and the endpoint reports
+OnOffPlugInUnit. Google Home discovery/control of this second plug remains
+pending. The failed pairing attempt and this replacement retain separate
+private inventory records.
+
+At the operator's request, the catalog's second inverted LED channel, GPIO0, was
+added as a separate Red Indicator light. That update compiled in 16.55 seconds
+and passed encrypted OTA. ESPHome and HA acknowledge its on state, and the
+operator confirmed the red color with the relay off. The indicator is not
+included in the Matter filter. A software-restart check of this final firmware
+confirmed that both the relay and the previously lit red indicator return off.
 
 ## Software provenance
 

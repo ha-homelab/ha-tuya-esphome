@@ -93,8 +93,16 @@ relay candidates simultaneously.
 
 On the observed WP5, repeated controlled button presses produced GPIO13
 press/release events, while GPIO4 stayed inactive. A matching GPIO15-relay,
-inverted-GPIO2-indicator candidate was then built. GPIO0 is left unused. Physical
-output testing is still required before treating this candidate as verified.
+inverted-GPIO2-indicator profile was then built and installed. The operator
+confirmed that the physical button switches the connected load on and off.
+GPIO2 is configured from the catalog rather than used as proof of contact state.
+The second inverted LED channel on GPIO0 is exposed as a separate **Red
+Indicator** light at the operator's request; the operator confirmed its red color
+with the relay off. It defaults off after restart and has independent HA control;
+only the relay is exported through Matter. The matching package is
+[`wp5-gpio15.yaml`](../examples/wp5-gpio15.yaml). Replace the input-only probe
+package with this hardware package after identifying a matching unit; do not
+include both because they would assign GPIO13 twice.
 
 ## Verification sequence
 
