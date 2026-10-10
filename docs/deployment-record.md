@@ -516,10 +516,15 @@ manual load commands. All curtain schedules and manual-override helpers were
 preserved.
 
 The old evening-off rule had been retired earlier because its trigger lamp was
-removed. Its replacement remains pending the operator's choice of current lamp;
-it was not silently rebound by matching a similar display name. A scoped
-replacement should retain the 15-minute off interval, darkness condition and
-manual override while avoiding a dependency on an unrelated unavailable device.
+removed. The operator selected its current replacement explicitly. A separate
+evening rule now turns off only the media-power relay after that lamp remains
+off for 15 minutes, with the sun below -2 degrees and the existing manual override
+off. It does not depend on an unrelated unavailable device or re-enable the
+retired multi-device rule. Full configuration validation, an automation-only
+reload and runtime references passed. Six isolated tests using the installed
+HA runtime and fake services covered timing, cancellation, override and daylight
+guards, wrong-lamp events and startup with the lamp already off. No physical
+load was switched for those tests.
 
 One exact relay filter was added to the existing Matter bridge. Its device count
 increased from 18 to 19, with the new OnOffPlugInUnit reachable, every prior

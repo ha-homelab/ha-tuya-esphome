@@ -132,9 +132,9 @@ An eleventh conversion reuses the corrected JH-G01U profile with repeated
 physical and restart checks waived. Historical role, DHCP and loader identity
 matched before writing; encrypted API verification passed after the complete
 image installed. HA adoption, its separate dashboard control, restored motion-on
-action and DNS are ready. The old evening-off rule's replacement waits for the
-operator to select its current lamp trigger; unrelated curtain controls and
-manual overrides remain unchanged.
+action and DNS are ready. The operator selected the current lamp trigger for a
+separate evening-off rule, which is installed and verified with six isolated HA
+runtime tests. Unrelated curtain controls and manual overrides remain unchanged.
 Its relay is exposed through the existing Matter bridge, which now reports 19
 devices with prior endpoints and fabrics preserved.
 
