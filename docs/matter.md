@@ -6,18 +6,24 @@ The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
 responded successfully. This project reused that instance, added an exact relay
-entity filter for each of ten converted plugs. Seven passed per-unit physical
-checks; two WP5 units and the second YM-WS-1 reused established profiles with
-those checks explicitly waived by the operator. The original two fabrics were
-preserved when Alexa was commissioned, and all three were preserved when later
-plugs were added. No new bridge or factory reset was used.
+entity filter for each of eleven converted plugs. Seven passed per-unit physical
+checks; two WP5 units, the second YM-WS-1 and the second JH-G01U reused existing
+profiles with those checks explicitly waived by the operator. The original two
+fabrics were preserved when Alexa was commissioned, and all three were preserved
+when later plugs were added. No new bridge or factory reset was used.
 
 A separate, previously converted ESPHome plug was upgraded, renamed and added
 to the same bridge. Its button, load and corrected indicator were confirmed by
 the operator. The tenth conversion and this maintenance unit were added together;
-the bridge now reports 18 devices. Both new relay endpoints are reachable
+the bridge then reported 18 devices. Both new relay endpoints are reachable
 OnOffPlugInUnits. Existing endpoints and all three fabrics were preserved;
 new controller load tests remain deferred.
+
+The eleventh conversion subsequently added one more reachable OnOffPlugInUnit,
+bringing the bridge to 19 devices. The exact new filter preserved every prior
+endpoint and all three fabrics. Its former HA role and night-shutdown trigger
+are treated separately; exposing the relay does not imply that every old
+automation has been restored.
 
 Use the current hub's private Web UI endpoint and persistent storage. An older
 Portainer stack or a dormant alternative manifest is not evidence that it is the

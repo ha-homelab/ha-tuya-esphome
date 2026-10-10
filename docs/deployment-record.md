@@ -437,8 +437,8 @@ load checks remain deferred.
 
 A separate plug already running ESPHome was updated from 2026.8.0 to
 [2026.9.1](https://github.com/esphome/esphome/releases/tag/2026.9.1) and given a new
-household role. It is not counted as an eleventh Tuya conversion. Its identity,
-reserved address and existing API/OTA authentication mode were preserved. The
+household role. It is recorded separately from the Tuya conversion count. Its
+identity, reserved address and existing API/OTA authentication mode were preserved. The
 native API on this older installation is unencrypted; the encrypted-API claims
 for newly converted plugs do not apply to this maintenance operation.
 
@@ -489,6 +489,43 @@ preserved, and a full inventory readback matched the intended change. Control
 uses the switch domain without implying dimming or color capabilities. No
 physical load command or HA restart was needed for that binding.
 
+## Another JH-G01U: eleventh Tuya conversion
+
+The next JH-G01U reused the earlier GPIO4 relay, GPIO5 button and corrected
+active-low GPIO12 indicator profile. The operator's standing same-model policy
+waived repeated physical and restart checks. The old role had already been
+removed during a previous multi-device cleanup, so the historical integration
+record was matched to DHCP and then to the exact intermediate-loader MAC before
+writing firmware. A stale DHCP hostname was not treated as role evidence.
+
+The complete 440,480-byte image was built locally with ESPHome 2026.9.1 and
+passed checksum, 1 MB flash, DOUT and 40 MHz checks. The loader wrote it in
+11,878 ms without a stock backup. Encrypted native API readback confirmed the
+same physical identity, version and final-profile entities. The conversion
+container was cleaned up and both radios returned to host managed mode. Router
+DNS was renamed while retaining the reservation, with forward and reverse
+lookups checked from the router and client.
+
+HA adopted one canonical relay and added a separate dashboard row, preserving
+the existing curtain-power control. Its former motion-on action was restored
+before the unrelated legacy actions and marked `continue_on_error`, so either
+side's failures cannot prevent the other side's commands. The existing sensor
+triggers and manual-override condition were retained. Configuration validation,
+automation reload and runtime entity linkage passed without an HA restart or
+manual load commands. All curtain schedules and manual-override helpers were
+preserved.
+
+The old evening-off rule had been retired earlier because its trigger lamp was
+removed. Its replacement remains pending the operator's choice of current lamp;
+it was not silently rebound by matching a similar display name. A scoped
+replacement should retain the 15-minute off interval, darkness condition and
+manual override while avoiding a dependency on an unrelated unavailable device.
+
+One exact relay filter was added to the existing Matter bridge. Its device count
+increased from 18 to 19, with the new OnOffPlugInUnit reachable, every prior
+endpoint identity preserved and all three controller fabrics unchanged. No
+additional controller or physical load test was performed.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -510,9 +547,10 @@ Seven converted plugs passed per-unit physical button/load checks. Six also have
 HA software-restart evidence; the seventh conversion's restart began already off,
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
-The sixth and ninth use a previously verified WP5 profile, and the tenth reuses
-the established YM-WS-1 profile, with repeated physical and restart checks waived
-by the operator. Their transfers and encrypted APIs were verified separately.
+The sixth and ninth use a previously verified WP5 profile, the tenth reuses
+the established YM-WS-1 profile, and the eleventh reuses the corrected JH-G01U
+profile, with repeated physical and restart checks waived by the operator.
+Their transfers and encrypted APIs were verified separately.
 Google Home and Alexa app control passed on the
 first two converted plugs. Later controller checks were deferred. Physical
 power-cycle tests and the full button-to-controller round trip remain pending.

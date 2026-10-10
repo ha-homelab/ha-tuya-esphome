@@ -41,7 +41,7 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the ten successful firmware conversions.
+uninstalled candidate separate from the eleven successful firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
@@ -120,13 +120,23 @@ after longer bounded API requests recovered management access; an uncertain
 filter write was checked by readback instead of repeated.
 
 An additional device already running ESPHome was updated and renamed separately;
-it is not included in the ten conversions. The operator confirmed its button,
+it is not included in the conversion count. The operator confirmed its button,
 load and corrected indicator. Its HA motion rules and dashboard were migrated
 while preserving manual overrides, and DNS kept the original reservation.
 Both the relay and renamed firmware-update diagnostic are available after a
 targeted integration reload resolved its cached old node name.
 The tenth conversion and this maintenance unit have reachable relay endpoints
 in the existing Matter bridge, with prior endpoints and all three fabrics kept.
+
+An eleventh conversion reuses the corrected JH-G01U profile with repeated
+physical and restart checks waived. Historical role, DHCP and loader identity
+matched before writing; encrypted API verification passed after the complete
+image installed. HA adoption, its separate dashboard control, restored motion-on
+action and DNS are ready. The old evening-off rule's replacement waits for the
+operator to select its current lamp trigger; unrelated curtain controls and
+manual overrides remain unchanged.
+Its relay is exposed through the existing Matter bridge, which now reports 19
+devices with prior endpoints and fabrics preserved.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.
