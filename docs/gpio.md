@@ -18,6 +18,30 @@ This map is a **reference for identification**, not a configuration approved for
 every unit. Do not copy the old unit's current/voltage calibration coefficients.
 They do not establish the new unit's accuracy or even its metering chip.
 
+## First observed unit
+
+The operator confirmed two physical relay clicks during an on/off pulse using
+non-inverted GPIO12. Home Assistant and the encrypted native API both report its
+relay state. This establishes that output for the tested unit, not its retail
+model or the rest of the batch. GPIO13 with an inverted pull-up input is installed
+as a button candidate; its physical test is still pending.
+
+Optional packages are provided as
+[`relay-gpio12.yaml`](../examples/relay-gpio12.yaml) and
+[`button-gpio13-candidate.yaml`](../examples/button-gpio13-candidate.yaml).
+Copy them into the private build directory and add them to that unit's YAML:
+
+```yaml
+packages:
+  relay_hardware: !include relay-gpio12.yaml
+  button_candidate: !include button-gpio13-candidate.yaml
+```
+
+Start with the relay package alone; add the candidate button only while checking
+that unit. Keep the original GPIO-neutral YAML and image for other unknown plugs.
+The restart button permits a controlled software-restart test; it does not replace
+a separate power-cycle check. LEDs and metering are intentionally absent.
+
 ## Verification sequence
 
 1. Confirm stable Wi-Fi, API and OTA first.

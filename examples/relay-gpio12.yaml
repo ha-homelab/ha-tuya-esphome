@@ -1,0 +1,13 @@
+# Optional package for a unit whose relay has been verified on GPIO12.
+# The first observed unit switched physically with this non-inverted output.
+switch:
+  - platform: gpio
+    id: relay
+    name: Relay
+    pin: GPIO12
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic

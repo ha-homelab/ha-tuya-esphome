@@ -41,6 +41,9 @@ omitted; keep an exact operational record outside Git.
   uploaded successfully through encrypted ESPHome OTA in about 27.5 seconds.
   The API and Home Assistant report the relay entity, with state changes observed
   over the API. Physical switching is a separate acceptance gate.
+- The operator subsequently confirmed two physical clicks during the GPIO12
+  on/off pulse. A GPIO13 button candidate was installed by another successful
+  encrypted OTA update; physical button and restart checks remain pending.
 - Removing the first conversion container left the Broadcom radio inaccessible.
   Reloading its driver restored it. An explicit numeric-PHY return before
   container removal then passed a live namespace round-trip check; the launcher

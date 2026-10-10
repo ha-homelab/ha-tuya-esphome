@@ -1,0 +1,13 @@
+# Candidate only: verify the physical button on each unknown model.
+# Requires the relay id from relay-gpio12.yaml. This is not a model identifier.
+binary_sensor:
+  - platform: gpio
+    name: Physical Button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - switch.toggle: relay
