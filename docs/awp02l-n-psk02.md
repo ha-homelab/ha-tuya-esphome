@@ -16,6 +16,14 @@ Neither packet delivery nor that disconnection establishes that the exploit
 worked. Authentication with the replacement key and firmware installation have
 not yet been verified.
 
+A later authentication-only checkpoint sent normal Wi-Fi provisioning to the
+identified unit once. Its first temporary-AP setup stopped because the wrapper
+mistook dnsmasq's daemonizing parent exit for a service failure. A resumed run
+used foreground dnsmasq and started the AP and authentication listeners, without
+resending the exploit or provisioning. The target did not associate or obtain a
+DHCP lease during the 120-second window, and no application request was received.
+This is an absent-client result, not evidence of a rejected replacement key.
+
 The owner chose a wireless-only attempt, no factory-firmware backup, and retirement
 of an unsuccessful unit rather than serial recovery. That decision is specific
 to this batch. Keep the load disconnected throughout pairing and experimental
@@ -161,6 +169,23 @@ configuration is not evidence that the device actually stored those values.
 An existing LocalTuya local key is also not interchangeable with a cloud TLS PSK
 or authentication key. If the same bad-record-MAC failures continue, record the
 bypass as unverified/failed and stop automatic attempts.
+
+### Recover an interrupted authentication checkpoint
+
+Keep the exploit marker, provisioning receipt and authentication evidence as
+separate private records. If provisioning was already sent, resume at temporary
+AP setup instead of rerunning the entire experiment. Run dnsmasq in foreground
+mode when supervising its process directly, and stop only orphan processes
+owned by this isolated session. Confirm the AP and listeners are running before
+starting a bounded observation window.
+
+Record target association, a fresh matching DHCP/neighbor identity, TLS PSK
+identity version, handshake completion and a complete decoded request separately.
+Acceptance must correlate the expected key and exact target with the same
+connection; unrelated HTTP traffic cannot validate a different TLS connection.
+If the target never joins, leave authentication unverified, clean up the session
+and re-establish its current radio state before another attempt. Do not treat
+an empty log as a cryptographic failure or a reason to resend the exploit.
 
 The firmware-transfer step remains unresolved for this unit. The experimental
 branch validates an upgrade container, including a `55 AA 55 AA` UG format;

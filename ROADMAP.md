@@ -41,13 +41,15 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the eight successful firmware conversions.
+uninstalled candidate separate from the nine successful firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
       compatibility and a usable conversion profile are not yet established.
       One experimental packet was sent; replacement-key authentication and
-      conversion are unverified. See [the procedure](docs/awp02l-n-psk02.md).
+      conversion are unverified. A later authentication-only AP ran for 120
+      seconds without the target joining; this did not test the replacement key.
+      See [the procedure](docs/awp02l-n-psk02.md).
 
 The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
 Rapid-blink mode could not be established; its GPIO variant is unverified.
@@ -95,6 +97,17 @@ inverted GPIO12 indicator; active-low polarity was installed and the API checked
 again. A visual recheck of that correction and separate restart/power-cycle tests
 remain unperformed. Its role migration removes obsolete controls and motion
 rules from the old room and uses a switch card at the requested new position.
+
+A ninth conversion reuses the established WP5 profile, with physical/load and
+restart checks explicitly waived again. The complete profile was installed
+directly after matching the loader to the intended old device; encrypted API
+identity and expected entities were verified. These checks do not count as
+per-unit physical acceptance. Its HA references, cached curtain power profiles
+and existing Matter bridge were migrated with runtime readback; the router name
+was updated while retaining the reserved address. The installed desktop client,
+six persisted configurations and two server configuration Secrets were updated.
+The web deployments were already not ready, so their runtime adoption remains
+unverified.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.

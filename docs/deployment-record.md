@@ -297,6 +297,14 @@ next plug before replacement-key authentication or firmware-format validation.
 No HA, client or Matter migration was performed. See the
 [experimental procedure](awp02l-n-psk02.md); it is not a verified conversion recipe.
 
+A later authentication-only checkpoint sent normal Wi-Fi provisioning once to
+the identified unit. The first AP setup failed because process supervision
+treated dnsmasq's daemonizing parent exit as a failure. A resumed checkpoint used
+foreground dnsmasq, reached AP/listener readiness, and observed no target
+association, DHCP lease or application request over 120 seconds. Neither the
+exploit nor provisioning was repeated for that resume. Key authentication
+remains unverified; no firmware was served and the old role was not migrated.
+
 ## Later YM-WS-1: seventh ESPHome installation
 
 A YM-WS-1 selected from an existing LocalTuya role reached VTRUST-FLASH 1.5 using
@@ -358,6 +366,40 @@ OnOffPlugInUnit through the existing Matter bridge; all three fabrics and the
 previous endpoints were preserved. No extra load cycles or restarts were used
 for this migration. Controller-app acceptance remains deferred.
 
+## Another WP5: ninth ESPHome installation
+
+The owner selected another WP5 and explicitly requested reuse of the established
+profile without repeated physical/load or restart tests. After an initial pairing
+window expired, the phone reconnected to the conversion AP and the exact intended
+device reached the intermediate loader. Its identity matched the old LocalTuya
+record and it reported 1,024 KiB flash.
+
+The complete 440,688-byte WP5 image was written directly in 11,954 ms, rather than
+installing a diagnostic-only image first. It uses GPIO15 relay, GPIO13 button,
+inverted GPIO2 relay indicator and an independent inverted GPIO0 red indicator.
+Encrypted API readback verified the same device and the expected entities. No
+button, load, indicator or restart acceptance test was performed on this unit;
+reuse was the operator's explicit choice.
+
+The old LocalTuya device was removed only after the replacement was available.
+Its HA automations, dashboard row and two curtain power profiles now use the
+canonical replacement entity. One HA configuration restart loaded those cached
+profiles; this was not a plug restart test. Runtime readback confirmed both
+profiles and no active references to the old entity remained. A historical
+power timestamp was retained as history, without inventing a new power-on event.
+The relay is reachable as an OnOffPlugInUnit in the existing Matter bridge,
+preserving all three fabrics and the previous endpoints. Router DNS naming was
+updated without changing the reserved address. Controller-app checks remain
+deferred.
+
+The installed desktop client and six local/saved configuration files were
+updated and verified after the client reopened. Its existing button position and
+unrelated settings were preserved. Two existing server configuration Secrets
+were updated by changing only this role's entity and label, with readback of the
+result. Those web deployments were already not ready before the change, so
+running web-application adoption is not claimed. No workloads or plugs were
+restarted for this client update.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -379,9 +421,9 @@ Seven converted plugs passed per-unit physical button/load checks. Six also have
 HA software-restart evidence; the seventh conversion's restart began already off,
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
-The sixth uses a previously verified WP5 profile with repeated physical
-and restart checks explicitly waived by the operator; its transfer and encrypted
-API were verified separately. Google Home and Alexa app control passed on the
+The sixth and ninth use a previously verified WP5 profile with repeated physical
+and restart checks explicitly waived by the operator; their transfers and encrypted
+APIs were verified separately. Google Home and Alexa app control passed on the
 first two converted plugs. Later controller checks were deferred. Physical
 power-cycle tests and the full button-to-controller round trip remain pending.
 Existing bridge fabrics were preserved, and household entity identifiers were
