@@ -31,7 +31,7 @@ hardware check.
 - [x] Select only the verified relay entity in the existing Matter Hub.
 - [x] Confirm Google Home discovers the new plug through the existing fabric and switches its load.
 - [x] Confirm or add Alexa commissioning; use the intended bridge on UDP 5540.
-- [x] Confirm Alexa discovers all selected devices, including both converted plugs.
+- [x] Confirm Alexa discovers all selected devices, including the first two converted plugs.
 - [x] Confirm actual load control from Alexa on both plugs.
 - [ ] Round-trip state/control checks in HA, Google, Alexa and the physical button.
 - [ ] Restart checks for the plug and bridge; record results separately.
@@ -45,8 +45,12 @@ confirmed its GPIO13 button. The matching GPIO15-relay profile is installed,
 physical button/load and HA software-restart checks passed, and its relay is
 exported through the existing Matter Hub. Google Home discovery and actual load
 control passed for this second plug as well. Alexa commissioning, discovery and
-actual load control also passed on both plugs. Complete state round-trip checks
-remain pending.
+actual load control also passed on the first two plugs. A third successful
+conversion, another WP5, passed its own GPIO13 input probe, physical button/load
+and red-indicator checks, encrypted OTA, and HA software-restart checks. Its
+verified relay is now exported through the existing three-fabric Matter bridge.
+The operator deferred post-migration Google Home/Alexa acceptance.
+Complete state round-trip checks remain pending.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.

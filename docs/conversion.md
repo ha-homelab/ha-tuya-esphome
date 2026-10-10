@@ -67,5 +67,20 @@ Only diagnostic entities exist at this stage. Continue with [GPIO identification
 before expecting a controllable plug entity or exposing it through Matter.
 
 For a subsequent device-specific image, keep a separate local YAML named for that
-unit and run ESPHome `upload <file>.yaml --device <address>`. Preserve its local
-credentials and stable identity. Return to Tuya-Convert only for a still-stock unit.
+unit. YAML filenames alone do not isolate build output: configurations in the
+same directory with the same `esphome.name` can overwrite the same build tree.
+After compiling a probe, the default `firmware.bin` can therefore contain that
+probe rather than the final relay profile.
+
+Before another build, save a private copy of the validated final image and its
+SHA-256 digest. With the pinned ESPHome uploader, select that file explicitly:
+
+```sh
+esphome upload unit.yaml --device <verified-unit-address> \
+  --file /private/path/to/validated-final.bin
+```
+
+Check the saved digest, matching configuration/credentials, and the target's
+encrypted API identity before uploading. Reuse a final GPIO profile only after
+checking that unit's hardware variant. Preserve the unit's local credentials and
+stable identity. Return to Tuya-Convert only for a still-stock unit.

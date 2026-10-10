@@ -124,6 +124,55 @@ then confirmed that Alexa discovered all nine selected devices, including both
 converted plugs. In a separate physical check, the operator confirmed that Alexa
 switches the connected load on and off on both converted plugs.
 
+## Third successful ESPHome installation: another WP5
+
+The operator identified the next plug as the same WP5 model. A new input-only
+GPIO13/GPIO4 probe compiled on the Mac in 25.59 seconds. The 424,448-byte image
+passed the first-image size limit, ESP8266 checksum and 1 MB DOUT/40 MHz checks.
+The loader identity differed from both working plugs and independently reported
+1 MB DOUT/40 MHz. The probe installed in 13.95 seconds without a stock backup.
+The new plug joined the home LAN and answered its encrypted API with both probe
+inputs and no relay output. The conversion AP was stopped and its radio returned
+to the Linux host.
+
+Four GPIO13 button press/release cycles were observed while GPIO4 stayed inactive.
+The previously verified WP5 final image was then reused via an explicit OTA file
+path after checking its digest, credentials and target identity. This matters
+because configurations sharing the same ESPHome node name also share a build
+directory: the latest build there was the probe, not the final profile. Encrypted
+OTA completed in 22.19 seconds. The operator confirmed actual load switching in
+both directions, mechanical relay clicks and the independent red indicator.
+The unit was adopted in Home Assistant. HA turned the relay on and restarted
+the plug; fresh states confirmed both the relay and the previously lit red
+indicator were off. The verified relay was then added to the existing Matter
+bridge as an OnOffPlugInUnit. The bridge reports ten selected devices and filters,
+with all three controller fabrics preserved. The operator deferred
+post-migration Google Home/Alexa tests; no new physical controller result is
+claimed for this third plug.
+
+## Reusing existing household roles
+
+The two WP5 units replaced existing HA roles. One old Tuya device was removed
+from its integration after matching its identity; the other was retained under
+an explicit `_old` name at the operator's request. The retained entity kept its
+original `light` domain, while its replacement relay uses `switch`.
+
+Active references in automations, scenes, dashboards, floorplans and configuration
+were migrated. The light-to-switch replacement also changed explicit service
+calls. A startup-only binding in a floorplan integration required an HA restart;
+HA completed startup with the new binding. The floorplan UI test confirmed the
+replacement control dispatches the switch service. Unrelated devices and
+conditions were preserved.
+
+The already exported WP5 retained its Matter endpoint during renaming, while the
+third plug received a new endpoint. The bridge reports ten devices and three
+fabrics. Six saved client/deployment configurations were checked, including the
+installed desktop client's encrypted settings and the Python/Go dashboard inputs.
+Native desktop controls showed both new entities, and settings survived normal
+save and two client restarts. Credentials and private configurations were not
+published. Post-migration Google Home/Alexa load tests were deferred by the
+operator.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -144,8 +193,10 @@ tags mean builds are not promised to be byte-for-byte identical.
 The first plug runs ESPHome, is adopted in Home Assistant and accepts encrypted
 OTA. Its initial GPIO12 output test failed; a model-specific GPIO15 profile is now
 installed and has passed a physical load/button test and an HA-controlled
-software-restart check. Google Home and Alexa app control passed on both converted
-plugs. Physical power-cycle and the full button-to-controller round trip remain
-pending. Existing bridge fabrics were preserved, and household entity
+software-restart check. Google Home and Alexa app control passed on the first two
+converted plugs. The third plug passed physical button/load, red-indicator and HA
+software-restart checks and is exported through Matter. The operator deferred
+post-migration controller checks. Physical power-cycle and the full
+button-to-controller round trip also remain pending. Existing bridge fabrics were preserved, and household entity
 identifiers were not published. A functioning server process is not a completed
 end-to-end acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).

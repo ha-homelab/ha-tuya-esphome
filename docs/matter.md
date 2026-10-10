@@ -6,8 +6,9 @@ The inspected installation already has **RiDDiX Home Assistant Matter Hub** and
 **Home Assistant Matter Server** running in the `ha-infra` namespace on a NAS-backed
 k3s worker. The hub uses a dedicated LAN interface named `net1`. Its health endpoint
 responded successfully. This project reused that instance, added an exact relay
-entity filter for each of the two physically verified plugs, and preserved both
-existing Matter fabrics. No new bridge or factory reset was used.
+entity filter for each of three physically verified plugs. The original two
+fabrics were preserved when Alexa was commissioned, and all three were preserved
+when the third plug was added. No new bridge or factory reset was used.
 
 Use the current hub's private Web UI endpoint and persistent storage. An older
 Portainer stack or a dormant alternative manifest is not evidence that it is the
@@ -34,6 +35,26 @@ changes. Avoid broad filters that unexpectedly publish every household entity.
 For a single verified unit, an exact `pattern` filter containing only its relay
 entity ID is also suitable. Preserve the existing filters and add that one entry;
 do not replace the filter list with a broad `switch.*` rule.
+
+### Replace an existing household role
+
+Identify the old HA device and the new ESPHome device from their private registry
+records before reusing a name. Decide whether the old device should be removed or
+retained with an explicit `_old` name. Keep a retained entity's original domain;
+renaming an old `light` does not convert it into a `switch`.
+
+Assign the new relay its intended stable entity ID before exporting it. Update
+active automation, scene, dashboard, floorplan and customization references, plus
+external clients and their saved deployment inputs. A change from a `light` to a
+`switch` also needs the correct service domain in explicit service calls. Check
+that a later deployment or application restart cannot restore the old references.
+
+If a plug is already exported, inspect the installed Hub's identity-preserving
+rename behavior before changing its HA ID or filter. Record and compare its
+endpoint and the bridge's existing fabrics afterward. Reusing a friendly name
+alone does not prove continuity. Keep only the intended primary relay in the
+filter, avoid duplicate old/new controls, and verify each controller after the
+migration without resetting the bridge.
 
 For Alexa, keep the intended bridge on UDP **5540**; the maintained project's
 guide identifies this as the reliable port. Do not create a second bridge on an
