@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+interface=${1:-wlan0}
+[[ "$interface" =~ ^[a-zA-Z0-9_.-]+$ ]] || exit 2
+sudo -n ip link set "$interface" up
+sudo -n iw dev "$interface" scan | python3 -c '
+import re, sys
+text = sys.stdin.read()
+found = 0
+for block in re.split(r"(?m)^BSS ", text)[1:]:
+    ssid = re.search(r"(?m)^\s*SSID: (.*)$", block)
+    if ssid and re.search(r"smartlife|tuya|sl-?light|a-?esp", ssid[1], re.I):
+        bssid = block.split("(", 1)[0].strip()
+        signal = re.search(r"signal: ([^\n]+)", block)
+        print(bssid, signal[1] if signal else "", ssid[1])
+        found += 1
+if not found:
+    print("No matching Tuya/SmartLife APs in this scan.")
+'

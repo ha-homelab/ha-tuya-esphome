@@ -1,0 +1,33 @@
+name: Validate workbench
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check publication boundaries
+        run: python3 scripts/check-publication.py
+      - name: Check shell and Python syntax
+        run: |
+          bash -n bin/* scripts/setup-workbench.sh
+          shellcheck bin/* scripts/setup-workbench.sh
+          python3 -m compileall -q scripts tests
+      - name: Fetch the pinned upstream source
+        run: |
+          git init /tmp/tuya-source
+          git -C /tmp/tuya-source remote add origin https://github.com/ct-Open-Source/tuya-convert.git
+          git -C /tmp/tuya-source fetch --depth 1 origin a34b2c91862ed855542e8a32a14a9ab7573c4de9
+          git -C /tmp/tuya-source checkout --detach FETCH_HEAD
+      - name: Build legacy protocol runtime
+        run: docker build -t tuya-convert:test -f container/Dockerfile /tmp/tuya-source
+      - name: Test real binary-identity TLS without hardware or network access
+        run: docker run --rm --network none -v "$PWD/tests:/checks:ro" tuya-convert:test python3 /checks/test_psk.py

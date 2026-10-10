@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+base=${WORKBENCH_ROOT:-/opt/tuya-workbench}
+exec docker run --rm --network=host \
+  -v "$base/esphome:/config" \
+  ghcr.io/esphome/esphome:2026.9.1 "$@"

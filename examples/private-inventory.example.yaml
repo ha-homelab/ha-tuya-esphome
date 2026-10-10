@@ -1,0 +1,14 @@
+# Copy outside the public repository and fill in locally.
+batch:
+  description: old unboxed Tuya Wi-Fi plugs
+  hardware_claim: ESP8266; exact module and flash capacity unverified
+  original_firmware_backup: false
+  failed_unit_policy: retire after station/pairing checks
+units:
+  - local_label: unit-001
+    model_status: unknown
+    conversion: pending
+    relay_verified: false
+    button_verified: false
+    google_home_verified: false
+    alexa_verified: false

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if [[ $EUID -ne 0 ]]; then
+  exec sudo -n env WORKBENCH_ROOT="${WORKBENCH_ROOT:-/opt/tuya-workbench}" WIFI_INTERFACE="${WIFI_INTERFACE:-wlan0}" MANAGEMENT_INTERFACE="${MANAGEMENT_INTERFACE:-enp1s0}" "$0" "$@"
+fi
+base=${WORKBENCH_ROOT:-/opt/tuya-workbench}
+container=tuya-workbench-session
+interface=${WIFI_INTERFACE:-wlan0}
+[[ "$interface" =~ ^[a-zA-Z0-9_.-]+$ ]] || { echo 'Invalid Wi-Fi interface name.' >&2; exit 1; }
+if ! ip -4 route show default | grep -q "dev ${MANAGEMENT_INTERFACE:-enp1s0}"; then
+  echo 'Expected management connection through the configured Ethernet interface.' >&2
+  exit 1
+fi
+if docker container inspect "$container" >/dev/null 2>&1; then
+  echo "$container already exists; inspect the current session first." >&2
+  exit 1
+fi
+phy="phy$(iw dev "$interface" info | awk '/wiphy/ {print $2; exit}')"
+[[ "$phy" =~ ^phy[0-9]+$ ]]
+session="$base/logs/$(date -u +%Y%m%dT%H%M%SZ)"
+mkdir -p "$session"
+chmod 700 "$session"
+cleanup() {
+  for log in wifi web mqtt psk udp; do
+    docker cp "$container:/usr/bin/tuya-convert/scripts/smarthack-$log.log" \
+      "$session/" >/dev/null 2>&1 || true
+  done
+  docker rm -f "$container" >/dev/null 2>&1 || true
+  chown -R "${SUDO_UID:-0}:${SUDO_GID:-0}" "$session"
+}
+trap cleanup EXIT
+trap 'exit 130' INT TERM
+rfkill unblock wifi
+ip link set "$interface" down
+docker run -d --name "$container" --privileged --network none \
+  --hostname tuya-workbench --add-host tuya-workbench:127.0.0.1 \
+  -e TERM=xterm \
+  -v "$session:/usr/bin/tuya-convert/backups" \
+  -v "$base/tuya-convert/files:/usr/bin/tuya-convert/files:ro" \
+  tuya-convert:workbench sleep infinity >/dev/null
+docker exec "$container" sed -i "s/^WLAN=.*/WLAN=$interface/" config.txt
+pid=$(docker inspect -f '{{.State.Pid}}' "$container")
+iw phy "$phy" set netns "$pid"
+docker exec -it "$container" bash ./start_flash.sh
