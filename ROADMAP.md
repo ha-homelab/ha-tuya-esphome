@@ -41,7 +41,7 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the twelve successful Tuya firmware conversions.
+uninstalled candidate separate from the thirteen successful Tuya firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
@@ -156,11 +156,22 @@ handover preserved its relay and ten meter entity IDs, eight statistic metadata
 records, inspected history, solar rules, dashboard and manual overrides. The
 exact old Tasmota device was retired through its supported removal hook.
 
-Both new relays have exact filters saved in the existing Matter bridge. All
-prior endpoint identities and three fabrics were preserved, but the latest
-graph still had 20 devices: the SP20 was reachable and discovery of the twelfth
-converted plug remained pending during HA registry request timeouts.
-- [ ] Verify both new relay endpoints after the hub's HA registry refresh completes.
+Both new relays have exact filters saved in the existing Matter bridge. HA
+registry request timeouts initially delayed discovery; later readback confirmed
+21 devices with both new relay endpoints reachable. All prior endpoint
+identities and three fabrics were preserved without a service restart.
+
+A thirteenth conversion reused the established KMC 30137 profile. Its 440,480-byte
+ESPHome 2026.9.1 image installed in one final upload lasting 18,894 ms. The loader
+identity, one-megabyte flash layout and final encrypted API identity/version/build
+time were verified. Physical and restart checks were waived for the reused model
+profile. The router retained the reserved address and adopted the new role name;
+forward and reverse DNS passed, and the conversion AP was cleaned up.
+HA retired the exact old LocalTuya device, migrated two solar rules and the
+existing dashboard row, and verified no remaining old references. The operator
+kept solar semantics but removed the plug from unrelated media shortcuts.
+The new relay is reachable in the existing Matter bridge, now reporting 22
+devices, with prior endpoint identities and all three fabrics preserved.
 
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.

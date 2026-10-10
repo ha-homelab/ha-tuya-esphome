@@ -600,17 +600,55 @@ configuration locations, with the build-machine-only path removed and private
 secret references resolved. DNS adopted the normalized name while retaining
 the original reservation. Forward and reverse lookups passed.
 
-## Latest Matter additions: verification still open
+## Twelfth conversion and SP20: delayed Matter discovery recovered
 
 The twelfth converted plug and the separate metered SP20 received exact relay
 filters in one additive update. Its client timed out, but independent readback
 confirmed that both filters were saved. Prior endpoint identities and all three
-controller fabrics were unchanged. The latest graph had 20 devices, with the
+controller fabrics were unchanged. The initial graph had 20 devices, with the
 SP20 relay reachable; discovery of the other new relay remained pending.
 The hub logged repeated HA registry request timeouts. A supported HA refresh
-was requested once and a bridge refresh acknowledged. No factory reset or
-recommissioning was performed. Final two-relay and controller acceptance checks
-remain open; the working native HA entities do not establish Matter completion.
+was requested once and a bridge refresh acknowledged. Discovery later caught up:
+readback confirmed 21 devices and both relays reachable as OnOffPlugInUnits,
+with every prior endpoint identity and all three fabrics preserved. No service
+restart, factory reset or recommissioning was performed. Physical controller
+tests remain deferred.
+
+## Another KMC 30137: thirteenth Tuya conversion
+
+The second KMC 30137 reused the established GPIO14 relay, active-low GPIO1 button
+and inverted GPIO13 indicator profile. The operator selected a new equipment
+role and waived repeated physical and restart checks under the existing
+same-model policy. The relay retains the OFF-on-start policy.
+
+The stock identity and DHCP lease matched the intermediate loader's physical
+MAC and one-megabyte flash report. A 440,480-byte ESPHome 2026.9.1 image passed
+DOUT/40 MHz/header/checksum validation, then one final upload completed in
+18,894 ms. Encrypted API readback matched the expected MAC, friendly name,
+version and exact compilation timestamp. Factory firmware was not backed up.
+DNS kept the reserved address while adopting the new role name; both forward
+and reverse checks passed. The conversion container and session were removed,
+and both Wi-Fi radios returned to managed mode.
+
+The HA handover retired only the exact old LocalTuya device and updated two
+solar-control rules, customization and the existing dashboard row. The operator
+explicitly retained the solar rules' thresholds, conditions and actions on
+other loads. A scan of 2,455 active files found no old references. Other device
+configuration, source files and manual-override states were preserved, and the
+final YAML and private secret references were saved in both active ESPHome
+locations. No HA restart or manual load command was used.
+
+The role change also exposed five active shortcuts in an installed media-control
+helper. With operator approval, the old plug was removed from two mixed audio
+groups while their other target was retained; three lamp-only shortcuts were
+retired. Those controls were not blindly renamed to operate the new equipment.
+The installed command map and saved source were verified after the edit.
+
+An exact relay filter was then added to the existing Matter bridge. Following
+supported registry and bridge refreshes, readback showed 22 devices and the new
+relay reachable as an OnOffPlugInUnit. All prior endpoint identities and all
+three controller fabrics were preserved. No repeated controller load test was
+performed.
 
 ## Software provenance
 
@@ -635,8 +673,9 @@ so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
 The sixth and ninth use a previously verified WP5 profile, the tenth reuses
 the established YM-WS-1 profile, the eleventh reuses the corrected JH-G01U
-profile, and the twelfth reuses the YM-WS-1 profile. Repeated physical and restart
-checks were waived by the operator for those units.
+profile, the twelfth reuses the YM-WS-1 profile, and the thirteenth reuses the
+KMC 30137 profile. Repeated physical and restart checks were waived by the
+operator for those units.
 Their transfers and encrypted APIs were verified separately.
 Google Home and Alexa app control passed on the
 first two converted plugs. Later controller checks were deferred. Physical

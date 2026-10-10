@@ -32,13 +32,14 @@ packet was sent to the identified unit in AP mode; its connection dropped, but
 replacement-key authentication and conversion remain unverified. See the
 [AWP02L-N experimental procedure](docs/awp02l-n-psk02.md).
 
-Twelve plugs have now been converted: two XS-SSA01 units, four WP5 units, one
+Thirteen plugs have now been converted: two XS-SSA01 units, four WP5 units, two
 KMC 30137, three YM-WS-1 units and two JH-G01U units. Seven passed their own physical
 button/load test; the first two WP5 units also passed their independent
 red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
-For two WP5 units, the second and third YM-WS-1 units and the second JH-G01U, the operator
-chose the existing model profile and waived repeated physical and restart tests.
+For two WP5 units, the second and third YM-WS-1 units, the second JH-G01U and
+the second KMC 30137, the operator chose the existing model profile and waived
+repeated physical and restart tests.
 The first two converted plugs passed actual load switching from Google Home and
 Amazon Alexa through the existing Matter Hub.
 The operator deferred later controller checks. The original controller fabrics
@@ -81,7 +82,7 @@ entities.
 
 A separate TECKIN SP20 was migrated from Tasmota to ESPHome with its metering
 calibration and cumulative counters carried across. This maintenance migration
-is separate from the twelve Tuya conversions. For an already converted plug,
+is separate from the thirteen Tuya conversions. For an already converted plug,
 use the [metered SP20 procedure](docs/tasmota-sp20-migration.md).
 
 ## Project policy
