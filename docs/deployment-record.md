@@ -1137,7 +1137,7 @@ tags mean builds are not promised to be byte-for-byte identical.
 
 ## Still pending
 
-Fifteen converted plugs passed per-unit physical button/load checks. Six earlier units also have
+Sixteen converted plugs passed per-unit physical button/load checks. Six earlier units also have
 HA software-restart evidence; the seventh conversion's restart began already off,
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
@@ -1235,3 +1235,48 @@ uploaded, no device was restarted and no test relay command was sent. Running
 firmware friendly names may still reflect the earlier deployment; HA names
 are explicit registry overrides. Both saved sources validate with ESPHome
 2026.9.1, and secret values and the total source count are unchanged.
+
+
+### 2026-10-11 — Ping01: fourth AWP02L-N, ordinary conversion successful
+
+This sample completed ordinary Tuya-Convert, unlike the three earlier AWP02L-N
+PSK `02` failures. VTRUST-FLASH 1.5 reported an ESP8266 with 1 MiB flash, DOUT,
+40 MHz. A private 1 MiB post-loader flash backup was saved; this is not a pristine
+factory image. An input-only GPIO13 probe preceded the final relay firmware.
+
+The final ESPHome 2026.9.1 image is 440480 bytes. GPIO13 is the active-low pull-up
+button, GPIO15 the active-high relay, and GPIO2 the inverted relay indicator;
+GPIO0 is unused. Encrypted API and OTA, ON/OFF control, restart from ON to OFF,
+and the owner's physical button/load/indicator test passed. A controlled mains
+cycle remains untested. This raises the Tuya-conversion count to 22 and the
+per-unit physical button/load acceptance count to 16.
+
+HA uses Ping01. Its exact former LocalTuya device was removed, with all 31
+remaining configurations preserved. No active dashboard, automation or script
+reference used the old entity. The source is saved as `ping01.yaml` in both HA
+`/config/esphome` and Dashboard `/config`, using private per-device secrets.
+
+### 2026-10-11 — Ping02: existing Tasmota MJ_XS-SSA01 migration
+
+The existing Tasmota 6.7.1 device was matched by physical MAC and its stored
+MJ_XS-SSA01 template. A private 4096-byte settings backup was saved. The template
+maps GPIO13 to the button, GPIO15 to the relay and inverted GPIO12 to the LED.
+The raw 440480-byte ESPHome image fitted the conservative 446464-byte OTA space
+calculated from this Tasmota version's uploader; no minimal-image or gzip step
+was used. Direct upload succeeded. This is a separate Tasmota migration and is
+not counted as another Tuya conversion.
+
+Encrypted API, native ON/OFF control, restart from ON to OFF, HA control and the
+owner's physical button/load/indicator test passed. An earlier report of relay
+clicks without load power did not recur in this test; this does not establish a
+hardware diagnosis or repair. A controlled mains-cycle check remains pending.
+
+HA uses Ping02. Only the old device's three MQTT entities and three retained
+Home Assistant discovery topics were retired. No matching LocalTuya device
+existed. The shared MQTT integration and unrelated devices were preserved.
+Two obsolete customization entries were removed. Both sources are available as
+`ping01.yaml` and `ping02.yaml` in HA and Dashboard; the managed plug-source count is
+now 27 (32 device YAML files including five non-plug devices). Lovelace ends with Switch07, Ping01, Ping02.
+
+Migration references: [ESPHome Tasmota migration](https://esphome.io/guides/migrate_sonoff_tasmota/)
+and the [Tasmota 6.7.1 uploader source](https://github.com/arendst/Tasmota/blob/v6.7.1/sonoff/xdrv_01_webserver.ino).

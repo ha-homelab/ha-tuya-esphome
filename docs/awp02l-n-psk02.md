@@ -65,6 +65,15 @@ and private complete backup would precede any erase or write. See the official
 [ESPHome connection guide](https://esphome.io/guides/physical_device_connection/)
 and [Espressif boot-mode guide](https://docs.espressif.com/projects/esptool/en/latest/esp8266/advanced-topics/boot-mode-selection.html).
 
+## Separate ordinary-conversion success
+
+On 2026-10-11 a fourth physical AWP02L-N reached the ordinary VTRUST loader
+and accepted ESPHome without an experimental authentication packet. Its
+GPIO13 button, GPIO15 relay and inverted GPIO2 LED passed an actual-load test.
+The [hardware package](../examples/awp02l-n-gpio15.yaml) records that sample.
+This does not change the three failed samples above or validate a PSK `02`
+bypass; an enclosure model alone does not identify the stock firmware.
+
 ## 1. Identify the failure before choosing this path
 
 1. Check the ordinary session's private Wi-Fi and PSK logs. A stock-firmware DHCP

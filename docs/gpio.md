@@ -278,3 +278,17 @@ The uncalibrated HLW8012 uses inverted SEL GPIO13, CF GPIO5 and CF1 GPIO4.
 GPIO14 follows the reference's inverted status-indicator assignment but its
 visual behavior remains unverified. UART logging must stay disabled. See
 [the complete acceptance record](supernight-cv01.md).
+
+## AWP02L-N: ordinary-conversion sample
+
+A fourth AWP02L-N reached the VTRUST loader by the ordinary workflow. An
+input-only probe recorded GPIO13 active-low button presses. The final
+[package](../examples/awp02l-n-gpio15.yaml) uses GPIO15 active-high relay and
+GPIO2 active-low indicator. The owner confirmed load, indicator and relay
+operation on both button presses. GPIO0 is unassigned. `ALWAYS_OFF` was checked
+with a software restart from ON; a controlled mains-cycle test is still pending.
+
+A separate former Tasmota 6.7.1 MJ_XS-SSA01 uses the existing
+[GPIO15 package](../examples/xs-ssa01-gpio15.yaml), with GPIO12 indicator.
+Its stored Tasmota template supplied the initial map; native events and the
+owner’s load/button/indicator check subsequently confirmed it.

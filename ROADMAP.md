@@ -41,7 +41,7 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the twenty-one successful Tuya firmware conversions.
+uninstalled candidate separate from the twenty-two successful Tuya firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
@@ -335,6 +335,19 @@ check. This recovery does not add another conversion to the device count.
 - [x] Preserve existing source files, secret values and installed firmware.
 - [x] Align the deployed Dashboard to ESPHome 2026.9.1 and compile limits to two CPUs; all twenty-five plug configurations pass live validation.
 
-All twenty-one converted plugs now have individual deployed source files.
+At the earlier source audit, all twenty-one converted plugs had individual
+deployed source files.
 See the [source audit](docs/deployment-record.md#deployed-source-audit-and-restoration)
 for scope and the distinction between saved source and physical acceptance.
+
+### 2026-10-11 — Ping outlet additions
+
+- [x] Convert a fourth AWP02L-N with ordinary Tuya-Convert; verify GPIO13 button,
+      GPIO15 relay, inverted GPIO2 LED, actual load and restart-to-OFF. This is
+      Tuya conversion 22 and physical button/load acceptance 16.
+- [x] Migrate one existing Tasmota 6.7.1 MJ_XS-SSA01 to ESPHome 2026.9.1;
+      verify GPIO13/GPIO15/inverted GPIO12, actual load and restart-to-OFF.
+      This is a separate Tasmota migration, not a Tuya conversion.
+- [x] Save both device sources in HA and the ESPHome Dashboard, retire exact old
+      integration records and add the two new controls after Switch07.
+- [ ] Controlled ON-to-OFF mains-cycle checks for these two additions.

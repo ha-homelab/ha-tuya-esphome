@@ -41,10 +41,14 @@ PSK `02` handshakes before any firmware transfer. It received no experimental
 payload. The session was cleaned up and existing HA/client bindings retained;
 the prepared ESPHome image remains uninstalled.
 
-Twenty-one plugs have now received ESPHome relay firmware: two XS-SSA01 units,
+A fourth AWP02L-N succeeded through ordinary Tuya-Convert and passed its physical
+button/load/indicator test. Its [GPIO13/GPIO15/GPIO2 profile](examples/awp02l-n-gpio15.yaml)
+does not establish a workaround for the three earlier PSK `02` failures.
+
+Twenty-two Tuya plugs have now received ESPHome relay firmware: two XS-SSA01 units,
 five WP5 units, two KMC 30137, three YM-WS-1 units, two JH-G01U units, two
-WP3 units, one GREFIC CZ-U201, three KMC 30608 and one Supernight CV01. Fifteen passed their own physical
-button/load test; the first two WP5 units also passed their independent
+WP3 units, one GREFIC CZ-U201, three KMC 30608, one Supernight CV01 and one
+AWP02L-N. Sixteen passed their own physical button/load test; the first two WP5 units also passed their independent
 red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
 For two WP5 units, the second and third YM-WS-1 units, the second JH-G01U and
@@ -128,7 +132,7 @@ entities.
 
 A separate TECKIN SP20 was migrated from Tasmota to ESPHome with its metering
 calibration and cumulative counters carried across. This maintenance migration
-is separate from the twenty-one Tuya firmware conversions. For an already converted plug,
+is separate from the twenty-two Tuya firmware conversions. For an already converted plug,
 use the [metered SP20 procedure](docs/tasmota-sp20-migration.md).
 
 ## Project policy
