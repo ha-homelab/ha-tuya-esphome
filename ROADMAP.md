@@ -41,7 +41,7 @@ hardware check.
 An AWP02L-N later joined the conversion AP but was blocked by patched Tuya PSK
 identity version `02`. No loader or firmware write occurred. Its migration was
 deferred, existing HA/client bindings retained, and the AP cleaned up. Keep its
-uninstalled candidate separate from the thirteen successful Tuya firmware conversions.
+uninstalled candidate separate from the twenty-one successful Tuya firmware conversions.
 
 - [ ] Evaluate the experimental ESP8266 CloudCutter port against the AWP02L-N's
       actual stock firmware. A research implementation exists; this unit's
@@ -50,6 +50,19 @@ uninstalled candidate separate from the thirteen successful Tuya firmware conver
       conversion are unverified. A later authentication-only AP ran for 120
       seconds without the target joining; this did not test the replacement key.
       See [the procedure](docs/awp02l-n-psk02.md).
+
+A second AWP02L-N reached the same ordinary PSK `02` failure. Its separate
+single-packet AP trial stopped when the target disappeared before Wi-Fi
+provisioning. Recover and re-identify that AP before continuing; preserve the
+attempt marker and keep its existing HA/client references until a working
+replacement is verified. It does not increase the conversion count.
+
+A third AWP02L-N failed thirteen ordinary PSK `02` handshakes, without reaching
+the loader or receiving firmware. The isolated session was stopped and its
+radio returned to the host. No experimental payload was sent: the ESP8266
+branch still uses an unmatched stock-firmware layout. A serial readout would
+first require inspection of the unplugged board and identification of its
+module, UART pads and boot strap. Its existing HA/client references remain.
 
 The second unit, marked YM-WS-1, is blocked at pairing before any flash write.
 Rapid-blink mode could not be established; its GPIO variant is unverified.
@@ -173,6 +186,44 @@ kept solar semantics but removed the plug from unrelated media shortcuts.
 The new relay is reachable in the existing Matter bridge, now reporting 22
 devices, with prior endpoint identities and all three fabrics preserved.
 
+- [x] Complete [TanTan WP3 identification and switch migration](docs/wp3-migration.md).
+      The matched loader reports 1 MiB flash, and the input-only image is
+      installed with encrypted API identity/build verification. A controlled
+      press identified GPIO13 as the button. The final GPIO15-relay/GPIO2-indicator
+      profile passed encrypted OTA and API verification. The operator confirmed
+      relay clicks, actual load switching and the visible indicator in both
+      directions. After an automation reload replaced the stale light target,
+      a natural motion event switched the new relay on with matching event
+      contexts; the operator confirmed it worked. The final HA audit found no
+      retired-entity references in 2,456 active files, with unrelated source and
+      LocalTuya devices unchanged. Source was saved in both active ESPHome
+      locations, and HA required no restart. All six persisted client files and
+      the running native client's canonical switch were verified after migration.
+      API on/off control and reported OFF after software restart from ON passed;
+      physical contact state during boot and boot transients were not measured.
+      Two later physical button presses produced reported relay states OFF, ON,
+      OFF, matching that load/indicator confirmation; the conversion AP and
+      dedicated workbench session are closed.
+      HA found the relay available and OFF after the operator relocated and
+      reconnected it. A controlled ON-to-OFF mains-cycle test and boot-transient
+      measurements remain open.
+- [x] Complete the latest WP5 handover. This fifteenth
+      firmware conversion uses GPIO15 relay, GPIO13 button and an internal
+      inverted GPIO2 indicator, without a separate GPIO0 red-light entity.
+      Its encrypted final upload, identity/build readback, API on/off control
+      and software restart from ON to reported OFF passed. The operator
+      confirmed the relay, connected lamp and indicator with two button
+      presses, matching captured OFF, ON, OFF states. All six persisted client
+      configurations and the native switch display were verified, preserving
+      the prior control's placement and icon. HA reload, direct service-control
+      and exact old-device retirement passed; 2,457 active files had no retired
+      references. Unrelated sources, devices, the prior WP3 and manual overrides
+      were unchanged. Source was saved in both active ESPHome locations without
+      an HA restart. The unchanged sun-elevation condition blocked a natural motion
+      acceptance test; it was not bypassed.
+      HA found the switch available and OFF after the operator returned it to
+      the installed position. A controlled mains-cycle test and boot-transient
+      measurement were not performed.
 - [ ] Convert sequentially and record local unit IDs/results.
 - [ ] Retire incompatible/unresponsive units under the chosen policy.
 - [ ] Validate each apparent model variant before reusing a GPIO profile.
@@ -181,3 +232,103 @@ devices, with prior endpoint identities and all three fabrics preserved.
 No dates or successful conversion counts are invented. Publish only anonymized
 results and reusable configuration; maintain the per-unit operational inventory
 privately.
+
+## GREFIC CZ-U201: sixteenth firmware conversion
+
+- [x] Ordinary Tuya-Convert handshake, live ESP8266/1 MiB identification.
+- [x] Retain a private flash image and recover the two-channel hardware JSON.
+- [x] Install a GPIO-neutral image, then encrypted OTA of the two-relay image.
+- [x] Verify independent native API states for both channels.
+- [x] Confirm GPIO14/channel 2 controls the left outlet with an actual lamp.
+- [x] Confirm the right outlet and shared button with an actual lamp.
+- [x] Confirm both outputs return OFF after a controlled mains cycle.
+- [x] Add and verify the two HA switch entities.
+
+See [the unit's evidence and acceptance record](docs/grefic-cz-u201.md).
+
+## KMC 30608: seventeenth firmware conversion
+
+- [x] Match the three LocalTuya channels to one physical device.
+- [x] Complete ordinary Tuya-Convert with stock firmware 1.0.5.
+- [x] Verify ESP8266/1 MiB and retain a private post-loader flash image.
+- [x] Install a GPIO-neutral image and verify the GPIO16 button with an input probe.
+- [x] Install three-relay ESPHome firmware and check independent native states.
+- [x] Confirm all three numbered outlets with a lamp and test the common button.
+- [x] Confirm all outputs return OFF after software restart and mains cycling.
+- [x] Preserve the three existing HA entity IDs while replacing LocalTuya with ESPHome.
+- [x] Enable all four native HLW8012 measurements and verify HA adoption and load response.
+- [ ] Calibrate metering against a reference; deferred by the owner.
+- [ ] Verify metering coverage of outlets 1, 2 and the always-on outlet.
+- [ ] Independently confirm the GPIO1 indicator's visual behavior.
+
+See [the conversion and acceptance record](docs/kmc-30608.md).
+
+## Second KMC 30608: eighteenth firmware conversion
+
+- [x] Convert stock firmware 1.0.5 and retain a private post-loader image.
+- [x] Confirm each numbered outlet using a fan and test the common button.
+- [x] Verify that GPIO1 lights only the common indicator; stock per-outlet LED fields are disabled.
+- [x] Recover the stock datapoint-to-GPIO order for the HA handover.
+- [x] Complete the controlled mains-cycle check and migrate the existing HA IDs.
+- [x] Correct the first KMC's role mapping while the owner confirms its normal loads remain disconnected.
+- [ ] Explain the second sample's separate outlet indicators; further diagnosis deferred by the owner. The first sample's outlet 3 indicator works with the same profile.
+
+## Supernight CV01: nineteenth firmware conversion
+
+- [x] Convert stock firmware 1.0.4 and retain a private post-loader image.
+- [x] Probe both buttons; use the measured high-on-press ADC polarity.
+- [x] Verify both outlets, independent buttons, software restart and mains cycling.
+- [x] Adopt two HA switches and four uncalibrated measurement sensors.
+- [x] Persist and verify source/private credentials in HA and ESPHome Dashboard.
+- [ ] Calibrate metering and verify left-outlet measurement coverage.
+- [ ] Physically verify indicator and photosensor night-light behavior.
+
+See [the Supernight evidence](docs/supernight-cv01.md).
+
+## Third KMC 30608: twentieth firmware conversion
+
+- [x] Convert the isolated stock 1.0.6 device and retain a private post-loader flash read.
+- [x] Verify 1 MiB DOUT at 40 MHz and use a matching image header.
+- [x] Confirm a physical GPIO16 button press and release with an input-only probe.
+- [x] Match the stock three-channel initializer to the second sample.
+- [x] Install the three-relay/metering image and verify independent native controls.
+- [x] Verify software restart from all ON returns all OFF.
+- [x] Confirm physical outlet 1 powers the test load.
+- [ ] Verify physical outlets 2 and 3, common-button load control and a mains cycle; deferred by the owner.
+- [x] Verify HA adoption and source persistence.
+- [ ] Exercise HA service relay transitions; deferred by the owner.
+- [ ] Calibrate measurements and determine per-outlet/always-on metering coverage.
+
+## Second WP3: twenty-first firmware conversion
+
+- [x] Match the former LocalTuya plug to the intermediate loader and retain a private post-loader backup.
+- [x] Identify GPIO13 with a short physical press using an input-only GPIO4/GPIO13 probe.
+- [x] Install the GPIO15 relay and inverted GPIO2 indicator profile through encrypted OTA.
+- [x] Verify native relay control and software restart from ON to OFF.
+- [x] Obtain owner confirmation of button, lamp and indicator operation.
+- [x] Adopt ESPHome under the existing numbered switch ID and persist its source and credentials.
+- [ ] Verify controlled mains-cycle behavior and boot transients separately.
+
+## Reused YM-WS-1 profile: deferred follow-up
+
+- [x] Confirm encrypted API communication and record the owner's dim-indicator/no-click report.
+- [x] Observe no physical-button transition during the requested short press.
+- [x] Compile an input-only GPIO1/GPIO13 probe without installing it.
+- [ ] Confirm the enclosure marking and unloaded power-cycle behavior; the owner deferred this check.
+- [ ] Identify this unit's actual button/relay/indicator mapping and verify physical load control.
+
+No firmware, relay command or HA configuration change was made during this
+follow-up. GPIO mismatch is a hypothesis, not a confirmed cause. The original
+installation remains counted as a firmware conversion, not physical acceptance.
+
+## Deployed configuration completeness
+
+- [x] Audit both active source directories against HA and the private unit inventory.
+- [x] Restore eleven missing per-unit YAMLs and their existing credentials from the private workbench.
+- [x] Validate the prepared configurations and verify identical source readback in both locations.
+- [x] Preserve existing source files, secret values and installed firmware.
+- [ ] Align the deployed Dashboard version and CPU-dependent compile limits; live validation currently passes only two of twenty-five plug configurations.
+
+All twenty-one converted plugs now have individual deployed source files.
+See the [source audit](docs/deployment-record.md#deployed-source-audit-and-restoration)
+for scope and the distinction between saved source and physical acceptance.

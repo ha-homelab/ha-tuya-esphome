@@ -117,6 +117,15 @@ only the relay is exported through Matter. The matching package is
 package with this hardware package after identifying a matching unit; do not
 include both because they would assign GPIO13 twice.
 
+A later WP5 installation intentionally omitted the independent GPIO0 red-light
+entity and left GPIO0 unassigned. Its own input probe identified GPIO13, then
+the operator confirmed physical button, relay, connected lamp and inverted
+GPIO2 indicator behavior in both directions. The installed relay-only profile
+uses the same GPIO15 relay with `ALWAYS_OFF` and the internal GPIO2 indicator;
+omitting the extra red channel does not change those pins. API on/off and
+software restart from ON to reported OFF passed. No mains-cycle or
+boot-transient acceptance is claimed for that check.
+
 ## KMC 30137: separate GPIO1-button variant
 
 The operator identified the manufacturer as KMC and the model as 30137. The
@@ -160,6 +169,23 @@ GPIO-neutral base only after matching the unit. It has a debounced local button,
 an `ALWAYS_OFF` relay, an internal indicator following relay commands, and a
 diagnostic restart button. Do not combine it with another GPIO package.
 
+## TanTan WP3: observed GPIO15-relay variant
+
+A TanTan WP3 selected from an existing LocalTuya light role initially ran an
+input-only image with GPIO4 and GPIO13 button candidates. Its encrypted API identity and
+build timestamp were verified. One controlled press produced GPIO13
+press/release events while GPIO4 stayed unchanged. This supports the older
+documented WP3 candidate. Its [GPIO15 package](../examples/wp3-gpio15.yaml)
+is installed with encrypted OTA/API verification. Two final-profile button
+presses produced matching reported relay transitions OFF, ON, OFF, and the
+operator confirmed relay clicks, actual light-load switching and the inverted
+GPIO2 indicator following those actions. GPIO0 remains unassigned. Software
+restart from ON returned reported state OFF, and HA found it available and OFF
+after relocation. No controlled ON-to-OFF mains-cycle test or boot-transient
+measurement was performed. Follow the
+[WP3 identification and switch-migration notes](wp3-migration.md). Do not reuse
+another model's relay package merely because its enclosure appears similar.
+
 ## Verification sequence
 
 1. Confirm stable Wi-Fi, API and OTA first.
@@ -185,3 +211,57 @@ previously verified profile and skip repeated button, load, indicator and restar
 tests. Record that as an operator waiver for the individual unit, not a passed
 physical test. Firmware identity, transfer completion and API availability can
 still be recorded separately; they do not establish that unit's physical output.
+
+## GREFIC CZ-U201: two independently switched outlets
+
+One ESP8266/1 MiB sample's original application contains a two-channel hardware
+JSON. Physical lamp tests confirmed channel 1/GPIO15 on the right and channel
+2/GPIO14 on the left, both active high. Its shared active-low GPIO0 button
+switches both outputs; the active-low GPIO13 LED is configured for network status.
+Both outlets returned OFF after a controlled mains cycle from both ON.
+
+The [dual-outlet package](../examples/grefic-cz-u201-dual.yaml) belongs with the
+GPIO-neutral base, not with another model's hardware package. Its status LED is
+normally dark when healthy; it is not a load-power indicator. Metering pins from
+the original JSON are left unconfigured because metering has not been tested.
+See [the complete evidence and limitations](grefic-cz-u201.md).
+
+## KMC 30608: three independently switched outlets
+
+One ESP8266/1 MiB Smart Tap running stock firmware 1.0.5 accepted ordinary
+Tuya-Convert. An input-only probe confirmed active-low GPIO16 button events.
+Separate physical lamp tests matched numbered outlets 1, 2 and 3 to active-high
+GPIO15, GPIO13 and GPIO14 respectively. The common button turns all outputs OFF
+if any is ON, or all ON if all are OFF. All three use `ALWAYS_OFF`; software
+restart and a controlled mains cycle from all ON both returned all OFF.
+
+Use the [three-outlet package](../examples/kmc-30608-three-outlet.yaml) with the
+GPIO-neutral base. GPIO1 is reserved for the inverted network-status indicator,
+so UART logging is disabled. Visual indicator behavior remains unverified.
+The optional [metering package](../examples/kmc-30608-metering.yaml) uses HLW8012
+SEL on GPIO12, CF on GPIO4 and CF1 on GPIO5. Voltage/current/power/energy readings
+and a load response on outlet 3 were observed; calibration and coverage of the
+other outlets remain unverified. See [the detailed evidence](kmc-30608.md); do not confuse
+this hardware with the separate single-relay KMC 30137 variant.
+
+The second KMC sample confirmed GPIO1 lights the common indicator only. Its
+stock table disables separate per-channel LED outputs. It also associates
+Tuya datapoints 1/2/3 with physical outlets 3/2/1; do not infer migration mapping
+from channel numbers alone. The first unit's role association was corrected
+after the owner confirmed its normal loads remained disconnected. Its outlet 3
+indicator works with the same profile; the second unit's indicator diagnosis
+was deferred by the owner.
+
+## Supernight CV01: two outlets and an analog button
+
+The tested sample uses GPIO3 for the left relay, GPIO12 for the right relay,
+and active-low GPIO1 for the left button. Its right button is on A0: raw readings
+are approximately 7 released and 1024 pressed, opposite to the published
+reference. The [hardware package](../examples/supernight-cv01.yaml) uses the
+observed polarity, debounce, and startup arming delay. Both outlets and button
+behavior passed physical tests; restart and mains cycling returned both OFF.
+
+The uncalibrated HLW8012 uses inverted SEL GPIO13, CF GPIO5 and CF1 GPIO4.
+GPIO14 follows the reference's inverted status-indicator assignment but its
+visual behavior remains unverified. UART logging must stay disabled. See
+[the complete acceptance record](supernight-cv01.md).

@@ -561,6 +561,27 @@ existing appliance. One switch row was added to that entities card; API and
 persisted-storage readback confirmed that all prior rows and manual overrides
 were preserved. This later UI change is separate from the migration baseline.
 
+### Twelfth conversion follow-up: diagnosis deferred
+
+On 2026-10-10, the owner reported a dim indicator and no physical response from
+this unit. The encrypted API still reported the expected device and installed
+build, with fresh signal readings. A requested short button press produced
+neither an observed native button transition nor an owner-observed relay click
+or indicator change. API availability does not validate this unit's reused
+GPIO13-button/GPIO15-relay/GPIO12-indicator mapping.
+
+The documented alternate YM-WS-1 map uses a GPIO1 button, GPIO14 relay and GPIO13
+indicator. That makes a profile mismatch plausible, but the enclosure marking
+was not reconfirmed and a hardware fault has not been excluded. An input-only
+GPIO1/GPIO13 probe compiled successfully and passed the image checksum check;
+it was not uploaded. No relay command or HA configuration change was made
+during this investigation.
+
+On 2026-10-11, the owner deferred the requested unloaded power cycle and model
+check. Diagnosis stopped at that point. The existing firmware remains installed,
+and the unit remains outside the per-unit physical acceptance count. Resume
+from physical identification and an unloaded check, not from an assumed repair.
+
 ## Existing Tasmota SP20: metered ESPHome maintenance
 
 A TECKIN SP20 already running Tasmota 13.4.0 was handled separately from the
@@ -650,6 +671,412 @@ relay reachable as an OnOffPlugInUnit. All prior endpoint identities and all
 three controller fabrics were preserved. No repeated controller load test was
 performed.
 
+## Second AWP02L-N: handshake blocked, AP recovery pending
+
+A separate AWP02L-N associated with the ordinary conversion AP but failed six
+PSK identity `02` handshakes with bad-record-MAC errors. No intermediate loader
+or replacement firmware was reached. A 420,800-byte GPIO-neutral ESPHome image
+was built and retained privately; it was not installed. Its intended role uses
+an ordinary latching power switch, without pulse or inching behavior.
+
+After the ordinary session was cleaned up, the operator placed this device in
+slow-blinking AP mode. The isolated experimental session matched its BSSID and
+gateway neighbor to the private target. All 117 archived source files matched
+the pinned ESP8266 branch, and a dry run built one 256-byte packet without
+transmission. One recorded packet was then sent. The first connection check
+passed, but the subsequent authentication checkpoint could no longer reach
+the AP; a rescan returned no matching target. Normal Wi-Fi provisioning never
+started, and neither replacement-key authentication nor conversion is verified.
+
+Recovery requires bringing this same physical device's AP back, keeping its
+attempt marker, and validating identity again before provisioning. No HA,
+desktop or Matter migration was applied. The successful Tuya conversion count
+remained thirteen at that checkpoint; this unit is distinct from the earlier
+AWP02L-N experiment.
+
+## TanTan WP3: fourteenth firmware conversion
+
+A TanTan WP3 previously exposed as a LocalTuya light reached the intermediate
+loader. Its physical identity matched the private inventory, and the loader
+reported ESP8266 bootloader version 4, normal boot and 1 MiB flash. A stock
+backup was retained privately as an exception to the earlier batch policy.
+
+The first 424,448-byte ESPHome 2026.9.1 image assigned only GPIO4 and GPIO13
+button-probe inputs. It installed in 8,000 ms, and encrypted API readback
+matched the intended identity, version and compilation timestamp. One
+operator-controlled short button press produced GPIO13 press/release events
+while GPIO4 stayed unchanged. That supports the older WP3 template as a
+candidate, rather than the variant with GPIO4 button and GPIO14 relay.
+
+The 440,480-byte final candidate uses a GPIO15 relay, active-low GPIO13 button
+and internal inverted GPIO2 indicator; GPIO0 remains unassigned. Its DOUT,
+40 MHz, 1 MiB image and checksum passed validation. Encrypted OTA transferred
+it in 4.32 seconds, with a 4.34-second complete update. The native API matched
+the expected physical identity, ESPHome version and compilation time, exposed
+one relay and the physical button, and no longer exposed the probe entities.
+API on/off state checks passed. A software restart requested from ON returned
+the same build with reported relay state OFF. Physical contact state and boot
+transients were not measured.
+
+After that restart, two physical button presses produced button events and
+matching reported relay transitions OFF, ON, OFF through the encrypted API.
+The operator confirmed relay clicks and actual light-load and indicator
+switching in both directions during those presses. This establishes the
+observed GPIO15 relay, GPIO13 button and inverted GPIO2 indicator mapping for
+this unit. The conversion container, AP and dedicated workbench session were
+closed afterward.
+
+The [WP3 profile](../examples/wp3-gpio15.yaml) also passed an isolated
+configuration validation and build using nonproduction credentials. That
+440,528-byte test image passed ESP8266 header, checksum and 512 KiB size checks;
+it was not installed. The installed firmware and test build are separate
+artifacts. The operator then moved the plug to its installed position, with
+mains power disconnected and reconnected. Subsequent HA readback found the
+ESPHome relay available and OFF. Availability-history gaps are not assigned
+solely to that power interruption because HA migration and reloads overlapped.
+Boot transients and an on-to-off physical power-cycle test were not measured.
+
+All six persisted client configurations match their reviewed migration edits.
+The running native desktop client shows the canonical switch available and
+OFF with the intended label and placement, retaining the other related control,
+unrelated plugins and authentication. HA, HA MQTT and gateway connections were
+live, and no actuator commands were sent during this client verification.
+During the handover, motion initially did not switch on the relocated load:
+the loaded automation still targeted the old light through `light.turn_on`.
+After reloading the automation and removing the old entity, a natural sensor
+OFF-to-ON event triggered that automation and the new switch changed OFF to ON
+about 0.13 seconds later. Matching sensor-parent and automation contexts tied
+the events together. The operator confirmed that motion control was working.
+No synthetic trigger was used; the sensor and manual-override helper were
+unchanged. The final audit scanned 2,456 active files with no retired-entity
+references. Migrated files matched the intended content; unrelated source
+files and LocalTuya device configurations were unchanged, and the old identity
+was absent. Automations, scripts, Lovelace and the floorplan were updated.
+The existing mixed group retained its other two members alongside
+the new switch. Final firmware source and private secret references were saved
+in both active ESPHome locations. HA remained running with no restart.
+The [WP3 migration procedure](wp3-migration.md) distinguishes source, runtime
+and physical checks. No Matter or controller result is claimed for this unit.
+
+## Another WP5: fifteenth firmware conversion
+
+A further WP5 selected from an existing LocalTuya light role reached the
+intermediate loader. Its identity matched the intended private device record;
+VTRUST-FLASH 1.5 reported ESP8266 bootloader version 4, normal boot, DOUT at
+40 MHz and 1,024 KiB flash. A 1 MiB stock backup was retained privately.
+
+The 424,432-byte input-only ESPHome 2026.9.1 image passed header, checksum and
+staged-digest checks, then installed in 12,787 ms. Encrypted API readback matched
+the intended identity, version and exact compilation timestamp. One
+operator-confirmed short press produced GPIO13 press/release events while GPIO4
+stayed inactive, identifying the button input. The probe assigned no outputs.
+
+The 440,464-byte final image passed DOUT/40 MHz/1 MiB and checksum checks, then
+transferred through encrypted ESPHome OTA in 9.78 seconds, with a 9.85-second
+complete update. Encrypted API readback matched the expected physical identity,
+version and compilation timestamp. It exposed one relay switch without the
+temporary probes. Native API on/off control passed, and a software restart
+requested from ON returned the same build with the relay reporting OFF.
+The operator then connected a lamp and pressed the button twice, confirming
+the relay, actual lamp and indicator worked. Matching button events and relay
+states OFF, ON, OFF were captured. Their batched recording timestamps are not
+used as latency measurements. This unit passed its own physical acceptance;
+a controlled mains-cycle test and boot-transient measurements were not performed.
+The operator later confirmed returning it to the installed position. A subsequent
+HA read found the new switch available and OFF, with the previous migrated plug
+still available. This relocation is not recorded as a controlled ON-to-OFF
+power-cycle test.
+
+The installed profile omits the independent GPIO0 red-indicator channel;
+the operator requested the relay switch without that extra light entity. The
+existing public [WP5 example](../examples/wp5-gpio15.yaml), which includes the
+separately controlled red channel for earlier units, remains unchanged. The
+existing motion automation's sun-elevation condition is retained, even when
+it currently prevents motion control.
+
+The desktop handover is complete. All six persisted configurations use the new
+canonical switch and label, with the old identifier and alias absent. The
+running native client shows that switch available and OFF at its existing
+position with its icon preserved. The previously migrated plug is still
+available. Gateway, HA and HA MQTT connections are live; no actuator commands
+were sent during the client update. HA migration and reload verification are
+complete across automations, scripts, the group and Lovelace. A direct HA
+service-control cycle passed and restored the original
+relay state. The exact old LocalTuya device was retired with unrelated
+identities preserved; the old entity and its alias are absent. The existing
+mixed group contains both newly migrated relay switches and its other light.
+
+The loaded motion configuration was verified, but the unchanged daylight
+condition prevented natural motion from turning the relay on at that time.
+This is not recorded as an end-to-end natural motion acceptance test, and no
+guard was bypassed to obtain one. The configured power estimate, off timeout,
+sun and manual-override conditions were retained, and the loaded off action
+handles the replacement switch correctly.
+
+The final audit scanned 2,457 active files and found no retired-entity
+references. Migrated files matched their intended content; unrelated sources,
+LocalTuya devices, the preceding WP3 and manual-override helpers were unchanged.
+Final ESPHome source and private secret references were saved in both active
+configuration locations. HA remained running and required no restart.
+
+## GREFIC CZ-U201: sixteenth firmware conversion
+
+An owner-reported two-outlet GREFIC CZ-U201 accepted the ordinary handshake.
+The live loader identified ESP8266 with 1 MiB flash. The retained private flash
+image includes the original application's two-channel hardware JSON. A neutral
+image followed by encrypted OTA installed ESPHome 2026.9.1. Independent native
+API commands passed all four combinations and returned both outputs to OFF.
+The left outlet is physically confirmed as channel 2/GPIO14 and the right outlet
+as channel 1/GPIO15. A shared-button cycle passed with a real lamp. Starting
+with both relays ON, a controlled mains cycle returned both to reported OFF,
+and the connected right lamp stayed off. HA adopted separate left and right
+switches. Each passed an ON/OFF service cycle with a matching command context
+and the other outlet unchanged. Both ended OFF. Final source and secret
+references were persisted and independently verified in HA and ESPHome Dashboard;
+unrelated entities and secrets were preserved without restarting HA.
+See [the detailed record](grefic-cz-u201.md). Ten converted units have now passed
+their own physical button/load checks.
+
+A subsequent software handover assigned the two outputs to separate load roles
+previously served by LocalTuya and Matter plugs, retaining both original devices
+and their names. HA automations, Lovelace bindings and the native desktop client
+now use the replacement outputs. Configuration and availability checks passed
+with both outputs OFF. The owner subsequently confirmed relocation and both
+load connections; encrypted API and HA availability passed at the installation
+location. The owner confirmed that an independent OFF-to-ON command illuminated
+the installed floodlight while the other output remained OFF, then confirmed
+that the floodlight went dark after an OFF command and the separately powered
+appliance worked from its own remote after its output was turned ON. All three
+transitions had matching HA command contexts and left the unaddressed output
+unchanged. Both intended loads passed their installation checks. A final
+owner-requested OFF command to appliance power left both outputs OFF, with a
+matching HA command context. No firmware or shared-button behavior changed.
+
+The owner later requested deletion of the retained LocalTuya appliance-power
+plug, reporting that it was reset and not currently needed. Its device and
+entity were removed through HA's supported API. The persisted LocalTuya
+configuration changed from 37 devices to 36, with every other device's settings
+unchanged. The replacement output remained available and OFF; the old Matter
+plug was retained.
+
+## Third AWP02L-N: stock OTA blocked before firmware transfer
+
+The owner confirmed rapid pairing mode, the phone on the conversion AP and an
+unloaded outlet. The plug associated with the MAC corresponding to its existing
+LocalTuya identity. Thirteen TLS attempts presented PSK identity version `02`
+and failed with `DECRYPTION_FAILED_OR_BAD_RECORD_MAC`. The intermediate loader
+never appeared and the HTTP log recorded no firmware image transfer.
+
+A fresh GPIO-neutral ESPHome 2026.9.1 candidate compiled successfully in 28.82
+seconds with separate private credentials. Its 420,784-byte ESP8266 image passed
+checksum and 1 MB DOUT/40 MHz header checks. It was staged but not installed;
+its flash layout is therefore not a hardware confirmation for this unit.
+The ordinary session was stopped, its container removed and its Wi-Fi radio
+returned to host managed mode. No experimental packet was sent.
+
+The ESP8266 CloudCutter branch was rechecked and still matches the previously
+examined revision. Its stock-image addresses are not established for this
+unit, so it provides no justified automatic next step. The known model and
+Espressif network identity support investigating an ESP8266 serial path, but
+the actual module and boot/UART pads still need inspection of the unplugged
+board. Existing HA, client, automation and Matter references were not changed.
+HA still displayed its earlier state while the original local TCP endpoint was
+unreachable; no present relay state or restored home-network connection is
+claimed. The count of successful conversions remains sixteen.
+
+## KMC 30608: seventeenth firmware conversion
+
+A three-relay Smart Tap running stock firmware 1.0.5 accepted the ordinary
+Tuya-Convert path. The loader identity matched HA, with ESP8266 and 1 MiB flash.
+A private full-flash read was retained after loader installation. GPIO-neutral
+ESPHome and an input-only probe established encrypted API access and GPIO16
+button behavior. The final 429,312-byte ESPHome 2026.9.1 image uses relay
+GPIO15/13/14 and starts all outputs OFF.
+
+Native control and a software restart passed. The owner verified each numbered
+outlet with a lamp, the common button's OFF/ON behavior, and a five-second mains
+cycle from all outputs ON. The same build returned with all outputs OFF. The
+existing three HA entity IDs now address the corresponding ESPHome switches;
+only this device was retired from LocalTuya. Final source was saved in HA and
+the ESPHome Dashboard. Visual indicator acceptance remains separate.
+See [the detailed record](kmc-30608.md).
+
+All three channels also passed separate HA ON/OFF service checks with matching
+state contexts and the other channels OFF. The final state is all OFF. Other
+LocalTuya device configurations are unchanged. Two obsolete third-channel alias
+references in one notification automation were corrected; configuration
+validation passed and automations were reloaded without restarting HA.
+
+A subsequent 432,560-byte ESPHome 2026.9.1 update added all four native HLW8012
+fields: voltage, current, active power and energy since boot. The published
+GPIO12/4/5 interface produced readings and responded to the test lamp on outlet
+3; energy increased under load. HA exposes all four fields and a diagnostic
+`Not calibrated` status. Calibration was explicitly deferred by the owner, and
+coverage of the other outlets has not been tested. The three switch IDs remain
+unchanged, all relays ended OFF, and updated source was saved in both HA and the
+ESPHome Dashboard. See the [metering observations](kmc-30608.md#metering-update).
+
+## Second KMC 30608: eighteenth firmware conversion
+
+A second KMC 30608 with stock firmware 1.0.5 accepted ordinary Tuya-Convert.
+The loader reported ESP8266, bootloader 4, and 1 MiB QIO flash at 40 MHz.
+A private post-loader flash read was retained. The 420,800-byte neutral image
+was followed by a GPIO16 button probe and a 432,560-byte relay/metering image.
+Three numbered outlets passed individual fan tests, and the common button
+stopped and restarted the fan. A five-second mains disconnection from all ON
+left the fan stopped and all three native states OFF on the production build.
+HA handover retained the three existing IDs, and source/private credentials
+were persisted and verified in HA and ESPHome Dashboard. Exactly this LocalTuya
+device was removed; the other 34 device configurations remained unchanged.
+
+The separate outlet indicators remained dark. A temporary GPIO1 test lit only
+the common indicator beside the button, confirmed by the owner. The stock
+hardware table disables all three per-channel LED outputs. The production
+image was restored; no speculative GPIO assignments were added. Stock Tuya
+datapoints 1/2/3 map to GPIO14/13/15, while physical outlets 1/2/3 map to
+GPIO15/13/14. Migration preserves this distinction. After the owner confirmed
+the first KMC remained on the table without its normal loads, that unit's
+earlier HA role association for outlets 1 and 3 was corrected while retaining
+its existing entity IDs. The owner also clarified that the individual outlet
+indicators previously lit with their loads; the second sample's dark indicators
+remain an unresolved regression, not a confirmed hardware failure.
+The first sample's outlet 3 indicator subsequently lit correctly with the same
+GPIO/metering configuration. The owner deferred further diagnosis of the second
+sample's indicators. Both KMCs were returned to all outputs OFF.
+
+## Supernight CV01: nineteenth firmware conversion
+
+The owner identified SUPERNIGHT FCC ID 2ANJ7-CV01 and confirmed both outlets
+empty. Stock firmware 1.0.4 accepted ordinary Tuya-Convert. The loader reported
+an ESP8266-family device, bootloader 4 and 1 MiB DOUT flash at 40 MHz. A full
+post-loader read was retained privately, followed by the 420,800-byte neutral
+ESPHome 2026.9.1 image.
+
+An input probe confirmed the left button on active-low GPIO1 and the right
+button on the ADC input. The latter read about 7 released and 1024 pressed,
+opposite to the published reference. The 435,872-byte production image uses
+that observed polarity and waits ten seconds plus a released reading before
+arming the right button. It adds two `ALWAYS_OFF` relay channels and four
+uncalibrated HLW8012 measurements.
+
+Native controls, a software restart, both physical outlets and independent
+button behavior passed. After a five-second mains disconnection from both
+outputs ON, the fan remained stopped and both reported OFF on the same build.
+HA adopted the new device, verified both switches through service calls and
+exposed all four measurements. Both outputs ended OFF. Source and private
+credentials were saved and verified in HA and ESPHome Dashboard. No unrelated
+entity identity or existing secret value changed. Indicator/night-light
+behavior, absolute calibration and left-outlet meter coverage remain pending.
+
+## Third KMC 30608: twentieth firmware conversion
+
+An isolated KMC 30608 Type 3 SPD running stock 1.0.6 reached the ordinary
+Tuya-Convert loader on a second attempt after an owner-controlled mains cycle.
+The first attempt downloaded the intermediate image but did not expose the
+loader. The working loader reported ESP8266-family silicon and 1 MiB DOUT flash
+at 40 MHz. A private post-loader flash read was retained. A header-checked
+420,800-byte neutral image and an input-only GPIO16 probe both passed.
+
+The stock channel initializer matches the second KMC sample. The final
+432,560-byte ESPHome 2026.9.1 image exposes three independently controlled
+relays and four uncalibrated HLW8012 measurements. Native channel controls and
+a software restart from all ON to all OFF passed. The owner confirmed a test
+load on physical outlet 1, then deferred the remaining outlet, common-button
+and mains-cycle checks. HA adopted three switches
+and four available metering sensors with the expected units and state classes.
+Source and private credentials were saved and read back in HA and ESPHome
+Dashboard. No pre-existing LocalTuya entity identity changed. Cleanup returned
+all three outputs OFF, confirmed through the encrypted API. HA service
+switching tests are also deferred by the owner, not passed. See the
+[third-sample record](kmc-30608.md#third-sample-stock-106-and-dout-flash).
+
+## Second WP3: twenty-first firmware conversion
+
+The owner identified a previously retained LocalTuya WP3 for conversion to a
+numbered spare switch. The loader matched the selected identity and reported
+1 MiB flash; a complete private post-loader backup was saved. A 424,432-byte
+input-only probe installed successfully, and a physical button press identified
+GPIO13. The 440,480-byte final image uses GPIO15 for the relay and inverted
+GPIO2 for the indicator, with an ALWAYS_OFF restore mode.
+
+Encrypted OTA and native relay controls passed, including software restart
+from ON to OFF. The owner confirmed button/load/indicator operation; the final
+observer did not capture both physical cycles. HA adoption preserved the
+existing numbered entity ID and dashboard row. Final source and private
+credentials were persisted and read back in both configuration locations.
+Controlled mains-cycle and boot-transient tests remain unperformed. See the
+[second WP3 record](wp3-migration.md#second-sample).
+
+## Subsequent household role changes
+
+The owner reassigned outlets 1 and 2 of the second KMC 30608 and both Supernight
+outlets after physical acceptance. Three predecessor plugs were retained under
+neutral names; the former television plug was also retained. Logical role IDs
+were attached to the new channels only after their original owners had been
+renamed. Independent registry checks confirmed all seven mappings against
+device and channel unique IDs, and confirmed that the KMC's third channel kept
+its existing identity.
+
+HA dashboard references, shared shutdown logic and state notifications were
+updated for the new roles. Existing logical-role references were kept where
+they already selected the correct replacement channel. Duplicate dashboard
+entries were removed. An obsolete audio automation in an unloaded legacy file
+was disabled rather than repurposed as lighting behavior. Configuration checks
+and targeted reloads passed, retaining the enabled/disabled states of all 120
+automations. The rename work issued no load-control or firmware commands.
+Exact household mappings and before/after records remain private.
+At the owner's subsequent request, the three retained predecessor plugs were
+also added to the bottom of the existing dashboard switch list. A readback
+confirmed exactly one entry for each, with the other dashboard content and
+relay states preserved.
+
+The first KMC was subsequently assigned three utility-power roles. Its former
+decorative-light targets were removed from morning shutdown, shared shutdown
+and surplus-power lighting actions before completing the role change. The new
+names explicitly distinguish supply power from appliance operation. Existing
+separate utility controls were retained for the owner's later physical move;
+no automatic handover or scheduled disconnection was created. Notifications
+and a grouped dashboard section use the new IDs. An active-reference scan found
+no remaining retired lighting IDs; no load commands or firmware changes were
+part of the reassignment.
+
+## Deployed source audit and restoration
+
+On 2026-10-11, the active HA and ESPHome Dashboard source directories were
+audited against the ESPHome device registry and the private per-unit inventory.
+Eleven earlier converted plugs had no individual YAML in either active source
+directory, although their accepted source files remained in the private
+workbench. The more recent conversions already had deployed source files.
+
+The eleven missing configurations were restored to both locations. Each source
+was matched to the recorded unit, current HA role, node name and API credential
+before publication to the private deployment. Validation with ESPHome passed
+for all eleven prepared files. Local build-directory overrides were removed;
+the installed node names, hardware profiles and existing credentials were
+retained. Per-unit secret references prevent accidental dependence on generic
+secret names. Existing deployed source files and secret values were preserved,
+and both copies of every restored YAML matched on readback.
+
+There are now thirty top-level configurations in each deployment source
+directory, including twenty-five plug configurations. The latter include all
+twenty-one Tuya conversions, the two previously documented maintenance units
+and two older plugs. Registry-only role names can differ from the preserved
+firmware friendly names. Source presence does not establish physical acceptance
+or mean that a new firmware image has been installed. This restoration sent no
+relay commands, performed no firmware uploads and did not resume the deferred
+hardware investigations. Exact paths, identities, backup receipts and secret
+values remain private.
+
+The deployed validator exposed a separate build-environment gap: its ESPHome
+version is 2026.8.2, whereas the recent local builds used 2026.9.1. Only two of
+the twenty-five plug configurations passed validation in that container.
+Twenty-one specify a compile-process limit above the two CPUs visible there;
+the two maintained older devices explicitly require at least 2026.9.1. This
+audit restored source availability, not build readiness. Align the Dashboard
+version with the recorded toolchain and its compilation parallelism with the
+container before attempting a new build. No deployment upgrade or firmware
+update was performed as part of this audit.
+
 ## Software provenance
 
 - Tuya-Convert: `a34b2c91862ed855542e8a32a14a9ab7573c4de9`.
@@ -667,7 +1094,7 @@ tags mean builds are not promised to be byte-for-byte identical.
 
 ## Still pending
 
-Seven converted plugs passed per-unit physical button/load checks. Six also have
+Fourteen converted plugs passed per-unit physical button/load checks. Six earlier units also have
 HA software-restart evidence; the seventh conversion's restart began already off,
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
@@ -677,9 +1104,22 @@ profile, the twelfth reuses the YM-WS-1 profile, and the thirteenth reuses the
 KMC 30137 profile. Repeated physical and restart checks were waived by the
 operator for those units.
 Their transfers and encrypted APIs were verified separately.
+The fourteenth conversion, TanTan WP3, passed physical button/load/indicator
+checks, encrypted API control and a software restart from reported ON to OFF.
+It was available and OFF after the operator relocated and reconnected it;
+an on-to-off physical power-cycle test and boot-transient measurements remain
+pending.
+The fifteenth conversion, another WP5, passed physical button/load/indicator
+checks, encrypted API control and a software restart to reported OFF. Its
+desktop handover and HA service-control/retirement checks passed. Its natural
+motion acceptance was not exercised because the unchanged daylight condition
+blocked it. The final source-reference audit passed. No controlled mains-cycle
+or boot-transient checks were performed; its GPIO0 red channel is not configured.
 Google Home and Alexa app control passed on the
-first two converted plugs. Later controller checks were deferred. Physical
-power-cycle tests and the full button-to-controller round trip remain pending.
+first two converted plugs. Later controller checks were deferred. Controlled
+power-cycle checks remain pending for earlier units; the GREFIC and KMC 30608
+checks passed. KMC 30608 also passed a native-API software restart from all ON.
+The full button-to-controller round trip remains pending.
 Existing bridge fabrics were preserved, and household entity identifiers were
 not published. A functioning server process is not a completed end-to-end
 acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).

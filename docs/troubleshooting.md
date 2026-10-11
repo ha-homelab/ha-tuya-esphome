@@ -165,6 +165,15 @@ mapping's verified status and identify the model/output circuit before another
 output test. Keep the unit out of Matter until physical switching passes. A load
 that also fails directly from the wall cannot be used to establish a plug failure; check that distinction separately.
 
+A later YM-WS-1 with a reused, untested profile remained online while its LED
+glowed dimly and a physical press produced neither an input event nor a click.
+Different boards share that model marking. Compare documented button inputs
+before changing any output assignment; do not diagnose a failed relay solely
+from a healthy API or an ineffective software switch. In this case an input-only
+probe was prepared but not installed, and the owner deferred further checks.
+The cause remains unresolved; see the
+[follow-up record](deployment-record.md#twelfth-conversion-follow-up-diagnosis-deferred).
+
 ## The button switches the load, but the indicator stays dark
 
 Check both the hardware pin and the action path. An existing ESPHome plug later
@@ -194,6 +203,22 @@ confirmed the HA-commanded off/on/off transitions. The exact underlying cause
 was not established. Record the replacement config-entry/entity identifiers in
 the private inventory; preserve the original role until control works. Do not
 respond to this symptom by guessing new GPIOs or resetting the Matter bridge.
+
+## Motion still targets the retired light after a switch migration
+
+The WP3 was reachable after relocation, but its motion control initially did
+not turn on the load. The loaded HA automation still called `light.turn_on`
+with the retired light entity. A saved source change had not yet established
+the live action path. Reloading the automation and removing the old entity
+completed that path without changing the sensor or manual-override helper.
+
+Inspect the live automation trace and service target as well as saved YAML.
+After a light-to-switch migration, verify the service domain, indirect groups,
+and the new entity, then reload the affected configuration. In this case a
+natural sensor transition, automation trigger and new switch transition shared
+the expected parent/automation contexts, and the operator confirmed the light
+worked. No synthetic trigger or firmware change was needed. Keep configuration
+validation, runtime linkage and physical acceptance as separate results.
 
 ## HA works but Google/Alexa does not
 

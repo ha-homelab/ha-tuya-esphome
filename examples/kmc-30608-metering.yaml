@@ -1,0 +1,42 @@
+# Optional addition to kmc-30608-three-outlet.yaml for the tested Smart Tap.
+# Uncalibrated HLW8012 defaults: verify against a reference before relying on
+# absolute values. No-load current offset has been observed on the sample.
+# One meter, not three independent outlet meters. Energy resets on each boot.
+sensor:
+  - platform: hlw8012
+    id: outlet_meter
+    model: HLW8012
+    sel_pin: GPIO12
+    cf_pin: GPIO4
+    cf1_pin: GPIO5
+    current_resistor: 0.001
+    voltage_divider: 2351
+    initial_mode: VOLTAGE
+    change_mode_every: 1
+    update_interval: 5s
+    voltage:
+      name: Voltage
+      id: measured_voltage
+      accuracy_decimals: 1
+    current:
+      name: Current
+      id: measured_current
+      accuracy_decimals: 3
+    power:
+      name: Power
+      id: measured_power
+      accuracy_decimals: 1
+    energy:
+      name: Energy Since Boot
+      id: measured_energy
+      unit_of_measurement: kWh
+      accuracy_decimals: 5
+      filters:
+        - multiply: 0.001
+
+text_sensor:
+  - platform: template
+    name: Meter Calibration
+    entity_category: diagnostic
+    lambda: return {"Not calibrated"};
+    update_interval: 60s

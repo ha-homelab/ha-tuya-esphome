@@ -24,12 +24,46 @@ resending the exploit or provisioning. The target did not associate or obtain a
 DHCP lease during the 120-second window, and no application request was received.
 This is an absent-client result, not evidence of a rejected replacement key.
 
+A second physical AWP02L-N produced six PSK `02`/bad-record-MAC failures
+in the ordinary workflow. Its separate AP-mode trial verified the source files
+against the pinned commit, built the packet without transmitting, and then
+sent one 256-byte packet to the identity-checked device. The connection initially
+remained available, but the target became unreachable before normal Wi-Fi
+provisioning. A rescan found no matching AP. This checkpoint stopped at target
+identification; no replacement-key handshake or firmware transfer occurred.
+Recover this unit's AP before continuing, and retain its existing attempt marker
+so recovery cannot silently repeat the experimental packet.
+
+A third physical AWP02L-N associated with the identity recorded for its existing
+LocalTuya device. Thirteen PSK `02` handshakes failed with bad-record-MAC errors.
+No intermediate loader or firmware transfer occurred. The ordinary conversion
+session was stopped and its radio returned to managed mode. No experimental
+payload was sent to this unit. The current ESP8266 branch remains at the pinned
+revision below; its hard-coded exploit addresses are not a validated profile
+for this stock image. The handshake alone cannot establish those addresses,
+and a LocalTuya local key is not the cloud TLS PSK. The pre-existing HA entity
+was retained. A stale HA state after pairing is not proof that the old LAN
+connection or relay state remains available.
+
 The owner chose a wireless-only attempt, no factory-firmware backup, and retirement
 of an unsuccessful unit rather than serial recovery. That decision is specific
 to this batch. Keep the load disconnected throughout pairing and experimental
 steps. The experiment may alter stored credentials even though it does not send
 an ESPHome image; retaining the old HA configuration does not guarantee that
 the old LocalTuya connection will still work afterward.
+
+### Possible serial continuation
+
+No serial operation has been performed. Before choosing that route, identify the
+actual module and accessible programming pads from both sides of the unplugged
+board; the enclosure model and MAC vendor are insufficient. An ESP8266 path
+needs a USB-to-UART adapter with 3.3 V signal levels, a stable 3.3 V supply,
+common ground, crossed TX/RX and access to GPIO0 for boot selection. Never connect
+the opened plug to mains while connecting a programmer. Adapter labels do not
+guarantee that both its power and data pins use 3.3 V. A chip/flash identification
+and private complete backup would precede any erase or write. See the official
+[ESPHome connection guide](https://esphome.io/guides/physical_device_connection/)
+and [Espressif boot-mode guide](https://docs.espressif.com/projects/esptool/en/latest/esp8266/advanced-topics/boot-mode-selection.html).
 
 ## 1. Identify the failure before choosing this path
 
@@ -124,6 +158,12 @@ Do not invoke an upstream host-network setup script on the management host.
 5. Save the association and lease privately. Use the observed gateway rather than
    a hard-coded household address.
 
+If more than one plug of the same model is powered, keep separate per-unit
+checkpoints and pass both the intended identity and the excluded identities to
+any delegated worker. Never resume a previous unit's session merely because its
+AP is also visible. The second AWP02L-N trial used a separate checkpoint while
+the earlier test unit remained powered in AP mode.
+
 ## 5. Make one recorded attempt
 
 Before network transmission, dry-run the exact source with its send function
@@ -178,6 +218,13 @@ AP setup instead of rerunning the entire experiment. Run dnsmasq in foreground
 mode when supervising its process directly, and stop only orphan processes
 owned by this isolated session. Confirm the AP and listeners are running before
 starting a bounded observation window.
+
+Write a provisioning-intent marker before its first datagram, in addition to the
+receipt afterward. A missing receipt after an interrupted send is an uncertain
+outcome, not permission to retry automatically. Conversely, if target validation
+failed before any provisioning intent exists, recover and recheck the same AP
+before starting provisioning. A resume operation must check the saved receipt
+instead of merely assuming that provisioning previously completed.
 
 Record target association, a fresh matching DHCP/neighbor identity, TLS PSK
 identity version, handshake completion and a complete decoded request separately.

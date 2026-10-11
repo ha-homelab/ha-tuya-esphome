@@ -1,0 +1,107 @@
+# Hardware package for the tested SUPERNIGHT CV01 sample.
+# Right ADC polarity is sample-specific: released about 7, pressed about 1024.
+# Meter scaling is provisional and uncalibrated. Energy resets on reboot.
+esphome:
+  on_boot:
+    priority: -100
+    then:
+      - delay: 10s
+      - wait_until:
+          lambda: return id(right_button_adc).has_state() && id(right_button_adc).state < 50;
+      - globals.set:
+          id: allow_right_button
+          value: 'true'
+
+logger:
+  baud_rate: 0
+
+sensor:
+  - platform: adc
+    pin: A0
+    id: right_button_adc
+    internal: true
+    raw: true
+    update_interval: 50ms
+  - platform: hlw8012
+    id: outlet_meter
+    model: HLW8012
+    sel_pin:
+      number: GPIO13
+      inverted: true
+    cf_pin: GPIO5
+    cf1_pin: GPIO4
+    current_resistor: 0.001215
+    voltage_divider: 806
+    initial_mode: VOLTAGE
+    change_mode_every: 1
+    update_interval: 5s
+    voltage:
+      name: Voltage
+      accuracy_decimals: 1
+    current:
+      name: Current
+      accuracy_decimals: 3
+    power:
+      name: Power
+      accuracy_decimals: 1
+    energy:
+      name: Energy Since Boot
+      unit_of_measurement: kWh
+      accuracy_decimals: 5
+      filters:
+        - multiply: 0.001
+
+text_sensor:
+  - platform: template
+    name: Meter Calibration
+    entity_category: diagnostic
+    lambda: return {"Not calibrated"};
+    update_interval: 60s
+
+binary_sensor:
+  - platform: gpio
+    id: left_button
+    internal: true
+    pin:
+      number: GPIO1
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - switch.toggle: outlet_left
+  - platform: template
+    id: right_button
+    internal: true
+    lambda: return id(right_button_adc).has_state() && id(right_button_adc).state > 500;
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - if:
+          condition:
+            lambda: return id(allow_right_button);
+          then:
+            - switch.toggle: outlet_right
+
+globals:
+  - id: allow_right_button
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+
+switch:
+  - platform: gpio
+    id: outlet_left
+    name: Left Outlet
+    pin: GPIO3
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    id: outlet_right
+    name: Right Outlet
+    pin: GPIO12
+    restore_mode: ALWAYS_OFF
+
+status_led:
+  pin:
+    number: GPIO14
+    inverted: true

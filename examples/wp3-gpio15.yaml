@@ -1,0 +1,48 @@
+# Observed older TanTan WP3 map: GPIO13 button, GPIO15 relay, inverted GPIO2 LED.
+# The operator confirmed relay clicks, actual load switching and the indicator.
+# API control and software restart to the reported OFF state were checked.
+# Controlled ON-to-OFF mains-cycle and boot-transient checks remain open.
+# The other WP3 template uses GPIO4 button / GPIO14 relay; identify the variant.
+# Include with the GPIO-neutral base and remove all button probe definitions.
+# GPIO0, the older template's second LED channel, is intentionally unassigned.
+switch:
+  - platform: gpio
+    id: relay
+    name: Relay
+    pin: GPIO15
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - light.turn_on: relay_indicator
+    on_turn_off:
+      - light.turn_off: relay_indicator
+
+binary_sensor:
+  - platform: gpio
+    name: Physical Button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - switch.toggle: relay
+
+output:
+  - platform: gpio
+    id: indicator_output
+    pin:
+      number: GPIO2
+      inverted: true
+
+light:
+  - platform: binary
+    id: relay_indicator
+    output: indicator_output
+    internal: true
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic

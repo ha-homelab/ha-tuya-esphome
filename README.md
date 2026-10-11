@@ -32,14 +32,57 @@ packet was sent to the identified unit in AP mode; its connection dropped, but
 replacement-key authentication and conversion remain unverified. See the
 [AWP02L-N experimental procedure](docs/awp02l-n-psk02.md).
 
-Thirteen plugs have now been converted: two XS-SSA01 units, four WP5 units, two
-KMC 30137, three YM-WS-1 units and two JH-G01U units. Seven passed their own physical
+A second AWP02L-N also failed the ordinary handshake and became unreachable
+after its own single experimental packet, before Wi-Fi provisioning or a
+replacement-key check. Neither AWP02L-N is counted as converted.
+
+A third AWP02L-N also associated with the expected identity but failed thirteen
+PSK `02` handshakes before any firmware transfer. It received no experimental
+payload. The session was cleaned up and existing HA/client bindings retained;
+the prepared ESPHome image remains uninstalled.
+
+Twenty-one plugs have now received ESPHome relay firmware: two XS-SSA01 units,
+five WP5 units, two KMC 30137, three YM-WS-1 units, two JH-G01U units, two
+WP3 units, one GREFIC CZ-U201, three KMC 30608 and one Supernight CV01. Fourteen passed their own physical
 button/load test; the first two WP5 units also passed their independent
 red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
 For two WP5 units, the second and third YM-WS-1 units, the second JH-G01U and
 the second KMC 30137, the operator chose the existing model profile and waived
 repeated physical and restart tests.
+The third converted YM-WS-1 later showed a dim indicator and no response to
+its physical button despite a healthy encrypted API. Its reused GPIO profile
+has not been physically validated; further diagnosis was deferred by the owner.
+See the [follow-up record](docs/deployment-record.md#twelfth-conversion-follow-up-diagnosis-deferred).
+Both WP3 units passed encrypted OTA/API, button/load/indicator and software-restart
+state checks. The first was also available after relocation; controlled ON-to-OFF mains
+power-cycle tests remain pending. Their
+[profile and migration notes](docs/wp3-migration.md) keep those results separate.
+The latest WP5 passed its own button/load/indicator test, encrypted API control
+and a software restart to reported OFF. This unit omits the separate
+red-indicator channel and was available after relocation; a controlled mains-cycle
+test was not performed.
+The [GREFIC CZ-U201](docs/grefic-cz-u201.md) has two independently controlled
+relay channels identified from its original application. Both outlets, the shared
+button and a controlled mains cycle passed physical acceptance.
+The [KMC 30608 Smart Tap](docs/kmc-30608.md) passed separate lamp checks on all
+three numbered outlets, common-button control and a controlled mains cycle.
+Its existing three HA entity IDs now use ESPHome. Voltage, current, power and
+energy metering are enabled; calibration is explicitly deferred.
+The second KMC also passed outlet, button and mains-cycle acceptance and its HA
+handover. Its stock table shows that Tuya datapoint numbers and physical outlet
+numbers differ; both KMC handovers now retain that association. The second
+sample's separate outlet indicators remain unresolved; further diagnosis was
+deferred by the owner.
+A third KMC, running stock firmware 1.0.6 with 1 MiB DOUT flash, also accepted
+ordinary Tuya-Convert. Its GPIO16 button, independent native relay controls and
+software restart to all OFF passed. The owner confirmed a load on physical
+outlet 1, then deferred the remaining physical and HA service switching tests.
+All outputs were returned OFF. HA exposes its three switches and four measurements;
+its source and private credentials are saved in HA and ESPHome Dashboard.
+The [Supernight CV01](docs/supernight-cv01.md) passed independent outlet/button
+checks and a controlled mains cycle, and now exposes two switches and four
+uncalibrated measurements in HA.
 The first two converted plugs passed actual load switching from Google Home and
 Amazon Alexa through the existing Matter Hub.
 The operator deferred later controller checks. The original controller fabrics
@@ -82,16 +125,20 @@ entities.
 
 A separate TECKIN SP20 was migrated from Tasmota to ESPHome with its metering
 calibration and cumulative counters carried across. This maintenance migration
-is separate from the thirteen Tuya conversions. For an already converted plug,
+is separate from the twenty-one Tuya firmware conversions. For an already converted plug,
 use the [metered SP20 procedure](docs/tasmota-sp20-migration.md).
 
 ## Project policy
 
 - Convert one disconnected-load plug at a time.
 - Do not initialize this batch in Tuya/Smart Life or install vendor updates first.
-- The owner explicitly chose **no factory-firmware backups** and accepts retiring
-  unsuccessful units rather than spending time on serial recovery. The container
+- The original batch policy skips factory-firmware backups and accepts retiring
+  unsuccessful units rather than spending time on serial recovery. Its container
   disables the upstream download step; session logs and metadata are still local.
+  The later [WP3 attempt](docs/wp3-migration.md) and a subsequent WP5 saved stock
+  backups as per-unit exceptions. The GREFIC investigation also retained a private
+  post-loader flash image to recover its hardware configuration. Any backup remains private and is never
+  published here.
 - Start unidentified variants with a GPIO-neutral ESPHome image. Record an
   operator's explicit choice to reuse a same-model profile without repeated tests.
   A working Wi-Fi/API connection and a functional mains relay are different milestones.

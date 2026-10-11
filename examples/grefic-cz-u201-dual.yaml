@@ -1,0 +1,41 @@
+# Pin assignments recovered from this unit's factory hardware JSON.
+status_led:
+  pin:
+    number: GPIO13
+    inverted: true
+
+switch:
+  - platform: gpio
+    id: relay_1
+    name: Outlet 1
+    pin: GPIO15
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    id: relay_2
+    name: Outlet 2
+    pin: GPIO14
+    restore_mode: ALWAYS_OFF
+
+binary_sensor:
+  - platform: gpio
+    id: physical_button
+    name: Physical Button
+    entity_category: diagnostic
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - if:
+          condition:
+            or:
+              - switch.is_on: relay_1
+              - switch.is_on: relay_2
+          then:
+            - switch.turn_off: relay_1
+            - switch.turn_off: relay_2
+          else:
+            - switch.turn_on: relay_1
+            - switch.turn_on: relay_2
