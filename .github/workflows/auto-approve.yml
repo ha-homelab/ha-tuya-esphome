@@ -28,3 +28,26 @@ jobs:
     secrets:
       BOT_PAT: ${{ secrets.BOT_PAT }}
       APPROVAL_PAT: ${{ secrets.APPROVAL_PAT }}
+  bootstrap-bot-access:
+    # One-time acceptance of the owner's explicit, repository-scoped invitation.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.repository == 'ha-homelab/ha-tuya-esphome' &&
+      github.event.pull_request.number == 2 &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.actor == '4alvit' &&
+      contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Accept the approved bot invitation for this repository
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          set -euo pipefail
+          test "$(gh api user --jq .login)" = californiantiramisu
+          invitation=$(gh api user/repository_invitations --jq '.[] | select(.id == 337222818 and .repository.full_name == "ha-homelab/ha-tuya-esphome") | .id')
+          if test "$invitation" = 337222818; then
+            gh api --method PATCH user/repository_invitations/337222818 --silent
+          fi
+          test "$(gh api repos/ha-homelab/ha-tuya-esphome --jq .permissions.push)" = true
