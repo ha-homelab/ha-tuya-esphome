@@ -351,3 +351,7 @@ for scope and the distinction between saved source and physical acceptance.
 - [x] Save both device sources in HA and the ESPHome Dashboard, retire exact old
       integration records and add the two new controls after Switch07.
 - [ ] Controlled ON-to-OFF mains-cycle checks for these two additions.
+
+- [ ] Identify the board or original application of the square outlet reserved
+      as Switch08. Ordinary pairing failed; its setup AP is identified, but no
+      firmware update route is established and no image has been installed.

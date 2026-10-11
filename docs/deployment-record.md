@@ -1280,3 +1280,25 @@ now 27 (32 device YAML files including five non-plug devices). Lovelace ends wit
 
 Migration references: [ESPHome Tasmota migration](https://esphome.io/guides/migrate_sonoff_tasmota/)
 and the [Tasmota 6.7.1 uploader source](https://github.com/arendst/Tasmota/blob/v6.7.1/sonoff/xdrv_01_webserver.ino).
+
+
+### 2026-10-11 — Unidentified square outlet: Switch08 reserved
+
+A white-and-silver square outlet with no readable manufacturer/model/FCC marking
+was selected for Switch08. Two bounded ordinary Tuya-Convert sessions produced
+no target association, no intermediate loader and no ESPHome transfer. The first
+started while the device was in slow-blinking mode; the second began after the
+owner switched it to fast blinking. Only the companion phone associated.
+
+Its protected `SmartTouch_…` setup AP was subsequently identified by a controlled
+power interruption: fresh beacons stopped and the AP uptime reset after power
+returned. An isolated station connected and verified the gateway's physical MAC.
+The checked TCP service ports and UDP discovery ports did not expose a recognized
+provisioning or firmware-update interface. This is not proof that all OTA methods
+are impossible, nor does the MAC alone identify the chip or GPIO mapping.
+
+A unique-key GPIO-neutral ESPHome image is prepared privately but uninstalled.
+No HA entity or live Dashboard source was created. The factory firmware remains
+in place, both workbench sessions were cleaned up, and the Wi-Fi radio returned
+to managed mode. Continue after identifying the original app or board/module;
+do not count this unit among successful conversions.
