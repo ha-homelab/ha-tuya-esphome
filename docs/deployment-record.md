@@ -1116,9 +1116,8 @@ After the rollout, the Dashboard had one ready replica, returned HTTP 200 and
 validated all twenty-five plug configurations successfully. The Deployment
 specification changed only its image; its source volume, security settings and
 replica count were retained. This maintenance did not upload device firmware
-or establish any additional physical acceptance results. The image and rollout
-documentation are recorded in
-[k3s-self-healing PR #186](https://github.com/4alvit/k3s-self-healing/pull/186).
+or establish any additional physical acceptance results. Detailed deployment
+receipts remain in the private operations records.
 
 ## Software provenance
 
