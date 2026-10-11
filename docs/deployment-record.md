@@ -1349,3 +1349,155 @@ source is saved as `switch10.yaml` in HA and ESPHome Dashboard, with distinct
 named secrets and the Dashboard's two-worker compile limit. Lovelace places it
 after Switch09. No preexisting HA identity matched this unit, so no old entities
 were removed. The final relay state is OFF and the workbench AP was cleaned up.
+
+
+### Twenty-fifth conversion: XS-SSA05, Switch11
+
+This sample accepted ordinary Tuya-Convert from stock firmware 1.0.1, despite
+the published model entry describing serial installation. The loader reported
+1 MiB QIO flash at 40 MHz. A distinct-key neutral ESPHome 2026.9.1 image installed
+in 7397 ms, followed by encrypted OTA updates. The final image is 444352 bytes.
+
+The relay is GPIO12 and the active-low button is GPIO13. Output tests established
+active-low GPIO0 red, GPIO15 bright blue and GPIO4 faint blue channels. With both
+blue channels driven high the glow disappeared. The final profile holds GPIO4
+off, assigns GPIO15 to connection/warning status and makes GPIO0 follow the relay.
+The owner confirmed that the physical button switches both the test load and red
+indicator on and off, with relay clicks. Native and HA state control and software
+restart from ON to OFF passed. Controlled mains-cycle acceptance remains pending.
+
+Switch11 exposes voltage, current, power and energy since boot through the
+HLW8012 interface, with a Not calibrated diagnostic. The initial voltage scale
+was visibly inaccurate; quantitative readings need reference calibration.
+The complete source is saved as switch11.yaml in HA and ESPHome Dashboard, with
+separate secrets and the two-worker compile limit. Lovelace places Switch11
+after Switch10. No existing HA identity matched this plug. Final relay state: OFF.
+See [the profile and calibration notes](xs-ssa05.md).
+
+
+### Twenty-sixth conversion: second XS-SSA05, Switch12
+
+At the owner's request, this unit reuses the accepted first XS-SSA05 profile
+without repeating button, load, indicator or mains-cycle acceptance. The owner
+confirmed that the outlet was unloaded and in fast pairing mode. The complete
+ESPHome 2026.9.1 relay firmware was installed directly through ordinary
+Tuya-Convert, without a diagnostic firmware stage. Distinct private credentials
+were generated, and the encrypted API matched the loader identity.
+
+GPIO12 switches the relay; GPIO13 is the active-low button. Active-low GPIO0
+follows the relay, GPIO15 provides connection status, and GPIO4 stays off. The
+HLW8012 voltage/current/power/energy readings remain explicitly uncalibrated.
+Native and HA controls and software restart to OFF passed. The source is saved
+and validated in HA and ESPHome Dashboard as `switch12.yaml`, with two compile
+workers. Lovelace places Switch12 after Switch11. Final relay state: OFF.
+
+
+### Twenty-seventh conversion: third XS-SSA05, Switch15
+
+The owner requested Switch15 as the next number and the same profile-reuse
+workflow. The final ESPHome 2026.9.1 firmware was installed directly through
+ordinary Tuya-Convert with distinct private credentials. The encrypted native
+API matched the new loader identity. The accepted GPIO12 relay, GPIO13 button,
+GPIO0 red, GPIO15 status and disabled GPIO4 indicator profile is unchanged.
+
+Repeated physical button/load/indicator and mains-cycle acceptance was waived.
+Native and HA control and software restart to OFF passed. The HLW8012 meter is
+exposed but remains uncalibrated. Both complete deployed source copies validate
+as `switch15.yaml`, with two compile workers. Lovelace places Switch15 after
+Switch12. Final relay state: OFF.
+
+
+### Twenty-eighth conversion: fourth XS-SSA05, Switch16
+
+The owner requested the next identical conversion as Switch16, reusing the
+accepted GPIO12/GPIO13/GPIO0/GPIO15/GPIO4 profile without repeated physical
+checks. Ordinary Tuya-Convert installed the final ESPHome 2026.9.1 image
+directly. A spare, previously disconnected workbench Wi-Fi adapter supplied the
+associated AP client for this session; no phone reconnection was needed.
+It was disconnected and restored after the session.
+
+Encrypted API identity, native and HA controls and software restart to OFF
+passed. Meter readings remain uncalibrated. Complete `switch16.yaml` source
+copies are saved and validated in HA and ESPHome Dashboard with two compile
+workers. Lovelace places Switch16 after Switch15. Final relay state: OFF.
+No new physical button/load/indicator or mains-cycle acceptance is claimed.
+
+
+### Twenty-ninth conversion: fourth KMC 30608, Switch17–Switch19
+
+The owner identified the same model, confirmed all four physical outlets were
+unloaded, and requested the next three numbered controls. The final ESPHome
+2026.9.1 image was installed directly by ordinary Tuya-Convert with distinct
+credentials, reusing the accepted profile without diagnostic firmware or
+repeated physical acceptance. Encrypted API identity matched the new loader.
+
+Embossed outlets 1, 2 and 3 use GPIO15, GPIO13 and GPIO14 and are named Switch17,
+Switch18 and Switch19. The GPIO16 button turns all relays off when any is on,
+or all on when all are off. GPIO1 provides inverted connection status. The
+fourth outlet remains always on and has no relay entity. Existing unresolved
+per-outlet LED behavior was not re-investigated.
+
+Independent native and HA controls and software restart from all ON to all
+OFF passed. Shared HLW8012 voltage/current/power/energy remain uncalibrated;
+no other unit's calibration factors were copied. Both complete source copies
+are persisted and validated as `kmc-switch17-19.yaml`, with two compile workers.
+Lovelace places Switch17, Switch18 and Switch19 after Switch16. All relays end OFF.
+
+
+### LSPA11, prospective Switch20: authentication blocked
+
+The owner reports one button, two AC outlets with individual indicators and two
+USB ports, and confirmed every output unloaded. The unit joined the isolated
+workbench network but made repeated PSK identity `02` handshakes ending in
+`DECRYPTION_FAILED_OR_BAD_RECORD_MAC`. No VTRUST loader started and no replacement
+firmware was transferred. A prepared GPIO-neutral ESP8266 image was not installed;
+the actual chip family and GPIO assignments remain unconfirmed.
+
+The current upstream CloudCutter device index has no exact LSPA11 profile.
+Profiles for similarly named LSPA models are not evidence of compatibility.
+Continuation requires the stock main-module firmware version and a matching
+profile, or identification of the actual radio module. The two AC outlets' and
+USB ports' independent control remains unknown. At that checkpoint Switch20
+was reserved only; no HA entity, dashboard control or deployed ESPHome source
+was created. The owner
+subsequently deferred LSPA11 and reassigned Switch20 to the KMC below. This attempt
+does not increase the successful conversion or physical-acceptance counts.
+
+
+### Thirtieth conversion: third KMC 30137, Switch20
+
+The owner reassigned number 20 from the deferred LSPA11 to a KMC 30137 and
+confirmed it was unloaded and the only device in pairing mode. Ordinary
+Tuya-Convert installed the final ESPHome 2026.9.1 image directly with distinct
+credentials, reusing the accepted GPIO14 relay, active-low GPIO1 button and
+inverted GPIO13 relay indicator. Repeated physical acceptance was waived.
+
+The new loader identity was distinct from every earlier converted unit and
+from the excluded LSPA11. Encrypted native API identity, relay control and
+software restart from ON to OFF passed. HA adopted `switch.switch20` with
+friendly name Switch20, and its ON/OFF service check passed. The accepted
+profile does not expose voltage/current/power metering.
+
+Complete `switch20.yaml` source and private secrets are saved in HA and the
+ESPHome Dashboard, with two compile workers. Both source copies and deployed
+configuration validation passed. Lovelace places Switch20 after Switch19.
+The relay ends OFF. No new physical button/load/indicator or mains-cycle
+acceptance is claimed.
+
+
+### Thirty-first conversion: fourth KMC 30137, Switch21
+
+The owner requested another identical KMC 30137 as Switch21 and confirmed it
+unloaded and the only device in pairing mode. The final ESPHome 2026.9.1 image
+was installed directly through ordinary Tuya-Convert, reusing the accepted
+GPIO14 relay, active-low GPIO1 button and inverted GPIO13 relay indicator.
+Credentials are distinct; the loader and encrypted API identities matched
+this new unit and differed from earlier devices.
+
+Native control, software restart from ON to OFF and HA ON/OFF commands passed.
+Repeated physical button/load/indicator and mains-cycle tests were waived.
+The accepted profile does not configure electrical metering. Both complete
+`switch21.yaml` source copies and their private secrets are persisted in HA
+and ESPHome Dashboard with two compilation workers. Source readback and
+deployed configuration validation passed. Lovelace places `switch.switch21`
+with friendly name Switch21 immediately after Switch20. Final relay state: OFF.

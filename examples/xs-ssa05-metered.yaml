@@ -1,0 +1,83 @@
+# Observed XS-SSA05 variant; include with the GPIO-neutral ESP8266 base.
+# GPIO0 red, GPIO15 bright blue and GPIO4 faint blue are active low.
+# GPIO4 is initialized OFF; GPIO15 is reserved for network/error status.
+# Meter calibration is required; these are ESPHome default scaling factors.
+sensor:
+- platform: hlw8012
+  id: outlet_meter
+  model: HLW8012
+  sel_pin:
+    number: GPIO3
+    inverted: true
+  cf_pin: GPIO5
+  cf1_pin: GPIO14
+  initial_mode: VOLTAGE
+  change_mode_every: 1
+  update_interval: 5s
+  voltage:
+    name: Voltage
+    accuracy_decimals: 1
+  current:
+    name: Current
+    accuracy_decimals: 3
+  power:
+    name: Power
+    accuracy_decimals: 1
+  energy:
+    name: Energy Since Boot
+    unit_of_measurement: kWh
+    accuracy_decimals: 5
+    filters:
+    - multiply: 0.001
+text_sensor:
+- platform: template
+  name: Meter Calibration
+  entity_category: diagnostic
+  lambda: return {"Not calibrated"};
+  update_interval: 60s
+binary_sensor:
+- platform: gpio
+  name: Physical Button
+  pin:
+    number: GPIO13
+    mode: INPUT_PULLUP
+    inverted: true
+  filters:
+  - delayed_on_off: 20ms
+  on_press:
+  - switch.toggle: relay
+switch:
+- platform: gpio
+  id: relay
+  name: Relay
+  pin: GPIO12
+  restore_mode: ALWAYS_OFF
+  on_turn_on:
+  - light.turn_on: relay_indicator
+  on_turn_off:
+  - light.turn_off: relay_indicator
+output:
+- platform: gpio
+  id: indicator_output
+  pin:
+    number: GPIO0
+    inverted: true
+- platform: gpio
+  id: internal_blue_off
+  pin:
+    number: GPIO4
+    inverted: true
+status_led:
+  pin:
+    number: GPIO15
+    inverted: true
+light:
+- platform: binary
+  id: relay_indicator
+  output: indicator_output
+  internal: true
+  restore_mode: ALWAYS_OFF
+button:
+- platform: restart
+  name: Restart
+  entity_category: diagnostic
