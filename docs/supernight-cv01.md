@@ -79,3 +79,24 @@ HA name overrides implement this reassignment without changing the accepted
 firmware, GPIO mapping or independent button behavior. No relay command or
 additional flash was issued for the reassignment. Exact household entity IDs
 remain in the private inventory.
+
+## Second sample: profile reuse
+
+A second owner-confirmed CV01 accepted ordinary Tuya-Convert from stock 1.0.4.
+The loader reported 1 MiB DOUT flash at 40 MHz and bootloader 4. Its initial
+420,800-byte neutral image used separate private credentials. It became
+available after an owner-performed power cycle.
+
+The input-only probe recorded GPIO1 press/release and ADC values near 3–4
+released, 1024 pressed. In the owner's viewing orientation, a separate
+one-second left-button press confirmed the ADC input. Side names therefore
+follow that orientation: the ADC/GPIO12 pair is the left control and the
+GPIO1/GPIO3 pair is the right control. This keeps the previous sample's
+button-to-relay coupling unchanged; it is not evidence of a different PCB.
+
+The owner explicitly requested reuse of the existing profile and waived
+repeated physical outlet, button/load and controlled mains-cycle tests.
+The final 435,776-byte ESPHome 2026.9.1 image preserves the relay mapping, ADC
+startup guard, status indicator and provisional HLW8012 measurements. Native
+API tests independently exercised both outputs and a software restart from
+both ON returned both OFF. The waived physical tests remain unverified.

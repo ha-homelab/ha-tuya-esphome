@@ -1282,7 +1282,7 @@ Migration references: [ESPHome Tasmota migration](https://esphome.io/guides/migr
 and the [Tasmota 6.7.1 uploader source](https://github.com/arendst/Tasmota/blob/v6.7.1/sonoff/xdrv_01_webserver.ino).
 
 
-### 2026-10-11 — Unidentified square outlet: Switch08 reserved
+### 2026-10-11 — Unidentified square outlet: initial Switch08 reservation
 
 A white-and-silver square outlet with no readable manufacturer/model/FCC marking
 was selected for Switch08. Two bounded ordinary Tuya-Convert sessions produced
@@ -1303,3 +1303,26 @@ in place, both workbench sessions were cleaned up, and the Wi-Fi radio returned
 to managed mode. Continue after identifying the original app or board/module;
 do not count this unit among successful conversions. The owner subsequently
 deferred Switch08; no further probing or flashing is scheduled.
+
+The owner later reassigned the Switch08 name to the second CV01 below. The
+unidentified square outlet remains deferred and unflashed, without a reserved
+number or HA entity.
+
+### Twenty-third conversion: second SUPERNIGHT CV01
+
+The second owner-confirmed CV01 accepted ordinary Tuya-Convert. Its stock
+version was 1.0.4 and its loader reported 1 MiB DOUT flash at 40 MHz. A distinct
+credential set was used. After the neutral firmware and an owner-performed
+power cycle, the encrypted API was available. The input-only probe confirmed
+both button inputs, with the ADC button on the left in the owner's orientation.
+
+At the owner's explicit request, the previous CV01 hardware profile was reused
+without repeated physical load or controlled mains-cycle tests. Both native
+relay controls and a software restart from both ON to both OFF passed.
+The second sample is counted as converted, but not as another physically
+verified button/load acceptance. See [the profile record](supernight-cv01.md#second-sample-profile-reuse).
+
+HA adopted the second unit as Switch08 and Switch09. Its complete source is
+saved separately as `switch08-switch09.yaml` in HA and ESPHome Dashboard,
+with distinct named secrets. No existing device matched its identity, so no
+LocalTuya or MQTT records were removed.

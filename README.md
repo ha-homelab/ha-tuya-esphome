@@ -45,9 +45,9 @@ A fourth AWP02L-N succeeded through ordinary Tuya-Convert and passed its physica
 button/load/indicator test. Its [GPIO13/GPIO15/GPIO2 profile](examples/awp02l-n-gpio15.yaml)
 does not establish a workaround for the three earlier PSK `02` failures.
 
-Twenty-two Tuya plugs have now received ESPHome relay firmware: two XS-SSA01 units,
+Twenty-three Tuya plugs have now received ESPHome relay firmware: two XS-SSA01 units,
 five WP5 units, two KMC 30137, three YM-WS-1 units, two JH-G01U units, two
-WP3 units, one GREFIC CZ-U201, three KMC 30608, one Supernight CV01 and one
+WP3 units, one GREFIC CZ-U201, three KMC 30608, two Supernight CV01 and one
 AWP02L-N. Sixteen passed their own physical button/load test; the first two WP5 units also passed their independent
 red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
@@ -87,9 +87,12 @@ software restart to all OFF passed. The owner confirmed a load on physical
 outlet 1, then deferred the remaining physical and HA service switching tests.
 All outputs were returned OFF. HA exposes its three switches and four measurements;
 its source and private credentials are saved in HA and ESPHome Dashboard.
-The [Supernight CV01](docs/supernight-cv01.md) passed independent outlet/button
-checks and a controlled mains cycle, and now exposes two switches and four
-uncalibrated measurements in HA.
+The first [Supernight CV01](docs/supernight-cv01.md) passed independent outlet/button
+checks and a controlled mains cycle, and exposes two switches and four
+uncalibrated measurements in HA. A second CV01 reused that hardware profile at
+the owner's explicit request. Its button inputs, independent native relay controls
+and software restart to both OFF were checked; repeated physical load and
+controlled mains-cycle tests were waived.
 The first two converted plugs passed actual load switching from Google Home and
 Amazon Alexa through the existing Matter Hub.
 The operator deferred later controller checks. The original controller fabrics
