@@ -1349,3 +1349,27 @@ source is saved as `switch10.yaml` in HA and ESPHome Dashboard, with distinct
 named secrets and the Dashboard's two-worker compile limit. Lovelace places it
 after Switch09. No preexisting HA identity matched this unit, so no old entities
 were removed. The final relay state is OFF and the workbench AP was cleaned up.
+
+
+### Twenty-fifth conversion: XS-SSA05, Switch11
+
+This sample accepted ordinary Tuya-Convert from stock firmware 1.0.1, despite
+the published model entry describing serial installation. The loader reported
+1 MiB QIO flash at 40 MHz. A distinct-key neutral ESPHome 2026.9.1 image installed
+in 7397 ms, followed by encrypted OTA updates. The final image is 444352 bytes.
+
+The relay is GPIO12 and the active-low button is GPIO13. Output tests established
+active-low GPIO0 red, GPIO15 bright blue and GPIO4 faint blue channels. With both
+blue channels driven high the glow disappeared. The final profile holds GPIO4
+off, assigns GPIO15 to connection/warning status and makes GPIO0 follow the relay.
+The owner confirmed that the physical button switches both the test load and red
+indicator on and off, with relay clicks. Native and HA state control and software
+restart from ON to OFF passed. Controlled mains-cycle acceptance remains pending.
+
+Switch11 exposes voltage, current, power and energy since boot through the
+HLW8012 interface, with a Not calibrated diagnostic. The initial voltage scale
+was visibly inaccurate; quantitative readings need reference calibration.
+The complete source is saved as switch11.yaml in HA and ESPHome Dashboard, with
+separate secrets and the two-worker compile limit. Lovelace places Switch11
+after Switch10. No existing HA identity matched this plug. Final relay state: OFF.
+See [the profile and calibration notes](xs-ssa05.md).
