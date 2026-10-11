@@ -1326,3 +1326,27 @@ HA adopted the second unit as Switch08 and Switch09. Its complete source is
 saved separately as `switch08-switch09.yaml` in HA and ESPHome Dashboard,
 with distinct named secrets. No existing device matched its identity, so no
 LocalTuya or MQTT records were removed.
+
+
+### Twenty-fourth conversion: sixth WP5, Switch10
+
+The owner confirmed an unloaded WP5 with no other pairing targets. Ordinary
+Tuya-Convert reached the intermediate loader from stock version 1.0.1; the
+loader reported 1 MiB QIO flash at 40 MHz. The accepted WP5 profile was installed
+directly as ESPHome 2026.9.1, using distinct credentials: GPIO13 active-low button,
+GPIO15 relay and inverted GPIO2 indicator. GPIO0 remains unassigned, matching
+the previous single-indicator configuration. This does not establish compatibility
+with the different Gosund WP5 pinout.
+
+The 440352-byte full image installed successfully. Its encrypted API identity,
+independent native and HA on/off state control, and software restart from ON
+to OFF passed. The existing request to reuse known profiles without repeating
+manual tests was carried forward. This unit has no separate physical button/load,
+indicator or controlled mains-cycle acceptance; the physical verification count
+therefore remains sixteen.
+
+HA uses `switch.switch10` with device and friendly name Switch10. The complete
+source is saved as `switch10.yaml` in HA and ESPHome Dashboard, with distinct
+named secrets and the Dashboard's two-worker compile limit. Lovelace places it
+after Switch09. No preexisting HA identity matched this unit, so no old entities
+were removed. The final relay state is OFF and the workbench AP was cleaned up.
