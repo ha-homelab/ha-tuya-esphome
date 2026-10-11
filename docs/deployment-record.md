@@ -1483,3 +1483,21 @@ ESPHome Dashboard, with two compile workers. Both source copies and deployed
 configuration validation passed. Lovelace places Switch20 after Switch19.
 The relay ends OFF. No new physical button/load/indicator or mains-cycle
 acceptance is claimed.
+
+
+### Thirty-first conversion: fourth KMC 30137, Switch21
+
+The owner requested another identical KMC 30137 as Switch21 and confirmed it
+unloaded and the only device in pairing mode. The final ESPHome 2026.9.1 image
+was installed directly through ordinary Tuya-Convert, reusing the accepted
+GPIO14 relay, active-low GPIO1 button and inverted GPIO13 relay indicator.
+Credentials are distinct; the loader and encrypted API identities matched
+this new unit and differed from earlier devices.
+
+Native control, software restart from ON to OFF and HA ON/OFF commands passed.
+Repeated physical button/load/indicator and mains-cycle tests were waived.
+The accepted profile does not configure electrical metering. Both complete
+`switch21.yaml` source copies and their private secrets are persisted in HA
+and ESPHome Dashboard with two compilation workers. Source readback and
+deployed configuration validation passed. Lovelace places `switch.switch21`
+with friendly name Switch21 immediately after Switch20. Final relay state: OFF.
