@@ -1137,3 +1137,31 @@ The full button-to-controller round trip remains pending.
 Existing bridge fabrics were preserved, and household entity identifiers were
 not published. A functioning server process is not a completed end-to-end
 acceptance test. Track those gates in [ROADMAP.md](../ROADMAP.md).
+
+
+### 2026-10-11 — iNewSwitch maintenance and s6 rename
+
+The pre-existing iNewSwitch outlet was updated from ESPHome 2025.4.0 to stable
+2026.9.1 by native OTA and renamed `s6`; this is maintenance, not another Tuya
+conversion. Its private source is now `s6.yaml` in both HA `/config/esphome`
+and Dashboard `/config`, replacing `inewswitch.yaml` without changing the
+25-plug source count. Both copies pass validation with the deployed toolchain.
+
+The accepted GPIOs, metering calibration, credentials and `ALWAYS_OFF` relay
+behavior were preserved. The uptime unit was corrected from `minutes` to `min`
+without changing its values. The final firmware is 476112 bytes, below 512 KiB.
+API reconnect and version 2026.9.1 were verified; both API and MQTT relay states
+remained OFF, and metering was available. No test relay toggle was sent.
+
+HA uses `switch.s6`; existing secondary MQTT exposure uses `switch.s6_mqtt`.
+Twenty-five entity names/IDs were normalized and seven existing automation
+references plus the Lovelace item were migrated. Twenty-two registry identities
+were retained. The newer MQTT implementation changes signal/uptime/version
+unique IDs; those three secondary diagnostics use new records while existing
+recorder history remains untouched. Retained discovery topics were migrated,
+and the invalid old uptime registry record was removed. The firmware's legacy
+component names and MQTT state/command topic prefix intentionally remain stable.
+
+HA configuration validation passed. Reloading only the seven changed automation
+IDs preserved unrelated active motion-off timers. Refreshing HA's Dashboard
+coordinator resolved its stale node-name cache before final API verification.
