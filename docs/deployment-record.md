@@ -1442,3 +1442,21 @@ OFF passed. Shared HLW8012 voltage/current/power/energy remain uncalibrated;
 no other unit's calibration factors were copied. Both complete source copies
 are persisted and validated as `kmc-switch17-19.yaml`, with two compile workers.
 Lovelace places Switch17, Switch18 and Switch19 after Switch16. All relays end OFF.
+
+
+### LSPA11, prospective Switch20: authentication blocked
+
+The owner reports one button, two AC outlets with individual indicators and two
+USB ports, and confirmed every output unloaded. The unit joined the isolated
+workbench network but made repeated PSK identity `02` handshakes ending in
+`DECRYPTION_FAILED_OR_BAD_RECORD_MAC`. No VTRUST loader started and no replacement
+firmware was transferred. A prepared GPIO-neutral ESP8266 image was not installed;
+the actual chip family and GPIO assignments remain unconfirmed.
+
+The current upstream CloudCutter device index has no exact LSPA11 profile.
+Profiles for similarly named LSPA models are not evidence of compatibility.
+Continuation requires the stock main-module firmware version and a matching
+profile, or identification of the actual radio module. The two AC outlets' and
+USB ports' independent control remains unknown. Switch20 is reserved only; no
+HA entity, dashboard control or deployed ESPHome source was created. This attempt
+does not increase the successful conversion or physical-acceptance counts.
