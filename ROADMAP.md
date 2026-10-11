@@ -327,7 +327,7 @@ installation remains counted as a firmware conversion, not physical acceptance.
 - [x] Restore eleven missing per-unit YAMLs and their existing credentials from the private workbench.
 - [x] Validate the prepared configurations and verify identical source readback in both locations.
 - [x] Preserve existing source files, secret values and installed firmware.
-- [ ] Align the deployed Dashboard version and CPU-dependent compile limits; live validation currently passes only two of twenty-five plug configurations.
+- [x] Align the deployed Dashboard to ESPHome 2026.9.1 and compile limits to two CPUs; all twenty-five plug configurations pass live validation.
 
 All twenty-one converted plugs now have individual deployed source files.
 See the [source audit](docs/deployment-record.md#deployed-source-audit-and-restoration)

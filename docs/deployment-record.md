@@ -1067,15 +1067,29 @@ relay commands, performed no firmware uploads and did not resume the deferred
 hardware investigations. Exact paths, identities, backup receipts and secret
 values remain private.
 
-The deployed validator exposed a separate build-environment gap: its ESPHome
-version is 2026.8.2, whereas the recent local builds used 2026.9.1. Only two of
-the twenty-five plug configurations passed validation in that container.
-Twenty-one specify a compile-process limit above the two CPUs visible there;
-the two maintained older devices explicitly require at least 2026.9.1. This
-audit restored source availability, not build readiness. Align the Dashboard
-version with the recorded toolchain and its compilation parallelism with the
-container before attempting a new build. No deployment upgrade or firmware
-update was performed as part of this audit.
+The deployed validator initially exposed a separate build-environment gap: its
+ESPHome version was 2026.8.2, whereas the recent local builds used 2026.9.1. Only
+two of the twenty-five plug configurations passed validation in that container.
+Twenty-one failed on a compile-process limit above the two CPUs visible there;
+the two maintained older devices explicitly required at least 2026.9.1. The
+source audit therefore left a separate requirement to align the Dashboard
+version and compilation parallelism before attempting a new build. No deployment
+upgrade or firmware update was performed as part of that initial audit.
+
+The separately authorized Dashboard upgrade later on 2026-10-11 resolved that
+gap. The active deployment now runs ESPHome 2026.9.1 pinned by OCI digest. All
+twenty-two explicit compile-process limits above the container's two CPUs were
+reduced to two in both private source copies, including the maintained device
+whose version requirement had previously prevented its full validation.
+Credentials, hardware profiles and relay behavior were preserved.
+
+After the rollout, the Dashboard had one ready replica, returned HTTP 200 and
+validated all twenty-five plug configurations successfully. The Deployment
+specification changed only its image; its source volume, security settings and
+replica count were retained. This maintenance did not upload device firmware
+or establish any additional physical acceptance results. The image and rollout
+documentation are recorded in
+[k3s-self-healing PR #186](https://github.com/4alvit/k3s-self-healing/pull/186).
 
 ## Software provenance
 
