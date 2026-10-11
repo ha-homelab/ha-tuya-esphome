@@ -1169,7 +1169,9 @@ coordinator resolved its stale node-name cache before final API verification.
 ### 2026-10-11 — KMC voltage reference adjustment
 
 All three KMC 30608 samples received separate voltage-only multipliers against
-the owner's nominal 122 V Victron reference. The firmware's current, power and
+the owner's Victron reference. An initial nominal-122 V adjustment was refined
+against concurrent live readings using the mean of the two reference phases;
+the outlet phase assignments remain unknown. The firmware's current, power and
 energy calculations were preserved and remain uncalibrated; the diagnostic
 text states this partial scope. The update preserved device/component identities
 and all GPIO behavior. Each unit was updated in sequence, and all nine recorded
