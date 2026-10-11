@@ -169,10 +169,13 @@ A later YM-WS-1 with a reused, untested profile remained online while its LED
 glowed dimly and a physical press produced neither an input event nor a click.
 Different boards share that model marking. Compare documented button inputs
 before changing any output assignment; do not diagnose a failed relay solely
-from a healthy API or an ineffective software switch. In this case an input-only
-probe was prepared but not installed, and the owner deferred further checks.
-The cause remains unresolved; see the
-[follow-up record](deployment-record.md#twelfth-conversion-follow-up-diagnosis-deferred).
+from a healthy API or an ineffective software switch. This investigation was
+initially deferred. When resumed with the output unloaded, an input-only probe
+identified GPIO1 as the button; GPIO14 restored relay operation, and an
+active-high GPIO13 indicator then followed the load. An inverted LED can appear
+to show the opposite relay state, so verify the actual load and indicator
+separately. See the
+[recovery record](deployment-record.md#twelfth-conversion-recovery-alternate-gpio14-profile-confirmed).
 
 ## The button switches the load, but the indicator stays dark
 

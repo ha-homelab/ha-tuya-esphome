@@ -155,9 +155,12 @@ A twelfth conversion reused the established YM-WS-1 profile. Its initial final-i
 request stalled without a recorded image download. A fresh read confirmed that
 the same device still ran the intermediate loader; one bounded retry installed
 the complete profile with its new role name. The final encrypted API, identity
-and compilation time were verified. Repeated physical and restart tests remain
-waived under the standing same-model policy. HA references and DNS now use the
-new role; the exact old LocalTuya device was removed, with automation logic and
+and compilation time were verified. Repeated physical and restart tests were
+initially waived under the standing same-model policy. A later input probe and
+load test corrected this unit to GPIO1 button, GPIO14 relay and active-high
+GPIO13 indicator; the owner confirmed both button cycles and matching lamp/LED
+operation. HA references and DNS use the new role; the exact old LocalTuya
+device was removed, with automation logic and
 manual overrides preserved. No corresponding client references were found.
 
 A separate TECKIN SP20 moved from Tasmota to ESPHome through its existing web
@@ -310,17 +313,19 @@ See [the Supernight evidence](docs/supernight-cv01.md).
 - [x] Adopt ESPHome under the existing numbered switch ID and persist its source and credentials.
 - [ ] Verify controlled mains-cycle behavior and boot transients separately.
 
-## Reused YM-WS-1 profile: deferred follow-up
+## Reused YM-WS-1 profile: corrected follow-up
 
 - [x] Confirm encrypted API communication and record the owner's dim-indicator/no-click report.
 - [x] Observe no physical-button transition during the requested short press.
-- [x] Compile an input-only GPIO1/GPIO13 probe without installing it.
-- [ ] Confirm the enclosure marking and unloaded power-cycle behavior; the owner deferred this check.
-- [ ] Identify this unit's actual button/relay/indicator mapping and verify physical load control.
+- [x] Compile an input-only GPIO1/GPIO13 probe; install it after the owner confirms the output is unloaded.
+- [x] Identify GPIO1 with a complete physical press/release and restore switching with GPIO14.
+- [x] Correct GPIO13 LED polarity to active-high and confirm that lamp and indicator follow both button cycles.
+- [x] Preserve the original six component/entity identities, verify that no temporary probe entities remain and persist the corrected source.
+- [ ] Separately verify controlled mains-cycle behavior and boot transients.
 
-No firmware, relay command or HA configuration change was made during this
-follow-up. GPIO mismatch is a hypothesis, not a confirmed cause. The original
-installation remains counted as a firmware conversion, not physical acceptance.
+The original GPIO assignment was wrong for this unit. The corrected profile
+now has physical button/load/indicator acceptance and a firmware-restart OFF
+check. This recovery does not add another conversion to the device count.
 
 ## Deployed configuration completeness
 

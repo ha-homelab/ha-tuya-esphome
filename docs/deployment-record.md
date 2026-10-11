@@ -544,9 +544,10 @@ checks; encrypted API readback matched the physical identity, final role and
 compilation timestamp. The API also remained reachable after the operator's
 reported power interruption; no relay transition was tested during that event.
 
-The complete verified model profile was reused without repeated physical or
-restart testing. The conversion container was removed, both radios returned
-to managed mode, and the existing DNS reservation retained its MAC/address
+The profile previously verified on another sample was reused without repeated
+physical or restart testing. The later recovery below establishes that this
+unit needed a different GPIO map. The conversion container was removed, both
+radios returned to managed mode, and the existing DNS reservation retained its MAC/address
 while adopting the new name. Forward and reverse DNS checks passed.
 
 The new HA relay replaced the exact old LocalTuya device. Eight references in
@@ -577,10 +578,38 @@ GPIO1/GPIO13 probe compiled successfully and passed the image checksum check;
 it was not uploaded. No relay command or HA configuration change was made
 during this investigation.
 
-On 2026-10-11, the owner deferred the requested unloaded power cycle and model
-check. Diagnosis stopped at that point. The existing firmware remains installed,
-and the unit remains outside the per-unit physical acceptance count. Resume
-from physical identification and an unloaded check, not from an assumed repair.
+On 2026-10-11, the owner initially deferred the requested unloaded power cycle
+and model check. Diagnosis stopped at that point with the existing firmware
+still installed and no per-unit physical acceptance. The later recovery is
+recorded separately below.
+
+### Twelfth conversion recovery: alternate GPIO14 profile confirmed
+
+Later on 2026-10-11, the owner reported the indicator lit but no response or
+apparent network connection. A fresh check found the same device online with
+its original ESPHome 2026.9.1 build and an accessible OTA service. The owner
+confirmed the output was unloaded before diagnosis resumed.
+
+The prepared 424,448-byte input-only image was installed and its identity
+verified. A short physical press and release produced GPIO1 events, confirming
+that the former GPIO13 button assignment was wrong. A 440,480-byte image with
+GPIO1 button, GPIO14 relay and GPIO13 indicator restored physical switching.
+The owner then reported that the indicator was opposite to the load. A second
+440,480-byte update changed only LED polarity to active-high. The owner
+confirmed that the lamp and indicator now turn ON and OFF together; native
+events recorded both complete button cycles and the matching relay changes.
+
+The final encrypted API check matched the same device, final build and all six
+original component identities. The relay returned OFF after the firmware
+restart and ended OFF after physical testing. The original HA entity IDs were
+preserved, no temporary probe entities remained in HA, and the corrected
+source was synchronized to HA, ESPHome Dashboard and the private workbench.
+Dashboard validation passed without changing credentials. A controlled mains
+cycle and boot-transient measurement were not performed in this recovery.
+
+The reusable [alternate YM-WS-1 profile](../examples/ym-ws1-gpio14.yaml) records
+the observed hardware. This repairs an existing conversion; it does not add
+another device to the conversion count.
 
 ## Existing Tasmota SP20: metered ESPHome maintenance
 
@@ -1108,15 +1137,17 @@ tags mean builds are not promised to be byte-for-byte identical.
 
 ## Still pending
 
-Fourteen converted plugs passed per-unit physical button/load checks. Six earlier units also have
+Fifteen converted plugs passed per-unit physical button/load checks. Six earlier units also have
 HA software-restart evidence; the seventh conversion's restart began already off,
 so it does not prove on-to-off restoration. The eighth has no separate restart
 test and its corrected indicator has not been visually rechecked.
 The sixth and ninth use a previously verified WP5 profile, the tenth reuses
 the established YM-WS-1 profile, the eleventh reuses the corrected JH-G01U
-profile, the twelfth reuses the YM-WS-1 profile, and the thirteenth reuses the
-KMC 30137 profile. Repeated physical and restart checks were waived by the
-operator for those units.
+profile, and the thirteenth reuses the KMC 30137 profile. Repeated physical and
+restart checks were waived by the operator for those units. The twelfth
+initially reused the YM-WS-1 profile but subsequently required a different
+GPIO map and LED polarity; its corrected configuration now has physical
+button/load/indicator acceptance.
 Their transfers and encrypted APIs were verified separately.
 The fourteenth conversion, TanTan WP3, passed physical button/load/indicator
 checks, encrypted API control and a software restart from reported ON to OFF.

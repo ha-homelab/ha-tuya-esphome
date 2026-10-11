@@ -62,7 +62,7 @@ Keep the original GPIO-neutral YAML and image for unknown plugs. The historical
 the initial attempt; do not combine them with the XS-SSA01 package. GPIO12 is not
 a relay output for this observed variant.
 
-## YM-WS-1: different reported boards, one observed GPIO15 variant
+## YM-WS-1: two observed board variants
 
 The next unit is marked YM-WS-1. Its first pairing attempt ended before it joined
 the conversion AP; no replacement firmware was written. The operator could not
@@ -88,6 +88,19 @@ Use [`ym-ws1-gpio15.yaml`](../examples/ym-ws1-gpio15.yaml) with the GPIO-neutral
 base after matching the hardware. It provides a local debounced button,
 `ALWAYS_OFF` relay and internal indicator, and a diagnostic restart button.
 Do not combine it with another GPIO package.
+
+The twelfth converted unit later proved to have the alternate mapping. An
+input-only probe recorded a complete press/release on GPIO1, while GPIO13 did
+not respond. GPIO14 then switched the owner's test lamp. The first GPIO13 LED
+setting used inverted polarity and lit the indicator while the load was OFF;
+changing it to active-high made the lamp and indicator follow together. The
+owner confirmed both button cycles, and native events agreed.
+
+Use [`ym-ws1-gpio14.yaml`](../examples/ym-ws1-gpio14.yaml) only for a unit matching
+that observed mapping and polarity. It retains disabled serial logging from
+the neutral base, which is required before using GPIO1 as a button input.
+This recovery passed a firmware-restart OFF check; a separate controlled mains
+cycle and boot-transient measurement were not performed.
 
 ## WP5: identify the variant before assigning outputs
 

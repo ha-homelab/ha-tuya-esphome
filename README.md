@@ -43,17 +43,19 @@ the prepared ESPHome image remains uninstalled.
 
 Twenty-one plugs have now received ESPHome relay firmware: two XS-SSA01 units,
 five WP5 units, two KMC 30137, three YM-WS-1 units, two JH-G01U units, two
-WP3 units, one GREFIC CZ-U201, three KMC 30608 and one Supernight CV01. Fourteen passed their own physical
+WP3 units, one GREFIC CZ-U201, three KMC 30608 and one Supernight CV01. Fifteen passed their own physical
 button/load test; the first two WP5 units also passed their independent
 red-indicator check.
 Per-unit HA software-restart results are recorded in the deployment record.
 For two WP5 units, the second and third YM-WS-1 units, the second JH-G01U and
-the second KMC 30137, the operator chose the existing model profile and waived
-repeated physical and restart tests.
+the second KMC 30137, the operator initially chose the existing model profile
+and waived repeated physical and restart tests.
 The third converted YM-WS-1 later showed a dim indicator and no response to
-its physical button despite a healthy encrypted API. Its reused GPIO profile
-has not been physically validated; further diagnosis was deferred by the owner.
-See the [follow-up record](docs/deployment-record.md#twelfth-conversion-follow-up-diagnosis-deferred).
+its physical button despite a healthy encrypted API. A later probe identified
+GPIO1 as its button; GPIO14 relay control and an active-high GPIO13 indicator
+then passed the owner's physical lamp/button test. The corrected configuration
+preserves its HA identities. See the
+[recovery record](docs/deployment-record.md#twelfth-conversion-recovery-alternate-gpio14-profile-confirmed).
 Both WP3 units passed encrypted OTA/API, button/load/indicator and software-restart
 state checks. The first was also available after relocation; controlled ON-to-OFF mains
 power-cycle tests remain pending. Their
@@ -68,7 +70,8 @@ button and a controlled mains cycle passed physical acceptance.
 The [KMC 30608 Smart Tap](docs/kmc-30608.md) passed separate lamp checks on all
 three numbered outlets, common-button control and a controlled mains cycle.
 Its existing three HA entity IDs now use ESPHome. Voltage, current, power and
-energy metering are enabled; calibration is explicitly deferred.
+energy metering are enabled. All three KMC units have individual voltage
+reference corrections; current, power and energy remain uncalibrated.
 The second KMC also passed outlet, button and mains-cycle acceptance and its HA
 handover. Its stock table shows that Tuya datapoint numbers and physical outlet
 numbers differ; both KMC handovers now retain that association. The second

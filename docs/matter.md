@@ -9,7 +9,9 @@ responded successfully. This project reused that instance and added exact relay
 entity filters for the converted plugs below. Seven passed per-unit physical
 checks; two WP5 units, the second and third YM-WS-1, the second JH-G01U and
 the second KMC 30137 reused existing profiles with those checks explicitly
-waived by the operator. The original two
+initially waived by the operator. The third YM-WS-1 subsequently passed its own
+lamp/button/indicator test after a GPIO correction, with its HA identity
+preserved; that test does not establish Google/Alexa control. The original two
 fabrics were preserved when Alexa was commissioned, and all three were preserved
 when later plugs were added. No new bridge or factory reset was used.
 
