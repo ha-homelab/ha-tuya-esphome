@@ -1421,3 +1421,24 @@ passed. Meter readings remain uncalibrated. Complete `switch16.yaml` source
 copies are saved and validated in HA and ESPHome Dashboard with two compile
 workers. Lovelace places Switch16 after Switch15. Final relay state: OFF.
 No new physical button/load/indicator or mains-cycle acceptance is claimed.
+
+
+### Twenty-ninth conversion: fourth KMC 30608, Switch17–Switch19
+
+The owner identified the same model, confirmed all four physical outlets were
+unloaded, and requested the next three numbered controls. The final ESPHome
+2026.9.1 image was installed directly by ordinary Tuya-Convert with distinct
+credentials, reusing the accepted profile without diagnostic firmware or
+repeated physical acceptance. Encrypted API identity matched the new loader.
+
+Embossed outlets 1, 2 and 3 use GPIO15, GPIO13 and GPIO14 and are named Switch17,
+Switch18 and Switch19. The GPIO16 button turns all relays off when any is on,
+or all on when all are off. GPIO1 provides inverted connection status. The
+fourth outlet remains always on and has no relay entity. Existing unresolved
+per-outlet LED behavior was not re-investigated.
+
+Independent native and HA controls and software restart from all ON to all
+OFF passed. Shared HLW8012 voltage/current/power/energy remain uncalibrated;
+no other unit's calibration factors were copied. Both complete source copies
+are persisted and validated as `kmc-switch17-19.yaml`, with two compile workers.
+Lovelace places Switch17, Switch18 and Switch19 after Switch16. All relays end OFF.
