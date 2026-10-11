@@ -1,0 +1,44 @@
+# YM-WS-1 observed variant: GPIO13 button, GPIO15 relay, inverted GPIO12 LED.
+# Same model marking has other variants. Verify this mapping on each new unit.
+# Include with the GPIO-neutral tuya-plug.yaml; do not combine GPIO candidates.
+switch:
+  - platform: gpio
+    id: relay
+    name: Relay
+    pin: GPIO15
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - light.turn_on: relay_indicator
+    on_turn_off:
+      - light.turn_off: relay_indicator
+
+binary_sensor:
+  - platform: gpio
+    name: Physical Button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - switch.toggle: relay
+
+output:
+  - platform: gpio
+    id: indicator_output
+    pin:
+      number: GPIO12
+      inverted: true
+
+light:
+  - platform: binary
+    id: relay_indicator
+    output: indicator_output
+    internal: true
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic

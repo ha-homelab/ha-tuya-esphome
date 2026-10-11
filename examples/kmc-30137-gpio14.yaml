@@ -1,0 +1,44 @@
+# KMC 30137 observed variant: GPIO1 button, GPIO14 relay, inverted GPIO13 LED.
+# Verify this mapping on each unit; the model name does not prove the revision.
+# Include with tuya-plug.yaml. UART logging must remain disabled (baud_rate: 0).
+switch:
+  - platform: gpio
+    id: relay
+    name: Relay
+    pin: GPIO14
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - light.turn_on: relay_indicator
+    on_turn_off:
+      - light.turn_off: relay_indicator
+
+binary_sensor:
+  - platform: gpio
+    name: Physical Button
+    pin:
+      number: GPIO1
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - switch.toggle: relay
+
+output:
+  - platform: gpio
+    id: indicator_output
+    pin:
+      number: GPIO13
+      inverted: true
+
+light:
+  - platform: binary
+    id: relay_indicator
+    output: indicator_output
+    internal: true
+    restore_mode: ALWAYS_OFF
+
+button:
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic

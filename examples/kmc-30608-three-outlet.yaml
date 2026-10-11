@@ -1,0 +1,51 @@
+# Tested on one KMC 30608 / Smart Tap, ESP8266 with 1 MiB flash.
+# Hardware package for the GPIO-neutral base. Do not combine relay profiles.
+# GPIO1 is the network-status indicator, so disable UART logging.
+# Optional metering: add kmc-30608-metering.yaml as a separate package.
+logger:
+  baud_rate: 0
+
+status_led:
+  pin:
+    number: GPIO1
+    inverted: true
+
+switch:
+  - platform: gpio
+    id: outlet_1
+    name: Outlet 1
+    pin: GPIO15
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    id: outlet_2
+    name: Outlet 2
+    pin: GPIO13
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    id: outlet_3
+    name: Outlet 3
+    pin: GPIO14
+    restore_mode: ALWAYS_OFF
+
+binary_sensor:
+  - platform: gpio
+    id: physical_button
+    internal: true
+    pin:
+      number: GPIO16
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+    on_press:
+      - if:
+          condition:
+            lambda: return id(outlet_1).state || id(outlet_2).state || id(outlet_3).state;
+          then:
+            - switch.turn_off: outlet_1
+            - switch.turn_off: outlet_2
+            - switch.turn_off: outlet_3
+          else:
+            - switch.turn_on: outlet_1
+            - switch.turn_on: outlet_2
+            - switch.turn_on: outlet_3

@@ -1,0 +1,20 @@
+# Temporary WP5 identification package. Use with the GPIO-neutral base only.
+# No output GPIO or relay automation is defined. Press the physical button and
+# observe which candidate changes; remove this package before the final profile.
+binary_sensor:
+  - platform: gpio
+    name: Probe GPIO13 Button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
+  - platform: gpio
+    name: Probe GPIO4 Button
+    pin:
+      number: GPIO4
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms

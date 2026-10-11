@@ -6,6 +6,12 @@ Use [the workbench setup](workbench.md), generate private secrets, and review th
 local copy of `tuya-plug.yaml`. Each device adds its MAC suffix to its ESPHome
 hostname so the same initial image can be used for a batch.
 
+For an unidentified hardware variant, use the GPIO-neutral base or a documented
+input-only probe. For a repeated model whose existing profile the operator has
+explicitly chosen to reuse, the first image can instead include that final
+hardware package. Record any waived per-unit tests separately from successful
+checks. The same image-size, credential and device-identity requirements apply.
+
 Reusing that image also shares its API/OTA key across those units. For separate
 keys, generate and stage a separate image before converting each stock unit.
 Renaming a YAML file does not rotate credentials. Preserve deployed keys and
@@ -63,9 +69,27 @@ metadata go to `/opt/tuya-workbench/logs/<timestamp>/`; no stock dump is request
 
 Add the discovered ESPHome device under Settings → Devices & services, supplying
 its local API encryption key. If discovery is unavailable, use its DHCP address.
-Only diagnostic entities exist at this stage. Continue with [GPIO identification](gpio.md)
-before expecting a controllable plug entity or exposing it through Matter.
+With the GPIO-neutral image, only diagnostic entities exist at this stage.
+Continue with [GPIO identification](gpio.md) before expecting a controllable plug
+entity or exposing it through Matter. A deliberately reused final profile already
+contains its relay entities; preserve the recorded operator acceptance decision.
 
 For a subsequent device-specific image, keep a separate local YAML named for that
-unit and run ESPHome `upload <file>.yaml --device <address>`. Preserve its local
-credentials and stable identity. Return to Tuya-Convert only for a still-stock unit.
+unit. YAML filenames alone do not isolate build output: configurations in the
+same directory with the same `esphome.name` can overwrite the same build tree.
+After compiling a probe, the default `firmware.bin` can therefore contain that
+probe rather than the final relay profile.
+
+Before another build, save a private copy of the validated final image and its
+SHA-256 digest. With the pinned ESPHome uploader, select that file explicitly:
+
+```sh
+esphome upload unit.yaml --device <verified-unit-address> \
+  --file /private/path/to/validated-final.bin
+```
+
+Check the saved digest, matching configuration/credentials, and the target's
+encrypted API identity before uploading. Record whether a final GPIO profile was
+selected from this unit's hardware check or from the operator's explicit choice
+to reuse an existing same-model profile. Preserve the unit's local credentials
+and stable identity. Return to Tuya-Convert only for a still-stock unit.

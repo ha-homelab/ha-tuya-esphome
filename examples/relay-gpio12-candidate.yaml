@@ -1,5 +1,5 @@
-# Optional package for a unit whose relay has been verified on GPIO12.
-# The first observed unit switched physically with this non-inverted output.
+# Historical candidate only. GPIO12 is NOT a verified relay on the first unit.
+# Its LED changed, but a known-working load did not receive switched power.
 switch:
   - platform: gpio
     id: relay

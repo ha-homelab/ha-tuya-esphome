@@ -1,0 +1,12 @@
+# Temporary KMC 30137 GPIO1 input probe; use with the GPIO-neutral base only.
+# UART logging must remain disabled (baud_rate: 0) because GPIO1 is UART TX.
+# Remove this package before including the final hardware package.
+binary_sensor:
+  - platform: gpio
+    name: Probe GPIO1 Button
+    pin:
+      number: GPIO1
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on_off: 20ms
