@@ -18,6 +18,9 @@ sensor:
       name: Voltage
       id: measured_voltage
       accuracy_decimals: 1
+      # For voltage-only calibration, add a per-device multiply filter here:
+      # factor = reference voltage / reported voltage. Keep the generic example
+      # uncalibrated. Changing voltage_divider also changes power and energy.
     current:
       name: Current
       id: measured_current

@@ -257,7 +257,8 @@ See [the unit's evidence and acceptance record](docs/grefic-cz-u201.md).
 - [x] Confirm all outputs return OFF after software restart and mains cycling.
 - [x] Preserve the three existing HA entity IDs while replacing LocalTuya with ESPHome.
 - [x] Enable all four native HLW8012 measurements and verify HA adoption and load response.
-- [ ] Calibrate metering against a reference; deferred by the owner.
+- [x] Apply individual single-point voltage corrections to all three KMC samples using the owner's Victron reference.
+- [ ] Calibrate current, power and energy independently, and verify voltage accuracy across the range.
 - [ ] Verify metering coverage of outlets 1, 2 and the always-on outlet.
 - [ ] Independently confirm the GPIO1 indicator's visual behavior.
 

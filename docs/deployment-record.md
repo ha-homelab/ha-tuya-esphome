@@ -1165,3 +1165,17 @@ component names and MQTT state/command topic prefix intentionally remain stable.
 HA configuration validation passed. Reloading only the seven changed automation
 IDs preserved unrelated active motion-off timers. Refreshing HA's Dashboard
 coordinator resolved its stale node-name cache before final API verification.
+
+### 2026-10-11 — KMC voltage reference adjustment
+
+All three KMC 30608 samples received separate voltage-only multipliers against
+the owner's nominal 122 V Victron reference. The firmware's current, power and
+energy calculations were preserved and remain uncalibrated; the diagnostic
+text states this partial scope. The update preserved device/component identities
+and all GPIO behavior. Each unit was updated in sequence, and all nine recorded
+relay states were restored afterward. Active sources and private workbench
+copies were synchronized and the deployed Dashboard validated all three files.
+
+See the [KMC voltage adjustment](kmc-30608.md#voltage-only-reference-adjustment)
+for individual factors, the measurement basis and limits. This maintenance
+does not add conversions or change the outstanding physical acceptance gates.
