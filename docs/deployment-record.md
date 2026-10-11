@@ -1457,6 +1457,29 @@ The current upstream CloudCutter device index has no exact LSPA11 profile.
 Profiles for similarly named LSPA models are not evidence of compatibility.
 Continuation requires the stock main-module firmware version and a matching
 profile, or identification of the actual radio module. The two AC outlets' and
-USB ports' independent control remains unknown. Switch20 is reserved only; no
-HA entity, dashboard control or deployed ESPHome source was created. This attempt
+USB ports' independent control remains unknown. At that checkpoint Switch20
+was reserved only; no HA entity, dashboard control or deployed ESPHome source
+was created. The owner
+subsequently deferred LSPA11 and reassigned Switch20 to the KMC below. This attempt
 does not increase the successful conversion or physical-acceptance counts.
+
+
+### Thirtieth conversion: third KMC 30137, Switch20
+
+The owner reassigned number 20 from the deferred LSPA11 to a KMC 30137 and
+confirmed it was unloaded and the only device in pairing mode. Ordinary
+Tuya-Convert installed the final ESPHome 2026.9.1 image directly with distinct
+credentials, reusing the accepted GPIO14 relay, active-low GPIO1 button and
+inverted GPIO13 relay indicator. Repeated physical acceptance was waived.
+
+The new loader identity was distinct from every earlier converted unit and
+from the excluded LSPA11. Encrypted native API identity, relay control and
+software restart from ON to OFF passed. HA adopted `switch.switch20` with
+friendly name Switch20, and its ON/OFF service check passed. The accepted
+profile does not expose voltage/current/power metering.
+
+Complete `switch20.yaml` source and private secrets are saved in HA and the
+ESPHome Dashboard, with two compile workers. Both source copies and deployed
+configuration validation passed. Lovelace places Switch20 after Switch19.
+The relay ends OFF. No new physical button/load/indicator or mains-cycle
+acceptance is claimed.

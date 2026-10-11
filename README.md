@@ -45,8 +45,8 @@ A fourth AWP02L-N succeeded through ordinary Tuya-Convert and passed its physica
 button/load/indicator test. Its [GPIO13/GPIO15/GPIO2 profile](examples/awp02l-n-gpio15.yaml)
 does not establish a workaround for the three earlier PSK `02` failures.
 
-Twenty-nine Tuya plugs have now received ESPHome relay firmware: two XS-SSA01 units,
-six WP5 units, two KMC 30137, three YM-WS-1 units, two JH-G01U units, two
+Thirty Tuya plugs have now received ESPHome relay firmware: two XS-SSA01 units,
+six WP5 units, three KMC 30137, three YM-WS-1 units, two JH-G01U units, two
 WP3 units, one GREFIC CZ-U201, four KMC 30608, two Supernight CV01, one
 AWP02L-N and four XS-SSA05 units. Seventeen passed their own physical button/load test; the first two WP5 units also passed their independent
 red-indicator check.
