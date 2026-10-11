@@ -1301,4 +1301,5 @@ A unique-key GPIO-neutral ESPHome image is prepared privately but uninstalled.
 No HA entity or live Dashboard source was created. The factory firmware remains
 in place, both workbench sessions were cleaned up, and the Wi-Fi radio returned
 to managed mode. Continue after identifying the original app or board/module;
-do not count this unit among successful conversions.
+do not count this unit among successful conversions. The owner subsequently
+deferred Switch08; no further probing or flashing is scheduled.

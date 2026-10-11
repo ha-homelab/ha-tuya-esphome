@@ -353,5 +353,5 @@ for scope and the distinction between saved source and physical acceptance.
 - [ ] Controlled ON-to-OFF mains-cycle checks for these two additions.
 
 - [ ] Identify the board or original application of the square outlet reserved
-      as Switch08. Ordinary pairing failed; its setup AP is identified, but no
+      as Switch08 (deferred by the owner). Ordinary pairing failed; its setup AP is identified, but no
       firmware update route is established and no image has been installed.
