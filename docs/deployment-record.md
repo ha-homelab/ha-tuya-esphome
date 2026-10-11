@@ -1373,3 +1373,20 @@ The complete source is saved as switch11.yaml in HA and ESPHome Dashboard, with
 separate secrets and the two-worker compile limit. Lovelace places Switch11
 after Switch10. No existing HA identity matched this plug. Final relay state: OFF.
 See [the profile and calibration notes](xs-ssa05.md).
+
+
+### Twenty-sixth conversion: second XS-SSA05, Switch12
+
+At the owner's request, this unit reuses the accepted first XS-SSA05 profile
+without repeating button, load, indicator or mains-cycle acceptance. The owner
+confirmed that the outlet was unloaded and in fast pairing mode. The complete
+ESPHome 2026.9.1 relay firmware was installed directly through ordinary
+Tuya-Convert, without a diagnostic firmware stage. Distinct private credentials
+were generated, and the encrypted API matched the loader identity.
+
+GPIO12 switches the relay; GPIO13 is the active-low button. Active-low GPIO0
+follows the relay, GPIO15 provides connection status, and GPIO4 stays off. The
+HLW8012 voltage/current/power/energy readings remain explicitly uncalibrated.
+Native and HA controls and software restart to OFF passed. The source is saved
+and validated in HA and ESPHome Dashboard as `switch12.yaml`, with two compile
+workers. Lovelace places Switch12 after Switch11. Final relay state: OFF.

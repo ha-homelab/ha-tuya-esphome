@@ -46,3 +46,12 @@ software restart from ON to OFF passed. A controlled mains-cycle test was not ru
 HA uses `switch.switch11`; the source is saved in both HA and ESPHome Dashboard
 as `switch11.yaml`. The dashboard includes it after Switch10. No matching old
 HA entity required removal.
+
+
+## Second sample: Switch12
+
+The second unit uses this same profile, installed directly with ordinary
+Tuya-Convert. The owner explicitly waived repeated physical acceptance.
+Encrypted API identity, native and HA control, software restart to OFF and both
+deployed source copies were verified. Its meter also remains uncalibrated.
+The individual physical-acceptance count is unchanged by this second unit.
