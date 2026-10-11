@@ -1212,3 +1212,26 @@ copies were synchronized and the deployed Dashboard validated all three files.
 See the [KMC voltage adjustment](kmc-30608.md#voltage-only-reference-adjustment)
 for individual factors, the measurement basis and limits. This maintenance
 does not add conversions or change the outstanding physical acceptance gates.
+
+
+### 2026-10-11 — Switch06 and Switch07 naming
+
+The existing s6 device was subsequently renamed **Switch06** in HA, including
+its native and secondary MQTT entity names, both device records and the
+ESPHome entry title. Its saved source is now `switch06.yaml` in HA and the
+Dashboard, with only the friendly-name metadata changed; native node name,
+component identities, MQTT topics and electrical configuration remain stable.
+Seven active HA automation sources follow the new entity IDs without changing
+control policy or load estimates.
+
+The corrected standalone YM-WS-1 sample became **Switch07**, and its former
+logical role moved to outlet 2 of the third KMC 30608. Existing role consumers
+follow that KMC output; the other KMC outputs are unchanged. Its saved source
+is now `switch07.yaml`, retaining the corrected GPIO1/GPIO14/GPIO13 profile.
+The two numbered controls appear together after Switch05 in Lovelace.
+
+This was an HA registry/reference and saved-source migration: no firmware was
+uploaded, no device was restarted and no test relay command was sent. Running
+firmware friendly names may still reflect the earlier deployment; HA names
+are explicit registry overrides. Both saved sources validate with ESPHome
+2026.9.1, and secret values and the total source count are unchanged.
