@@ -55,3 +55,20 @@ Tuya-Convert. The owner explicitly waived repeated physical acceptance.
 Encrypted API identity, native and HA control, software restart to OFF and both
 deployed source copies were verified. Its meter also remains uncalibrated.
 The individual physical-acceptance count is unchanged by this second unit.
+
+
+## Third sample: Switch15
+
+The owner chose Switch15 as the next number and requested the same accepted
+profile without repeated physical checks. Ordinary Tuya-Convert, encrypted API
+identity, native/HA control, software restart to OFF and both deployed sources
+were verified. Meter calibration remains pending. Physical acceptance counts
+are unchanged by this sample.
+
+
+## Fourth sample: Switch16
+
+A fourth sample also accepted the final profile through ordinary Tuya-Convert.
+Its encrypted identity, native and HA controls, software restart to OFF and both
+deployed source copies were verified. Repeated physical acceptance was waived;
+its meter remains uncalibrated.

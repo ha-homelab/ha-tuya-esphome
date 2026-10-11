@@ -1390,3 +1390,34 @@ HLW8012 voltage/current/power/energy readings remain explicitly uncalibrated.
 Native and HA controls and software restart to OFF passed. The source is saved
 and validated in HA and ESPHome Dashboard as `switch12.yaml`, with two compile
 workers. Lovelace places Switch12 after Switch11. Final relay state: OFF.
+
+
+### Twenty-seventh conversion: third XS-SSA05, Switch15
+
+The owner requested Switch15 as the next number and the same profile-reuse
+workflow. The final ESPHome 2026.9.1 firmware was installed directly through
+ordinary Tuya-Convert with distinct private credentials. The encrypted native
+API matched the new loader identity. The accepted GPIO12 relay, GPIO13 button,
+GPIO0 red, GPIO15 status and disabled GPIO4 indicator profile is unchanged.
+
+Repeated physical button/load/indicator and mains-cycle acceptance was waived.
+Native and HA control and software restart to OFF passed. The HLW8012 meter is
+exposed but remains uncalibrated. Both complete deployed source copies validate
+as `switch15.yaml`, with two compile workers. Lovelace places Switch15 after
+Switch12. Final relay state: OFF.
+
+
+### Twenty-eighth conversion: fourth XS-SSA05, Switch16
+
+The owner requested the next identical conversion as Switch16, reusing the
+accepted GPIO12/GPIO13/GPIO0/GPIO15/GPIO4 profile without repeated physical
+checks. Ordinary Tuya-Convert installed the final ESPHome 2026.9.1 image
+directly. A spare, previously disconnected workbench Wi-Fi adapter supplied the
+associated AP client for this session; no phone reconnection was needed.
+It was disconnected and restored after the session.
+
+Encrypted API identity, native and HA controls and software restart to OFF
+passed. Meter readings remain uncalibrated. Complete `switch16.yaml` source
+copies are saved and validated in HA and ESPHome Dashboard with two compile
+workers. Lovelace places Switch16 after Switch15. Final relay state: OFF.
+No new physical button/load/indicator or mains-cycle acceptance is claimed.
