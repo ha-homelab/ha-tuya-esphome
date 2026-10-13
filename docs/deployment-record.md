@@ -1535,3 +1535,38 @@ validation and credentials matching the HA integration passed. Deployed
 configuration uses two compilation workers. The flashing session was cleaned
 up and the workbench Wi-Fi interface restored to managed mode. Final relay
 state: OFF.
+
+
+### Thirty-third conversion: fifth KMC 30608, Switch22–Switch24
+
+On 2026-10-13, the owner identified another KMC 30608 and confirmed that all
+four physical outlets were unloaded and it was the only pairing target.
+The device identity matched an earlier retired three-channel LocalTuya unit.
+Neither its configuration nor its old entities remained in the live HA
+registry, so no additional removal or restoration of former roles was needed.
+The next numbered controls after Switch21 were available.
+
+Ordinary Tuya-Convert started the VTRUST loader on the expected device, which
+reported 1 MiB QIO flash. A 432,480-byte ESPHome 2026.9.1 image installed in
+9,289 ms and joined the home network with a verified encrypted API. This
+session reused the accepted KMC profile directly, without a diagnostic image
+or a new firmware backup.
+
+Numbered outlets 1, 2 and 3 use GPIO15, GPIO13 and GPIO14, exposed as Switch22,
+Switch23 and Switch24. The GPIO16 button turns all relays off if any is on,
+or all on if all are off. GPIO1 provides inverted connection status. The fourth
+outlet remains always on. Shared HLW8012 voltage, current, power and energy
+since boot are available; no other unit's calibration factors were copied.
+The calibration diagnostic explicitly reports `Not calibrated`.
+
+Independent native and HA relay commands passed. A software restart from all
+ON returned all three OFF. These are software state checks: no new physical
+outlet/button/indicator acceptance or controlled mains-cycle test was performed.
+
+HA exposes `switch.switch22`, `switch.switch23` and `switch.switch24`, with
+matching friendly names, under KMC Switch22-24. Lovelace places the three
+controls immediately after Switch21. Complete `kmc-switch22-24.yaml` source
+and distinct private credentials are persisted in both HA and ESPHome Dashboard
+with two compile workers. Source readback and deployed configuration validation
+passed. Existing unrelated HA identities were preserved. The workbench session
+ended and its Wi-Fi interface returned to managed mode. Final state: all OFF.
