@@ -1501,3 +1501,72 @@ The accepted profile does not configure electrical metering. Both complete
 and ESPHome Dashboard with two compilation workers. Source readback and
 deployed configuration validation passed. Lovelace places `switch.switch21`
 with friendly name Switch21 immediately after Switch20. Final relay state: OFF.
+
+
+### Thirty-second conversion: fourth YM-WS-1
+
+On 2026-10-13, the owner confirmed that this existing LocalTuya outlet was
+unloaded and the only device in pairing mode. Its saved identity matched the
+1 MiB QIO VTRUST loader and the subsequent encrypted ESPHome API. Ordinary
+Tuya-Convert installed a 424,464-byte ESPHome 2026.9.1 input-only diagnostic
+image in 10,818 ms. No stock firmware backup was taken for this session.
+
+A short physical press produced a GPIO1 transition. This selected the existing
+[alternate YM-WS-1 profile](../examples/ym-ws1-gpio14.yaml): active-low GPIO1
+button with pull-up and 20 ms debounce, GPIO14 relay, and an active-high GPIO13
+indicator following the relay. The 440,432-byte final ESPHome 2026.9.1 image
+was installed through native OTA, with distinct private credentials and
+`ALWAYS_OFF` relay restoration.
+
+Native ON/OFF commands and a software restart from ON to OFF passed. The owner
+then confirmed that two short button presses switched the load, indicator
+and relay together. HA ON/OFF commands also passed. A controlled mains
+power-cycle test was not performed.
+
+The exact old LocalTuya device and its sole entity were removed after the new
+ESPHome integration was ready. The replacement retained the original canonical
+HA entity ID, friendly name and placement metadata, so the existing Lovelace
+row and automation/script references did not need rewriting. Other entities'
+identities were verified unchanged.
+
+Complete source and distinct private secrets are saved in both HA's ESPHome
+directory and ESPHome Dashboard. Source readback, deployed configuration
+validation and credentials matching the HA integration passed. Deployed
+configuration uses two compilation workers. The flashing session was cleaned
+up and the workbench Wi-Fi interface restored to managed mode. Final relay
+state: OFF.
+
+
+### Thirty-third conversion: fifth KMC 30608, Switch22–Switch24
+
+On 2026-10-13, the owner identified another KMC 30608 and confirmed that all
+four physical outlets were unloaded and it was the only pairing target.
+The device identity matched an earlier retired three-channel LocalTuya unit.
+Neither its configuration nor its old entities remained in the live HA
+registry, so no additional removal or restoration of former roles was needed.
+The next numbered controls after Switch21 were available.
+
+Ordinary Tuya-Convert started the VTRUST loader on the expected device, which
+reported 1 MiB QIO flash. A 432,480-byte ESPHome 2026.9.1 image installed in
+9,289 ms and joined the home network with a verified encrypted API. This
+session reused the accepted KMC profile directly, without a diagnostic image
+or a new firmware backup.
+
+Numbered outlets 1, 2 and 3 use GPIO15, GPIO13 and GPIO14, exposed as Switch22,
+Switch23 and Switch24. The GPIO16 button turns all relays off if any is on,
+or all on if all are off. GPIO1 provides inverted connection status. The fourth
+outlet remains always on. Shared HLW8012 voltage, current, power and energy
+since boot are available; no other unit's calibration factors were copied.
+The calibration diagnostic explicitly reports `Not calibrated`.
+
+Independent native and HA relay commands passed. A software restart from all
+ON returned all three OFF. These are software state checks: no new physical
+outlet/button/indicator acceptance or controlled mains-cycle test was performed.
+
+HA exposes `switch.switch22`, `switch.switch23` and `switch.switch24`, with
+matching friendly names, under KMC Switch22-24. Lovelace places the three
+controls immediately after Switch21. Complete `kmc-switch22-24.yaml` source
+and distinct private credentials are persisted in both HA and ESPHome Dashboard
+with two compile workers. Source readback and deployed configuration validation
+passed. Existing unrelated HA identities were preserved. The workbench session
+ended and its Wi-Fi interface returned to managed mode. Final state: all OFF.
