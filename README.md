@@ -195,3 +195,5 @@ project and does not claim that every Tuya firmware or plug is compatible.
 ## Development and security
 
 See [contribution and test requirements](CONTRIBUTING.md), [private security reporting](SECURITY.md), [source releases](RELEASING.md), [governance](GOVERNANCE.md) and [conduct](CODE_OF_CONDUCT.md).
+
+For provisioning without the legacy Wi-Fi converter, see the [encrypted USB provisioning profile](docs/security-profile.md). Its CI compiles the real XS-SSA01 configuration with disposable keys and never flashes hardware.

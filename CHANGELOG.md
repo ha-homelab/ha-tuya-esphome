@@ -19,3 +19,7 @@ versions or acceptance to third-party firmware or previously converted devices.
 - Maintain energy-counter migration code and executable C++ regressions.
 - Record device-specific conversion and acceptance evidence with explicit
   unresolved tests in ROADMAP.md and docs/deployment-record.md.
+
+## Encrypted provisioning validation
+
+- Add the USB provisioning profile and actual encrypted firmware compile/key-length rejection checks.
