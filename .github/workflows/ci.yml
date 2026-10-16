@@ -21,9 +21,11 @@ jobs:
           bash -n bin/* scripts/setup-workbench.sh
           shellcheck bin/* scripts/setup-workbench.sh
           python3 -m compileall -q scripts tests
+      - name: Test bounded private firmware staging
+        run: python3 -m unittest discover -s tests -p 'test_stage_*.py' -v
       - name: Test migrated energy counters
         run: |
-          c++ -std=c++17 -Wall -Wextra -Werror -Iexamples tests/test_energy_state.cpp -o /tmp/test-energy
+          c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Iexamples tests/test_energy_state.cpp -o /tmp/test-energy
           /tmp/test-energy
       - name: Fetch the pinned upstream source
         run: |
