@@ -1,5 +1,7 @@
 # Tuya plugs to ESPHome
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15585/badge)](https://www.bestpractices.dev/projects/15585)
+
 An English-language field guide and reproducible workbench for converting old
 Tuya Wi-Fi plugs to ESPHome, then exposing their Home Assistant
 entities through an **existing Home Assistant Matter Hub** to Google Home and
