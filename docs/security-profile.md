@@ -15,7 +15,7 @@ On the trusted provisioning computer, create a private directory outside the
 repository and install the exact compiler with a Python virtual environment:
 
 ```sh
-python3 -m venv .venv
+python3.12 -m venv .venv
 .venv/bin/python -m pip install 'esphome==2026.9.1'
 ```
 
@@ -56,3 +56,5 @@ code: its upstream fixed hint/MD5-derived AES key and CBC transport do not becom
 secure because the final ESPHome firmware uses a new key. Keep that path isolated
 as described in SECURITY.md. This profile does not claim all legacy algorithms
 meet modern recommendations or that compiling proves a physical device is safe.
+
+Read the [compiler dependency assessment](compiler-dependency-assessment.md) before using the pinned build environment. Its Starlette findings are assessed for the command-line workflow only; do not expose PlatformIO Home or ESPHome dashboard from that environment.
