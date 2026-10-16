@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import os
+import stat
 from pathlib import Path
 import tempfile
 
@@ -10,7 +11,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument("firmware", type=Path)
 parser.add_argument("--root", type=Path, default=Path(os.environ.get("WORKBENCH_ROOT", "/opt/tuya-workbench")))
 args = parser.parse_args()
-data = args.firmware.read_bytes()
+try:
+    descriptor = os.open(args.firmware, os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0))
+    with os.fdopen(descriptor, "rb") as source:
+        if not stat.S_ISREG(os.fstat(source.fileno()).st_mode):
+            parser.error("Firmware must be a regular file.")
+        # Bound memory even if the file grows after metadata inspection.
+        data = source.read(524288 + 1)
+except OSError:
+    parser.error("Cannot open a regular firmware file.")
 if not 4096 < len(data) <= 524288:
     raise SystemExit(f"Invalid first-image size: {len(data)} bytes; limit is 524288.")
 if data[0] != 0xE9:

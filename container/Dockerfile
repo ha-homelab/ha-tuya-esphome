@@ -13,6 +13,8 @@ COPY . /usr/bin/tuya-convert
 WORKDIR /usr/bin/tuya-convert
 # sslpsk3's 1.x API supports Tuya's binary PSK identity on Python 3.11.
 RUN sed -i 's/^import sslpsk$/import sslpsk3 as sslpsk/' scripts/psk-frontend.py
+# Session PSKs are protocol secrets, never diagnostic output.
+RUN python -c 'from pathlib import Path; p = Path("scripts/psk-frontend.py"); s = p.read_text(); old = "print(\"PSK: %s\" % hexlify(psk).decode())"; assert s.count(old) == 1; p.write_text(s.replace(old, "pass  # Session PSK deliberately not logged"))'
 # The operator explicitly chose to skip stock firmware backups. Keep only
 # session logs/device metadata in the directory the upstream calls backups.
 RUN sed -i \

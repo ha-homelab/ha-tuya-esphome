@@ -42,3 +42,20 @@ with ThreadPoolExecutor(max_workers=1) as pool:
     result.result(timeout=5)
 listener.close()
 print("PASS: TLS 1.2 PSK handshake with binary Tuya identity")
+
+# Exercise the exact patched upstream derivation, without publishing its key.
+import contextlib
+import importlib.util
+import io
+from pathlib import Path
+
+spec = importlib.util.spec_from_file_location("tuya_psk_frontend", Path.cwd() / "scripts/psk-frontend.py")
+frontend = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(frontend)
+output = io.StringIO()
+with contextlib.redirect_stdout(output):
+    derived = frontend.gen_psk(bytes([1]) + frontend.IDENTITY_PREFIX + bytes(16), bytes(32))
+assert len(derived) == 32
+assert derived.hex() not in output.getvalue()
+assert "PSK:" not in output.getvalue()
+print("PASS: upstream derivation does not log session PSKs")
