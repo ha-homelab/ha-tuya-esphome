@@ -355,3 +355,13 @@ for scope and the distinction between saved source and physical acceptance.
 - [ ] Identify the board or original application of the square outlet reserved
       as Switch08 (deferred by the owner). Ordinary pairing failed; its setup AP is identified, but no
       firmware update route is established and no image has been installed.
+
+## October 2026–October 2027 maintenance plan
+
+Preserve the historical evidence and unresolved physical acceptance above. Through
+December 2026, expand synthetic loader/staging regressions and review upstream
+protocol security constraints. In January–June 2027, qualify dependency updates
+and strengthen source provenance and maintenance documentation. Through
+October 2027, recruit a backup maintainer and test repository/CI/release recovery.
+These are plans, not completed capability or guarantees. Live device conversion,
+backup-policy changes and electrical acceptance require their separate scope.

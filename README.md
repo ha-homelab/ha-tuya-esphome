@@ -188,3 +188,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 [RiDDiX Home Assistant Matter Hub](https://github.com/RiDDiX/home-assistant-matter-hub)
 provide the underlying tools. This repository is an independent integration
 project and does not claim that every Tuya firmware or plug is compatible.
+
+
+## Development and security
+
+See [contribution and test requirements](CONTRIBUTING.md), [private security reporting](SECURITY.md), [source releases](RELEASING.md), [governance](GOVERNANCE.md) and [conduct](CODE_OF_CONDUCT.md).

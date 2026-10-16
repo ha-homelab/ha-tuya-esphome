@@ -23,3 +23,9 @@ to merge a convenience change. Public issue reports must follow [SECURITY.md](SE
 Our additions are MIT-licensed. Upstream tools retain their own licenses and are
 fetched separately. Do not upload vendor firmware, credentials, device dumps, or
 radio calibration archives here.
+
+All major functionality changes must include automated regression coverage and
+relevant negative cases. Use the existing public issue/PR process for proposals;
+follow [governance](GOVERNANCE.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
+Run `python3 -m unittest discover -s tests -p 'test_stage_*.py' -v` for local
+staging tests. These synthetic files are not hardware firmware.

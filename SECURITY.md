@@ -25,3 +25,19 @@ If a credential leaks, revoke/rotate it first and assess affected device firmwar
 and Matter fabrics. Removing the current file does not erase public Git history.
 Never rotate unrelated household credentials or reset fabrics merely to exercise
 this project's tests.
+
+## Private intake and supported source
+
+The current main-branch source receives fixes. Use [GitHub private reporting](https://github.com/ha-homelab/ha-tuya-esphome/security/advisories/new)
+or **alvit.work@gmail.com** with the affected revision and a synthetic reproducer.
+The maintainer aims to acknowledge within 14 days, assess and reproduce privately,
+test remediation and coordinate disclosure. Critical issues are addressed
+immediately; other medium-or-higher issues within 60 days. Security release notes
+include known CVE/GHSA identifiers and reporter credit unless anonymity is
+requested. There is no independent security team or tested one-week recovery
+mechanism; see [governance](GOVERNANCE.md).
+
+The legacy Tuya conversion protocol contains compatibility cryptography and
+must remain on the dedicated isolated workbench; it is not a modern secure
+remote-administration channel. This is distinct from the resulting ESPHome
+API/OTA configuration. Do not publish conversion logs or firmware images.
