@@ -17,3 +17,5 @@ The maintainer confirms secure-design and common Python/network vulnerability
 knowledge and no external-to-GitHub bug, enhancement or vulnerability reports in
 the preceding 12 months. These are human attestations; public issue history and
 current dependency/security findings also need review for the badge assessment.
+
+The owned C++ energy-counter tests run with AddressSanitizer and UndefinedBehaviorSanitizer, assertions and debug symbols. CodeQL analyzes owned Python and the compiled C++ implementation on pull requests, main changes and a weekly schedule; upstream sources fetched for the container remain separate dependencies.
