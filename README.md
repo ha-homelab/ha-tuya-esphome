@@ -1,9 +1,13 @@
 # Tuya plugs to ESPHome
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15585/badge)](https://www.bestpractices.dev/projects/15585)
+
 An English-language field guide and reproducible workbench for converting old
 Tuya Wi-Fi plugs to ESPHome, then exposing their Home Assistant
 entities through an **existing Home Assistant Matter Hub** to Google Home and
 Amazon Alexa.
+
+For new provisioning, use the [trusted USB and encrypted ESPHome profile](docs/security-profile.md) after verifying the hardware and safe serial access. This is the recommended security profile. Legacy Wi-Fi conversion is an explicit compatibility option: the launcher refuses to operate without `--allow-insecure-legacy-protocol`. It retains the disclosed upstream MD5/CBC weaknesses.
 
 The current batch consists of old, unboxed plugs reported by the owner to use
 ESP8266/“ESP-01” hardware. Similar-looking plugs were converted previously.
@@ -193,3 +197,5 @@ project and does not claim that every Tuya firmware or plug is compatible.
 ## Development and security
 
 See [contribution and test requirements](CONTRIBUTING.md), [private security reporting](SECURITY.md), [source releases](RELEASING.md), [governance](GOVERNANCE.md) and [conduct](CODE_OF_CONDUCT.md).
+
+For provisioning without the legacy Wi-Fi converter, see the [encrypted USB provisioning profile](docs/security-profile.md). Its CI compiles the real XS-SSA01 configuration with disposable keys and never flashes hardware.

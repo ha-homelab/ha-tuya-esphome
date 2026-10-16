@@ -1,0 +1,2 @@
+# Exact compiler used by the documented encrypted USB provisioning profile.
+esphome==2026.9.1

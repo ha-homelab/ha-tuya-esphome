@@ -46,7 +46,7 @@ This does not encrypt the legacy Tuya-Convert transfer itself. See ESPHome's
 
 1. Keep other unconverted plugs powered off. Put one unloaded plug near the host.
 2. Start a persistent terminal: `tmux new -s convert`.
-3. Run `/opt/tuya-workbench/bin/tuya-convert` and accept the upstream risk notice
+3. For the explicitly selected legacy compatibility path, run `/opt/tuya-workbench/bin/tuya-convert --allow-insecure-legacy-protocol` and accept the upstream risk notice
    if this is the first session.
 4. Connect a secondary phone/tablet to the station's `vtrust-flash` Wi-Fi network.
    Keep it connected despite the lack of Internet. The pinned upstream AP is
