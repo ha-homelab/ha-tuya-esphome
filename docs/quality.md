@@ -19,3 +19,5 @@ the preceding 12 months. These are human attestations; public issue history and
 current dependency/security findings also need review for the badge assessment.
 
 The owned C++ energy-counter tests run with AddressSanitizer and UndefinedBehaviorSanitizer, assertions and debug symbols. CodeQL analyzes owned Python and the compiled C++ implementation on pull requests, main changes and a weekly schedule; upstream sources fetched for the container remain separate dependencies.
+
+The [compiler dependency assessment](compiler-dependency-assessment.md) records the known Starlette advisories and why their HTTP-server preconditions are absent from the pinned command-line build profile.

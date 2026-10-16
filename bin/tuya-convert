@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# Legacy conversion deliberately requires an explicit risk opt-in before any
+# privilege escalation, interface inspection, container or device operation.
+if [[ $# -eq 1 && $1 == '--help' ]]; then
+  echo 'Recommended: trusted USB provisioning with encrypted ESPHome API/OTA; see docs/security-profile.md.'
+  echo 'Legacy isolated conversion: tuya-convert --allow-insecure-legacy-protocol'
+  exit 0
+fi
+if [[ $# -ne 1 || $1 != '--allow-insecure-legacy-protocol' ]]; then
+  echo 'Legacy conversion requires --allow-insecure-legacy-protocol.' >&2
+  echo 'Use the recommended USB provisioning profile in docs/security-profile.md.' >&2
+  exit 2
+fi
 if [[ $EUID -ne 0 ]]; then
   exec sudo -n env WORKBENCH_ROOT="${WORKBENCH_ROOT:-/opt/tuya-workbench}" WIFI_INTERFACE="${WIFI_INTERFACE:-wlan0}" MANAGEMENT_INTERFACE="${MANAGEMENT_INTERFACE:-enp1s0}" "$0" "$@"
 fi
