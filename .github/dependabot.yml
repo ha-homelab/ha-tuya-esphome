@@ -9,3 +9,8 @@ updates:
     directory: /container
     schedule:
       interval: daily
+    # sslpsk3 1.x uses ssl.wrap_socket, removed in Python 3.12.
+    # Keep Python 3.11 patch/digest updates until the binary-PSK stack is migrated.
+    ignore:
+      - dependency-name: python
+        versions: [">=3.12"]
