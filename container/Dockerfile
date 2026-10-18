@@ -1,4 +1,4 @@
-FROM python:3.15-slim-bookworm@sha256:122756f3fe72c4f5d3d71897888204ee85774bc79de952555b8a474e1d0a5d53
+FROM python:3.11-slim-bookworm@sha256:0a310eeecf4e1f5a0743f9a6520c90c88d089c903ca5fd283f501e3a805f5f89
 
 # Keep the legacy Tuya protocol on Python 3.11; it uses ssl.wrap_socket.
 RUN apt-get update && apt-get install -y --no-install-recommends \
