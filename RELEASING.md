@@ -6,8 +6,8 @@ upstream Tuya commit and ESPHome version. Never disable certificate validation.
 [CHANGELOG.md](CHANGELOG.md) records source changes; it does not create new
 upstream firmware versions or retroactively accept untested hardware.
 
-Use reviewed pull requests with the existing two approvals, resolved findings
-and passing checks. Preserve the baseline container PSK test, ShellCheck, C++
+Use reviewed pull requests with the independent approvals required by the current
+branch rules, resolved findings and passing checks. Preserve the baseline container PSK test, ShellCheck, C++
 energy regressions and Python staging tests. New major functionality requires
 automated tests and documentation. Include known CVE/GHSA identifiers and upgrade
 instructions with security fixes. Do not overwrite published source identity.
