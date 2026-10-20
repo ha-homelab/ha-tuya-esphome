@@ -49,11 +49,23 @@ A fourth AWP02L-N succeeded through ordinary Tuya-Convert and passed its physica
 button/load/indicator test. Its [GPIO13/GPIO15/GPIO2 profile](examples/awp02l-n-gpio15.yaml)
 does not establish a workaround for the three earlier PSK `02` failures.
 
-Thirty-three Tuya plugs have now received ESPHome relay firmware: two XS-SSA01 units,
+Thirty-four Tuya devices have now received ESPHome relay firmware: two XS-SSA01 units,
 six WP5 units, four KMC 30137, four YM-WS-1 units, two JH-G01U units, two
 WP3 units, one GREFIC CZ-U201, five KMC 30608, two Supernight CV01, one
-AWP02L-N and four XS-SSA05 units. Eighteen passed their own physical button/load test; the first two WP5 units also passed their independent
+AWP02L-N, four XS-SSA05 units and one SWP1-PW2-V5 / TYWE3S switch.
+Eighteen passed their own combined physical button/load test; the new serial
+switch separately passed a low-voltage button/indicator check and owner-confirmed
+operation after installation. The first two WP5 units also passed their independent
 red-indicator check.
+
+The [SWP1-PW2-V5 serial guide](docs/swp1-pw2-v5.md)
+([Русский](docs/swp1-pw2-v5.ru.md)) includes an illustrated wiring path,
+private backup procedure and the recovered GPIO profile. This sample rejected
+legacy Wi-Fi conversion but accepted verified serial flashing. It is installed
+as Living Bookshelf, with matching HA entity names and a control on the second
+Lovelace page. Its software restart to OFF was tested; a controlled mains-cycle
+test was not performed. The previous similarly named LocalTuya unit is a separate
+device and was retained.
 Per-unit HA software-restart results are recorded in the deployment record.
 The [XS-SSA05 sample](docs/xs-ssa05.md) accepted ordinary Tuya-Convert and passed
 its button/load/red-indicator test. Its two blue channels require inverted

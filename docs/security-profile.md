@@ -51,6 +51,11 @@ fresh disposable synthetic credentials, proves the actual compiler rejects a
 CI runs this command without flashing, network provisioning or hardware
 acceptance. Build artifacts and synthetic secrets are discarded.
 
+The same validation also compiles the standalone
+[SWP1-PW2-V5 profile](../examples/swp1-pw2-v5.yaml) and rejects a short key for
+that profile. Its [illustrated serial guide](swp1-pw2-v5.md) covers the distinct
+TYWE3S wiring and GPIO evidence; do not substitute the XS-SSA01 pin mapping.
+
 The alternative legacy Tuya converter requires `--allow-insecure-legacy-protocol` before it performs privilege escalation or any workbench operation. It remains explicitly insecure compatibility
 code: its upstream fixed hint/MD5-derived AES key and CBC transport do not become
 secure because the final ESPHome firmware uses a new key. Keep that path isolated
