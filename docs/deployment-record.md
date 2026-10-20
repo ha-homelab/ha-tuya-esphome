@@ -1570,3 +1570,48 @@ and distinct private credentials are persisted in both HA and ESPHome Dashboard
 with two compile workers. Source readback and deployed configuration validation
 passed. Existing unrelated HA identities were preserved. The workbench session
 ended and its Wi-Fi interface returned to managed mode. Final state: all OFF.
+
+### Thirty-fourth conversion: SWP1-PW2-V5 / TYWE3S, Living Bookshelf
+
+On 2026-10-18, the sample rejected the ordinary Tuya-Convert handshake with
+PSK identity version `02`. No firmware was transferred by that route. Its
+same-box burned LocalTuya counterpart was only a hardware reference: the new
+sample has a different physical identity and does not inherit that device's key.
+
+Serial identification established ESP8266EX, a 26 MHz crystal and 2 MiB flash.
+The initial adapter supply fell to 1.9 V under load. A separate regulated supply
+and a logic-level translator were used because the adapter's initialized TX
+measured 5.1 V. A corrected RX/TX connection produced a readable ROM download-mode
+banner and a successful serial exchange. A full 2 MiB factory backup was read,
+verified against the device and copied privately to a second host before writing.
+It contains provisioning credentials and is not part of this repository.
+
+The factory hardware table identified GPIO13 relay active high, GPIO3 button
+active low, GPIO14 relay indicator active low and GPIO0 status indicator active
+low. This allowed direct use of the final configuration. No speculative GPIO
+image was installed. The 429,600-byte ESPHome 2026.9.1 image used a 2 MiB
+`esp_wroom_02` layout, DOUT, encrypted API/OTA and `ALWAYS_OFF` relay restoration;
+serial write verification succeeded. The public
+[standalone example](../examples/swp1-pw2-v5.yaml) has generic names and no private
+network domain, so its build is not expected to match that deployment byte for byte.
+
+After removing the GPIO0 strap and UART leads, encrypted API identity and ON/OFF
+states were checked. A software restart from ON returned OFF. On external
+low-voltage power, the owner confirmed two physical button presses operated the
+relay and indicator together. After reassembly and normal installation, the owner
+reported that the device and load worked. These are separate acceptance stages;
+a controlled ON-to-OFF mains power-cycle test was not performed.
+
+The installed role was corrected from its provisional reference name to
+**Living Bookshelf**. HA exposes `switch.living_bookshelf` and four consistently
+named diagnostic entities. Overview's second **Lighting** page has exactly one
+control in its **Living Room** entity list. The original burned LocalTuya
+reference device remains unchanged. No legacy automation was reassigned to this
+different load. Both private source stores, HA and ESPHome Dashboard, contain the
+running configuration and distinct credentials. The internal firmware hostname
+retains the provisional name; HA's current names are explicit registry overrides.
+
+An independent read-only audit on 2026-10-19 confirmed the loaded integration,
+available relay and diagnostics, both persisted sources and the dashboard row.
+No load switching or firmware restart was part of that audit. See the illustrated
+[serial procedure](swp1-pw2-v5.md) ([Русский](swp1-pw2-v5.ru.md)).

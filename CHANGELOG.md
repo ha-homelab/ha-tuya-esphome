@@ -5,6 +5,10 @@ versions or acceptance to third-party firmware or previously converted devices.
 
 ## Development changes
 
+- Add the verified SWP1-PW2-V5 / TYWE3S serial profile, illustrated English and
+  Russian instructions, and the Living Bookshelf acceptance record. Validate and
+  compile this encrypted profile alongside XS-SSA01 without accessing hardware.
+
 - Recommend trusted USB provisioning with encrypted API/OTA; require an explicit `--allow-insecure-legacy-protocol` flag before any legacy launcher operation. Existing legacy scripts must add that opt-in only after reviewing its risks.
 
 - Remove the pinned upstream session-PSK print from the container runtime and exercise the actual derivation with synthetic inputs.

@@ -216,8 +216,11 @@ another model's relay package merely because its enclosure appears similar.
    Record a sanitized, verified model profile only after these checks pass.
 
 Physical validation remains necessary: successful compilation says nothing about
-which pin controls a real relay. The owner chose to retire unsuccessful units;
-serial recovery and live-board probing are not part of this project.
+which pin controls a real relay. Earlier sessions deferred or retired unsuccessful
+units. The later [SWP1-PW2-V5 serial conversion](swp1-pw2-v5.md) used a verified
+factory backup to identify its GPIOs before writing a final profile.
+Serial work requires full mains disconnection; probing an exposed mains-powered
+board is not part of this procedure.
 
 For a later WP5 in this batch, the operator explicitly chose to reuse the
 previously verified profile and skip repeated button, load, indicator and restart
@@ -292,3 +295,19 @@ A separate former Tasmota 6.7.1 MJ_XS-SSA01 uses the existing
 [GPIO15 package](../examples/xs-ssa01-gpio15.yaml), with GPIO12 indicator.
 Its stored Tasmota template supplied the initial map; native events and the
 owner’s load/button/indicator check subsequently confirmed it.
+
+## SWP1-PW2-V5: TYWE3S with GPIO13 relay
+
+This serially identified ESP8266EX / 2 MiB sample's factory hardware table
+assigns GPIO13 to the active-high relay, GPIO3 to the active-low button,
+GPIO14 to the active-low relay indicator and GPIO0 to active-low connection
+status. The [standalone profile](../examples/swp1-pw2-v5.yaml) uses `esp_wroom_02`,
+DOUT, disabled UART logging and `ALWAYS_OFF`. It must not be combined with
+the 1 MiB generic base or another hardware package.
+
+GPIO3 is also RXD0: disconnect the programmer UART before checking the button.
+GPIO0 is both the boot strap and status indicator: remove its ground bridge
+before normal operation. Software restart to OFF and physical button/indicator
+checks passed; the owner subsequently confirmed normal installed operation.
+A controlled ON-to-OFF mains-cycle test and boot-transient measurements were
+not performed. See the [complete wiring and evidence record](swp1-pw2-v5.md).

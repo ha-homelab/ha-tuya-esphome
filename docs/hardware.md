@@ -39,6 +39,10 @@ input probe rather than assuming identical behavior from the enclosure.
 - Already running ESPHome: normal ESPHome OTA; do not run Tuya-Convert again.
 - Already running Tasmota: follow ESPHome's
   [Tasmota migration guide](https://esphome.io/guides/migrate_sonoff_tasmota/).
+- Verified ESP8266 serial access with mains fully disconnected:
+  use the [encrypted USB provisioning profile](security-profile.md).
+  The [SWP1-PW2-V5 / TYWE3S case](swp1-pw2-v5.md) records a completed serial
+  conversion after the legacy Wi-Fi method failed.
 - A Beken/Realtek module is a different target. Stop using the ESP8266 image.
   [Tuya CloudCutter](https://github.com/tuya-cloudcutter/tuya-cloudcutter) and
   [LibreTiny](https://esphome.io/components/libretiny/) cover some such hardware,
@@ -50,14 +54,18 @@ The original operating policy skips original-firmware backups; the later
 [WP3 attempt](wp3-migration.md) and a subsequent WP5 saved backups privately as
 per-unit exceptions. The later GREFIC CZ-U201 investigation retained a private
 post-loader image and recovered its two-channel configuration from the original
-application. See [the observed variant](grefic-cz-u201.md). The selected workflow does not include disassembly,
-soldering, serial recovery, or
-module replacement. If pairing fails,
-check the station and pairing mode once; if the unit remains incompatible or
-unresponsive, label it locally as failed and move to the next unit. Retire it as
-electronic waste. This policy does not authorize deleting existing Matter fabrics
-or resetting unrelated equipment.
+application. See [the observed variant](grefic-cz-u201.md). Those early sessions
+used an enclosure-intact Wi-Fi workflow; serial recovery was outside their
+selected scope. A failed Wi-Fi handshake does not establish that a device
+cannot be recovered. Identify the module and electrical requirements before
+selecting a separate serial procedure. The later SWP1-PW2-V5 session saved and
+verified its complete 2 MiB factory flash privately before writing ESPHome.
+If safe, verified serial access is unavailable, defer the device rather than
+guessing pins or voltage levels. No recovery procedure authorizes deleting
+existing Matter fabrics or resetting unrelated equipment.
 
 Keep plugs unloaded during identification. Do not connect a live mains-powered
-board to a USB/UART adapter. This workbench performs the selected conversion over
-Wi-Fi with the enclosure intact.
+board to a USB/UART adapter. Legacy Wi-Fi conversion keeps the enclosure intact;
+wired conversion requires complete mains disconnection and a suitable
+low-voltage workbench. Remove all temporary wiring before reassembly and
+normal installation.
