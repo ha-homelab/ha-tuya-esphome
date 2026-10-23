@@ -40,7 +40,16 @@ channel number on the two sides of each signal. The translator converts logic
 levels; it does **not** supply the target's power. A genuine 3.3 V logic adapter
 can use direct UART wiring after its output level is checked.
 
-Use five firmly held probes for the five CBU connections. An extra probe is
+With a verified 3.3 V UART adapter (such as the measured CP2102), the level
+translator can be omitted: adapter TX → CBU RX1, adapter RX ← CBU TX1, and
+adapter GND → CBU GND. The sensor may retain its factory supply if it provides
+galvanically isolated low-voltage power and stable 3.3 V at CBU. In this
+arrangement, leave both adapter power pins and the bench supply disconnected;
+only GND, TX1, RX1 and CEN need probes. Do not infer isolation solely from a
+3.3 V measurement. Never connect the USB ground to a mains-referenced circuit.
+
+For the external 3.3 V supply arrangement above, use five firmly held probes.
+An extra probe is
 useful for monitoring the supply. Connect with power off, use an insulated
 fixture, and make sure a tip cannot bridge adjacent pads. The module expects
 3.0–3.6 V, nominally 3.3 V; provide a stable source with headroom for startup
