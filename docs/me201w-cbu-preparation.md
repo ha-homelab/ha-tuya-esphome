@@ -2,10 +2,15 @@
 
 [Русский](me201w-cbu-preparation.ru.md) · [Workbench](workbench.md)
 
-**Status on 2026-10-23: preparation only.** No ME201W flash read, firmware write,
+**Status on 2026-10-23: preparation and UART diagnosis.** No ME201W flash read, firmware write,
 or ESPHome measurement has been verified in this project. The label in the
 owner's photograph identifies **CBU**, which uses **BK7231N**; this is a different
 platform from the earlier TYWE3S / ESP8266 switches.
+
+A passive UART capture received valid factory Tuya frames, but the bootloader
+has not answered the connection attempts. This confirms reception from the
+module, not communication in both directions or measurement-board health.
+The prepared ESPHome image has not been installed.
 
 The older sensor responds on Wi-Fi and advertises Tuya protocol 3.4, while its
 Home Assistant reading remains unavailable. The second sensor did not respond
@@ -201,6 +206,12 @@ workbench preparation.
 - **No bootloader response:** check the selected port and its owner, common
   ground, TX/RX direction, translator channel pairing, CEN release and loaded
   supply voltage. Check for a competing carrier MCU before repeating resets.
+- **Factory bytes arrive but the bootloader does not answer:** reception only
+  checks the module TX1 to adapter RX path. Check adapter TX at the actual module
+  RX1 pad, not just a breadboard terminal. A breadboard can secure the leads but
+  cannot establish probe-to-pad contact. Binary Tuya frames are not ASCII boot
+  messages; replacement characters and visible NUL symbols alone do not diagnose
+  corruption. Close the serial monitor before starting the flash tool.
 - **Unstable reads or different hashes:** inspect probe contact and power first.
   Do not proceed to an erase or write to troubleshoot a bad read.
 - **Wi-Fi works but no level:** diagnose the measurement board and actual UART
