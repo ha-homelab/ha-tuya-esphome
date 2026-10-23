@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="720" viewBox="0 0 1160 720" role="img" aria-labelledby="title desc">
+  <title id="title">CBU wired programming with a five volt UART adapter and logic level translator</title>
+  <desc id="desc">Logical connections only, not physical pad positions. Adapter TX passes through HV1 and LV1 to CBU RX1 pin 16. CBU TX1 pin 15 passes through LV2 and HV2 to adapter RX. Adapter five volts supplies HV. A separate regulated three point three volt supply feeds LV and CBU pin 14. All grounds connect to CBU pin 13. Briefly ground and release CEN pin 18 to reset. No GPIO0 jumper.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto-start-reverse"><path d="M0 0 L9 3.5 L0 7Z" fill="context-stroke"/></marker>
+    <style>
+      text {font-family:system-ui,-apple-system,Segoe UI,sans-serif;fill:#17304b}
+      .title{font-size:28px;font-weight:750}.sub{font-size:16px;fill:#536779}
+      .head{font-size:21px;font-weight:700}.label{font-size:18px}.small{font-size:15px}
+      .box{fill:#fff;stroke:#d7e2ed;stroke-width:2}.wire{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1160" height="720" rx="18" fill="#f4f8fc"/>
+  <text x="38" y="46" class="title">ME201W · CBU / BK7231N programming</text>
+  <text x="38" y="76" class="sub">Logical signal map — use the official module drawing to locate pads.</text>
+  <rect x="40" y="130" width="240" height="365" rx="16" class="box"/>
+  <rect x="445" y="130" width="235" height="365" rx="16" class="box"/>
+  <rect x="845" y="130" width="275" height="365" rx="16" class="box"/>
+  <text x="62" y="167" class="head">USB–UART adapter</text>
+  <text x="62" y="194" class="small">TX measured at 5 V</text>
+  <text x="467" y="167" class="head">Level translator</text>
+  <text x="467" y="194" class="small">HV side         LV side</text>
+  <text x="867" y="167" class="head">CBU module</text>
+  <text x="867" y="194" class="small">3.3 V logic and supply</text>
+  <text x="62" y="241" class="label">5V</text>
+  <path d="M140 235 H435" class="wire" stroke="#d97706" marker-end="url(#arrow)"/>
+  <text x="467" y="241" class="label">HV</text>
+  <text x="62" y="306" class="label">TX</text>
+  <path d="M140 300 H435" class="wire" stroke="#0891b2" marker-end="url(#arrow)"/>
+  <text x="458" y="306" class="label">HV1</text>
+  <path d="M503 300 H615" class="wire" stroke="#0891b2" marker-end="url(#arrow)"/>
+  <text x="625" y="306" class="label">LV1</text>
+  <path d="M681 300 H834" class="wire" stroke="#0891b2" marker-end="url(#arrow)"/>
+  <text x="867" y="306" class="label">16 · RX1 / P10</text>
+  <text x="62" y="371" class="label">RX</text>
+  <path d="M140 365 H435" class="wire" stroke="#7c3aed" marker-start="url(#arrow)"/>
+  <text x="458" y="371" class="label">HV2</text>
+  <path d="M510 365 H613" class="wire" stroke="#7c3aed" marker-start="url(#arrow)"/>
+  <text x="625" y="371" class="label">LV2</text>
+  <path d="M690 365 H834" class="wire" stroke="#7c3aed" marker-start="url(#arrow)"/>
+  <text x="867" y="371" class="label">15 · TX1 / P11</text>
+  <text x="62" y="437" class="label">3V3: disconnected</text>
+  <text x="62" y="467" class="label">GND</text>
+  <text x="467" y="467" class="label">GND</text>
+  <text x="867" y="467" class="label">13 · GND</text>
+  <path d="M151 460 V537 H986 V485 M558 485 V537" class="wire" stroke="#475569"/>
+  <text x="385" y="565" class="small">Common ground: adapter + translator + supply + CBU</text>
+  <rect x="297" y="595" width="420" height="86" rx="14" fill="#e1f5ed" stroke="#8bc9af" stroke-width="2"/>
+  <text x="319" y="626" class="head">Separate regulated 3.3 V supply</text>
+  <text x="319" y="653" class="small">Power OFF before moving any connection</text>
+  <path d="M315 596 V563 H170 V537" class="wire" stroke="#475569"/>
+  <path d="M705 610 H766 V236 H834 M766 236 H681" class="wire" stroke="#159468"/>
+  <text x="625" y="242" class="label">LV</text>
+  <text x="867" y="242" class="label">14 · 3V3</text>
+  <circle cx="766" cy="236" r="5" fill="#159468"/>
+  <text x="855" y="606" class="head">18 · CEN to GND</text>
+  <text x="855" y="634" class="label">Brief pulse, then release</text>
+  <text x="855" y="662" class="label" font-weight="700">NO GPIO0 jumper</text>
+  <text x="38" y="706" class="small">A level translator does not power the target. Verify 3.3 V at the module under load.</text>
+</svg>

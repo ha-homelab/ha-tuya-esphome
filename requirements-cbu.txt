@@ -1,0 +1,5 @@
+# Tested in a dedicated Python 3.11 environment; separate from the legacy tools.
+ltchiptool==4.15.0
+bk7231tools==2.1.2
+tinytuya==1.20.0
+pyserial==3.5
