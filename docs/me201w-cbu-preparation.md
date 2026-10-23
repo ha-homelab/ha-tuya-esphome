@@ -90,6 +90,13 @@ Tuya MCU or application GPIO configuration. It is a recovery starting point,
 not a working ME201W sensor profile. The selected compiler is ESPHome 2026.9.1;
 device installation and sensor acceptance remain pending.
 
+Offline preparation passed on 2026-10-23: configuration validation and compilation
+with ESPHome 2026.9.1 / LibreTiny 1.13.0 succeeded, and `ltchiptool flash file`
+recognized a valid BK7231N UF2. The build reported 46,196 / 262,144 bytes RAM
+(17.6%) and 582,950 / 1,083,136 bytes flash (53.8%). Private copies on two hosts
+had matching SHA-256 hashes. These checks validate the build artifact, not the
+sensor hardware or its measurements.
+
 Disabled application serial logging is not a guarantee of electrically idle
 UART pins: ROM, bootloader or framework startup can still produce activity.
 Isolate a competing transmitter before connecting the programming adapter.
