@@ -152,6 +152,12 @@ entities.
 
 ## Start here
 
+**ME201W water-level sensor (CBU / BK7231N):** the
+[wired preparation guide](docs/me201w-cbu-preparation.md)
+([русский](docs/me201w-cbu-preparation.ru.md)) includes the level-translator
+wiring diagram, backup sequence and measurement acceptance plan. This is a
+preparation record; the sensor has not yet been converted or validated.
+
 1. [Understand the hardware and batch policy](docs/hardware.md).
 2. [Prepare the Linux workbench](docs/workbench.md).
 3. [Build and convert one plug](docs/conversion.md).

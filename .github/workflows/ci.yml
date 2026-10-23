@@ -30,6 +30,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p 'test_stage_*.py' -v
           python3 -m unittest discover -s tests -p 'test_legacy_opt_in.py' -v
+          python3 -m unittest discover -s tests -p 'test_cbu_workbench.py' -v
       - name: Test migrated energy counters
         run: |
           c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Iexamples tests/test_energy_state.cpp -o /tmp/test-energy
