@@ -1,0 +1,49 @@
+# Preparation image, NOT a finished ME201W water-level sensor profile.
+# No measurement UART, Tuya MCU, relay, LED or other application GPIO is assigned.
+# Confirm the actual module and preserve its own factory dump before installation.
+esphome:
+  name: me201w-recovery
+  friendly_name: ME201W Recovery
+  name_add_mac_suffix: true
+  min_version: 2026.9.1
+  compile_process_limit: 2
+
+bk72xx:
+  board: cbu
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  domain: .home.arpa
+  ap:
+    password: !secret fallback_password
+
+captive_portal:
+
+# Disable application serial logging until the measurement interface is identified.
+# ROM/bootloader/framework activity is still possible; this is not an electrical
+# high-impedance guarantee for UART pins.
+logger:
+  baud_rate: 0
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+    encryption:
+
+sensor:
+  - platform: wifi_signal
+    name: WiFi Signal
+    update_interval: 60s
+
+text_sensor:
+  - platform: version
+    name: ESPHome Version
+
+binary_sensor:
+  - platform: status
+    name: Status

@@ -1,5 +1,10 @@
 # Workbench and firmware builder
 
+For a CBU / BK7231N water-level sensor, use the separate
+[ME201W wired preparation guide](me201w-cbu-preparation.md)
+([русский](me201w-cbu-preparation.ru.md)). It uses a UART workbench and private
+full-flash backups, without starting the ESP8266 conversion access point.
+
 ## Requirements
 
 A dedicated Linux host needs a wired management connection, a separate Wi-Fi
