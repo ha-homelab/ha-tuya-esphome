@@ -152,6 +152,9 @@ entities.
 
 ## Start here
 
+**[Browser USB installation](docs/browser-install.md)** provides a no-local-toolchain route for a verified ESP8266/ESP32 profile with safe, isolated serial access: compile in ESPHome Device Builder and install from ESPHome Web. It does not apply to BK7231N/CBU modules or remove mains-isolation and hardware-identification requirements.
+
+
 **ME201W water-level sensor (CBU / BK7231N):** the
 [wired preparation guide](docs/me201w-cbu-preparation.md)
 ([русский](docs/me201w-cbu-preparation.ru.md)) includes the level-translator
