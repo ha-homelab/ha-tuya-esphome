@@ -35,6 +35,10 @@ jobs:
         run: |
           c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Iexamples tests/test_energy_state.cpp -o /tmp/test-energy
           /tmp/test-energy
+      - name: Fuzz energy samples and day rollover
+        env:
+          CXX: clang++
+        run: bash fuzz/run.sh 15
       - name: Fetch the pinned upstream source
         run: |
           git init /tmp/tuya-source
