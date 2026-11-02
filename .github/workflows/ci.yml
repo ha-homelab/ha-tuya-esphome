@@ -31,6 +31,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_stage_*.py' -v
           python3 -m unittest discover -s tests -p 'test_legacy_opt_in.py' -v
           python3 -m unittest discover -s tests -p 'test_cbu_workbench.py' -v
+          python3 -m unittest discover -s tests -p 'test_dependency_lock.py' -v
       - name: Test migrated energy counters
         run: |
           c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Iexamples tests/test_energy_state.cpp -o /tmp/test-energy
@@ -46,7 +47,7 @@ jobs:
           git -C /tmp/tuya-source fetch --depth 1 origin a34b2c91862ed855542e8a32a14a9ab7573c4de9
           git -C /tmp/tuya-source checkout --detach FETCH_HEAD
       - name: Build legacy protocol runtime
-        run: docker build -t tuya-convert:test -f container/Dockerfile /tmp/tuya-source
+        run: docker build -t tuya-convert:test --build-context workbench-locks=./container -f container/Dockerfile /tmp/tuya-source
       - name: Test real binary-identity TLS without hardware or network access
         run: docker run --rm --network none -v "$PWD/tests:/checks:ro" tuya-convert:test python3 /checks/test_psk.py
   encrypted-firmware:
@@ -60,6 +61,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install the pinned firmware compiler
-        run: python3 -m pip install -r requirements-firmware.txt
+        run: |
+          python3 -m pip install --require-hashes --only-binary=:all: -r requirements-build.lock
+          python3 -m pip install --require-hashes --no-build-isolation --only-binary=:all: --no-binary=crcmod,esptool,paho-mqtt -r requirements-firmware.lock
       - name: Reject weak keys and compile the encrypted USB profile
         run: python3 scripts/validate_firmware.py

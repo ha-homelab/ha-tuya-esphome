@@ -26,6 +26,7 @@ if [[ ! -e "$base/esphome/tuya-plug.yaml" ]]; then
   install -m 0644 "$source_root/examples/tuya-plug.yaml" "$base/esphome/tuya-plug.yaml"
 fi
 docker build --network=host -t tuya-convert:workbench \
+  --build-context "workbench-locks=$source_root/container" \
   -f "$source_root/container/Dockerfile" "$base/tuya-convert"
 docker run --rm --network none -v "$base/validation:/checks:ro" \
   tuya-convert:workbench python3 /checks/test_psk.py

@@ -1,0 +1,4 @@
+paho-mqtt==1.6.1
+tornado==6.5.10
+sslpsk3==1.1.1
+pycryptodomex==3.23.0

@@ -1,0 +1,3 @@
+# Backends for the pinned paho-mqtt and sslpsk3 source distributions.
+setuptools==84.2.1
+poetry-core==2.5.0
