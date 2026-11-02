@@ -29,3 +29,27 @@ relevant negative cases. Use the existing public issue/PR process for proposals;
 follow [governance](GOVERNANCE.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
 Run `python3 -m unittest discover -s tests -p 'test_stage_*.py' -v` for local
 staging tests. These synthetic files are not hardware firmware.
+
+## Verified build dependencies
+
+Both the ESPHome compiler environment and legacy protocol image install complete
+artifact hash locks. Compiler source builds are restricted to crcmod, esptool
+and paho-mqtt, with a separately hashed setuptools backend. The legacy image
+builds only paho-mqtt and sslpsk3 using hashed setuptools/poetry-core. Isolated
+backend downloads are disabled; every other package requires a binary wheel.
+Existing runtime versions and the Python 3.11 legacy protocol are unchanged.
+
+Use uv 0.13.4 to regenerate:
+
+```sh
+uv pip compile requirements-firmware.txt --python-version 3.12 --universal --generate-hashes --no-annotate --output-file requirements-firmware.lock
+uv pip compile requirements-build.in --python-version 3.12 --universal --generate-hashes --only-binary=:all: --no-annotate --output-file requirements-build.lock
+uv pip compile container/requirements-runtime.in --python-version 3.11 --universal --generate-hashes --no-annotate --output-file container/requirements-runtime.lock
+uv pip compile container/requirements-build.in --python-version 3.11 --universal --generate-hashes --only-binary=:all: --no-annotate --output-file container/requirements-build.lock
+```
+
+The Docker build requires BuildKit named-context support. CI and
+`scripts/setup-workbench.sh` pass `--build-context workbench-locks=.../container`
+so the dependency locks are independent of the unchanged pinned upstream source
+checkout. The existing isolated real TLS protocol test and encrypted firmware
+build must pass after updates; no connected devices are involved in those checks.

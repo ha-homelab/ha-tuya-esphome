@@ -6,8 +6,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       net-tools openssl libssl-dev build-essential sudo coreutils grep \
       iproute2 iputils-ping procps ncurses-bin ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-RUN pip install --no-cache-dir \
-      paho-mqtt==1.6.1 tornado==6.5.10 sslpsk3==1.1.1 pycryptodomex==3.23.0
+# This named context contains only our reviewed container dependency files.
+COPY --from=workbench-locks requirements-build.lock requirements-runtime.lock /opt/dependencies/
+RUN pip install --no-cache-dir --require-hashes --only-binary=:all: -r /opt/dependencies/requirements-build.lock \
+    && pip install --no-cache-dir --require-hashes --no-build-isolation \
+      --only-binary=:all: --no-binary=paho-mqtt,sslpsk3 -r /opt/dependencies/requirements-runtime.lock
 
 COPY . /usr/bin/tuya-convert
 WORKDIR /usr/bin/tuya-convert

@@ -1,0 +1,2 @@
+# Verified backend for crcmod, esptool and paho-mqtt source archives.
+setuptools==84.2.1
