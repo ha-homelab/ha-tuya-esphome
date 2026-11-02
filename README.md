@@ -49,11 +49,12 @@ A fourth AWP02L-N succeeded through ordinary Tuya-Convert and passed its physica
 button/load/indicator test. Its [GPIO13/GPIO15/GPIO2 profile](examples/awp02l-n-gpio15.yaml)
 does not establish a workaround for the three earlier PSK `02` failures.
 
-Thirty-four Tuya devices have now received ESPHome relay firmware: two XS-SSA01 units,
+Thirty-five Tuya devices have now received ESPHome relay firmware: two XS-SSA01 units,
 six WP5 units, four KMC 30137, four YM-WS-1 units, two JH-G01U units, two
 WP3 units, one GREFIC CZ-U201, five KMC 30608, two Supernight CV01, one
-AWP02L-N, four XS-SSA05 units and one SWP1-PW2-V5 / TYWE3S switch.
-Eighteen passed their own combined physical button/load test; the new serial
+AWP02L-N, four XS-SSA05 units, one SWP1-PW2-V5 / TYWE3S switch, and one
+RMD-SS01S00A / TYWE3S switch.
+Eighteen passed their own combined physical button/load test; the SWP1-PW2-V5
 switch separately passed a low-voltage button/indicator check and owner-confirmed
 operation after installation. The first two WP5 units also passed their independent
 red-indicator check.
@@ -66,6 +67,13 @@ as Living Bookshelf, with matching HA entity names and a control on the second
 Lovelace page. Its software restart to OFF was tested; a controlled mains-cycle
 test was not performed. The previous similarly named LocalTuya unit is a separate
 device and was retained.
+
+The [RMD-SS01S00A conversion record](docs/rmd-ss01.md) tracks a separate TYWE3S
+wall switch: captive-portal upload with a conservative 1 MiB layout recovered
+from native OTA staging-sector erase failures. Relay API control and subsequent
+native OTA passed, and the owner confirmed the button, relay and indicator.
+This additional unit has no connected-load or controlled mains-cycle test.
+
 Per-unit HA software-restart results are recorded in the deployment record.
 The [XS-SSA05 sample](docs/xs-ssa05.md) accepted ordinary Tuya-Convert and passed
 its button/load/red-indicator test. Its two blue channels require inverted
