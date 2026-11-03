@@ -110,7 +110,10 @@ The [KMC 30608 Smart Tap](docs/kmc-30608.md) passed separate lamp checks on all
 three numbered outlets, common-button control and a controlled mains cycle.
 Its existing three HA entity IDs now use ESPHome. Voltage, current, power and
 energy metering are enabled. All three KMC units have individual voltage
-reference corrections; current, power and energy remain uncalibrated.
+reference corrections. The first and third samples also have single-point power
+reference adjustments. Current and accumulated-energy accuracy, and power on the
+second sample, remain unvalidated. See the sample-specific limits in the linked
+record.
 The second KMC also passed outlet, button and mains-cycle acceptance and its HA
 handover. Its stock table shows that Tuya datapoint numbers and physical outlet
 numbers differ; both KMC handovers now retain that association. The second
