@@ -28,6 +28,9 @@ jobs:
     with:
       # This repository protects "check"; native mode requires a protected "CI gate".
       reviewed-merge: true
+      # Match the official Actions approval paths already enabled by auto-approve.
+      allow-dependabot-actions-review: true
+      allow-owned-bot-actions-review: true
       required-status-checks: check
     secrets:
       BOT_PAT: ${{ secrets.BOT_PAT }}
