@@ -43,9 +43,9 @@ Use uv 0.13.4 to regenerate:
 
 ```sh
 uv pip compile requirements-firmware.txt --python-version=3.12 --universal --generate-hashes --output-file=requirements-firmware.lock
-uv pip compile requirements-build.in --python-version 3.12 --universal --generate-hashes --only-binary=:all: --no-annotate --output-file requirements-build.lock
+uv pip compile .github/requirements-wheels-only.in requirements-build.in --python-version=3.12 --universal --generate-hashes --output-file=requirements-build.lock
 uv pip compile container/requirements-runtime.in --python-version=3.11 --universal --generate-hashes --output-file=container/requirements-runtime.lock
-uv pip compile container/requirements-build.in --python-version 3.11 --universal --generate-hashes --only-binary=:all: --no-annotate --output-file container/requirements-build.lock
+uv pip compile .github/requirements-wheels-only.in requirements-build.in --python-version=3.12 --universal --generate-hashes --output-file=requirements-build.lock
 ```
 
 The Docker build requires BuildKit named-context support. CI and
