@@ -15,7 +15,11 @@
     "**/node_modules/**",
     "**/fixtures/**",
     "**/tools/browser-compatibility/**",
-    ".github/cosign/**"
+    ".github/cosign/**",
+    "container/requirements-build.lock",
+    "container/requirements-runtime.lock",
+    "requirements-build.lock",
+    "requirements-firmware.lock"
   ],
   "packageRules": [
     {
