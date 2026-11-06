@@ -16,7 +16,11 @@
     "**/node_modules/**",
     "**/fixtures/**",
     "**/tools/browser-compatibility/**",
-    ".github/cosign/**"
+    ".github/cosign/**",
+    "requirements-firmware.txt",
+    "requirements-firmware.lock",
+    "container/requirements-runtime.in",
+    "container/requirements-runtime.lock"
   ],
   "packageRules": [
     {
@@ -85,9 +89,10 @@
   "pip-compile": {
     "managerFilePatterns": [
       "/^container/requirements\\-build\\.lock$/",
-      "/^container/requirements\\-runtime\\.lock$/",
-      "/^requirements\\-build\\.lock$/",
-      "/^requirements\\-firmware\\.lock$/"
+      "/^requirements\\-build\\.lock$/"
     ]
-  }
+  },
+  "description": [
+    "Source-build dependency inputs and their generated locks are maintained together through the documented reviewed environment. Other native and CI updates remain automated."
+  ]
 }
