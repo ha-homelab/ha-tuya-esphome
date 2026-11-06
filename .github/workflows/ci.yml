@@ -7,7 +7,14 @@ on:
 permissions:
   contents: read
 jobs:
+  scope:
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/change-scope.yml@04d1a895fac608e5c972e49b127a1a792d7ad725 # main
+    with:
+      force-full: false
+      documentation-paths: "[\"GOVERNANCE.md\", \"ROADMAP.md\"]"
   check:
+    needs: ["scope", "encrypted-firmware"]
+    if: ${{ always() }}
     runs-on: ${{ fromJSON((vars.CI_RUNNER_MODE == 'self-hosted' || vars.CI_RUNNER_MODE == 'k3s') && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || (contains(fromJSON('["push","schedule","workflow_dispatch"]'), github.event_name) && github.ref == format('refs/heads/{0}', github.event.repository.default_branch))) && (vars.CI_RUNNER_LABELS || '[]') || '["ubuntu-latest"]') }}
     timeout-minutes: 15
     steps:
@@ -16,6 +23,27 @@ jobs:
         with:
           egress-policy: audit
 
+      - name: Require successful change classification
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        shell: python3 {0}
+        run: |
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          expected = ['scope', 'encrypted-firmware']
+          if set(results) != set(expected):
+              raise SystemExit('Validation job inventory differs')
+          scope = results['scope']
+          outputs = scope.get('outputs', {})
+          run = outputs.get('run')
+          if scope['result'] != 'success' or run not in {'true', 'false'}:
+              raise SystemExit('Change scope did not succeed')
+          if run == 'false' and outputs.get('reason') != 'documentation-only':
+              raise SystemExit('Unproven documentation-only scope')
+          for name, value in results.items():
+              wanted = 'success' if run == 'true' or name == 'scope' else 'skipped'
+              if value['result'] != wanted:
+                  raise SystemExit(f'Unexpected validation result: {name}={value["result"]}, expected {wanted}')
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -41,16 +69,23 @@ jobs:
           CXX: clang++
         run: bash fuzz/run.sh 15
       - name: Fetch the pinned upstream source
+        if: ${{ needs.scope.outputs.run == 'true' }}
         run: |
           git init /tmp/tuya-source
           git -C /tmp/tuya-source remote add origin https://github.com/ct-Open-Source/tuya-convert.git
           git -C /tmp/tuya-source fetch --depth 1 origin a34b2c91862ed855542e8a32a14a9ab7573c4de9
           git -C /tmp/tuya-source checkout --detach FETCH_HEAD
       - name: Build legacy protocol runtime
+        if: ${{ needs.scope.outputs.run == 'true' }}
         run: docker build -t tuya-convert:test --build-context workbench-locks=./container -f container/Dockerfile /tmp/tuya-source
       - name: Test real binary-identity TLS without hardware or network access
+        if: ${{ needs.scope.outputs.run == 'true' }}
         run: docker run --rm --network none -v "$PWD/tests:/checks:ro" tuya-convert:test python3 /checks/test_psk.py
+      - name: Test documentation-scope gate contracts
+        run: python3 .github/workflow-tests/test_docs_scope.py
   encrypted-firmware:
+    needs: scope
+    if: ${{ needs.scope.outputs.run == 'true' }}
     runs-on: ${{ fromJSON((vars.CI_RUNNER_MODE == 'self-hosted' || vars.CI_RUNNER_MODE == 'k3s') && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || (contains(fromJSON('["push","schedule","workflow_dispatch"]'), github.event_name) && github.ref == format('refs/heads/{0}', github.event.repository.default_branch))) && (vars.CI_RUNNER_LABELS || '[]') || '["ubuntu-latest"]') }}
     timeout-minutes: 30
     steps:
