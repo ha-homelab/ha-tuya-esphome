@@ -11,6 +11,16 @@ name: Auto Merge PRs
       - unlabeled
       - edited
       - converted_to_draft
+  workflow_run:
+    workflows: ["Auto Approve PRs", "CodeQL", "Validate workbench"]
+    types: [completed]
+  status:
+  check_run:
+    types: [completed]
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+
 permissions:
   contents: read
 concurrency:
@@ -28,9 +38,30 @@ jobs:
     with:
       # This repository protects "check"; native mode requires a protected "CI gate".
       reviewed-merge: true
+      reviewed-single-pass: true
       # Match the official Actions approval paths already enabled by auto-approve.
       allow-dependabot-actions-review: true
       allow-owned-bot-actions-review: true
       required-status-checks: check
+    secrets:
+      BOT_PAT: ${{ secrets.BOT_PAT }}
+
+  recover-auto-merge:
+    permissions:
+      contents: read
+      pull-requests: write
+    if: >-
+      contains(fromJSON('["workflow_run","status","check_run","schedule","workflow_dispatch"]'), github.event_name) &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    concurrency:
+      group: automerge-reviewed-recovery-${{ github.repository }}
+      cancel-in-progress: false
+    uses: victron-venus/venus-os-ci-toolkit/.github/workflows/auto-merge.yml@35ea6ef05730806bd85e27fdbbeed326ac5c3deb # main
+    with:
+      reviewed-merge: true
+      allow-dependabot-actions-review: true
+      allow-owned-bot-actions-review: true
+      required-status-checks: "check"
+      reviewed-single-pass: true
     secrets:
       BOT_PAT: ${{ secrets.BOT_PAT }}
