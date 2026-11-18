@@ -1,0 +1,31 @@
+# Optional BLE bench route for the same ESP32-C3 endpoint.
+packages:
+  satellite: !include satellite.yaml
+
+esp32_ble_server:
+  manufacturer: HA Homelab
+  services:
+    - uuid: 'ec3d570f-f92c-4c06-b300-1ca1e173a910'
+      advertise: true
+      characteristics:
+        - uuid: 'ec3d570f-f92c-4c06-b300-1ca1e173a911'
+          write: true
+          on_write:
+            then:
+              - lambda: |-
+                  if (x.size() == radio_pilot::FRAME_SIZE) {
+                    id(process_frame).execute(radio_pilot::to_hex(x.data(), x.size()), 2);
+                  }
+        - uuid: 'ec3d570f-f92c-4c06-b300-1ca1e173a912'
+          id: gatt_reply
+          read: true
+
+text_sensor:
+  - id: !extend ble_reply
+    on_value:
+      - ble_server.characteristic.set_value:
+          id: gatt_reply
+          value: !lambda |-
+            std::vector<uint8_t> reply(radio_pilot::FRAME_SIZE);
+            if (!radio_pilot::from_hex(x, reply.data(), reply.size())) return {};
+            return reply;
