@@ -1,0 +1,107 @@
+# ESP32-C3-DevKitM-1 lab node. The output is a virtual relay only.
+substitutions:
+  gateway_station_mac: !secret pilot_gateway_station_mac
+  command_key: !secret pilot_command_key
+
+esphome:
+  name: failover-lab-satellite
+  min_version: 2026.10.2
+  compile_process_limit: 2
+  includes: [protocol.h, hex.h, esp_auth.h]
+  on_boot:
+    then:
+      - binary_sensor.template.publish:
+          id: virtual_relay_state
+          state: OFF
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+    version: 5.5.5
+
+wifi:
+  ssid: !secret pilot_wifi_ssid
+  password: !secret pilot_wifi_password
+  reboot_timeout: 0s
+
+logger:
+
+api:
+  encryption:
+    key: !secret pilot_satellite_api_key
+  reboot_timeout: 0s
+  actions:
+    - action: pilot_exchange
+      variables:
+        frame: string
+      then:
+        - lambda: |-
+            radio_pilot::Wire packet{};
+            if (radio_pilot::from_hex(frame, packet.data(), packet.size())) {
+              id(process_frame).execute(frame, 0);
+            }
+
+ota:
+  - platform: esphome
+    password: !secret pilot_satellite_ota_password
+
+espnow:
+  id: pilot_radio
+  max_payload_size: 35
+  auto_add_peer: false
+  peers:
+    - ${gateway_station_mac}
+  on_receive:
+    - address: ${gateway_station_mac}
+      then:
+        - lambda: |-
+            if (size == radio_pilot::FRAME_SIZE) {
+              id(process_frame).execute(radio_pilot::to_hex(data, size), 1);
+            }
+
+text_sensor:
+  - platform: template
+    id: pilot_reply
+    name: Pilot Reply
+    update_interval: never
+    disabled_by_default: true
+
+  - platform: template
+    id: ble_reply
+    internal: true
+    update_interval: never
+
+binary_sensor:
+  - platform: template
+    id: virtual_relay_state
+    name: Virtual Relay State
+
+script:
+  - id: process_frame
+    parameters:
+      frame: string
+      route: int
+    then:
+      - lambda: |-
+          static const radio_pilot::EspAuth auth("${command_key}");
+          static radio_pilot::Endpoint endpoint;
+          radio_pilot::Wire packet{}, reply{};
+          if (!radio_pilot::from_hex(frame, packet.data(), packet.size())) return;
+          const auto apply = [](bool on) {
+            id(virtual_relay_state).publish_state(on);
+            return id(virtual_relay_state).state;
+          };
+          const uint64_t now = esp_timer_get_time() / 1000;
+          if (!endpoint.exchange(auth, radio_pilot::random_token, apply, now,
+                                 packet.data(), packet.size(), reply)) return;
+          if (route == 1) {
+            uint8_t peer[6];
+            if (radio_pilot::from_mac("${gateway_station_mac}", peer)) {
+              id(pilot_radio).send(peer, reply.data(), reply.size());
+            }
+          } else if (route == 2) {
+            id(ble_reply).publish_state(radio_pilot::to_hex(reply.data(), reply.size()));
+          } else {
+            id(pilot_reply).publish_state(radio_pilot::to_hex(reply.data(), reply.size()));
+          }

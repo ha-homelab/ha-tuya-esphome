@@ -1,0 +1,82 @@
+# Standalone lab firmware for a MC2-D-compatible WROVER-IE + W5500 harness.
+substitutions:
+  satellite_station_mac: !secret pilot_satellite_station_mac
+  radio_channel: '6'
+
+esphome:
+  name: failover-lab-gateway
+  min_version: 2026.10.2
+  compile_process_limit: 2
+  includes: [protocol.h, hex.h]
+
+esp32:
+  board: esp32dev
+  flash_size: 8MB
+  framework:
+    type: esp-idf
+    version: 5.5.5
+    sdkconfig_options:
+      CONFIG_ESP_WIFI_ENABLED: y
+      CONFIG_SW_COEXIST_ENABLE: y
+      CONFIG_ESP_COEX_SW_COEXIST_ENABLE: y
+
+spi:
+  id: lab_spi
+  interface: spi2
+  clk_pin: GPIO12
+  mosi_pin: GPIO2
+  miso_pin: GPIO19
+
+ethernet:
+  type: W5500
+  spi_id: lab_spi
+  cs_pin: GPIO5
+  interrupt_pin: GPIO34
+  reset_pin: GPIO4
+  clock_speed: 10MHz
+
+logger:
+  baud_rate: 0
+
+api:
+  encryption:
+    key: !secret pilot_gateway_api_key
+  reboot_timeout: 0s
+  actions:
+    - action: pilot_exchange
+      variables:
+        frame: string
+      then:
+        - lambda: |-
+            radio_pilot::Wire packet{};
+            uint8_t peer[6];
+            if (radio_pilot::from_hex(frame, packet.data(), packet.size()) &&
+                radio_pilot::from_mac("${satellite_station_mac}", peer)) {
+              id(pilot_radio).send(peer, packet.data(), packet.size());
+            }
+
+ota:
+  - platform: esphome
+    password: !secret pilot_gateway_ota_password
+
+espnow:
+  id: pilot_radio
+  channel: ${radio_channel}
+  max_payload_size: 35
+  auto_add_peer: false
+  peers:
+    - ${satellite_station_mac}
+  on_receive:
+    - address: ${satellite_station_mac}
+      then:
+        - lambda: |-
+            if (size == radio_pilot::FRAME_SIZE) {
+              id(pilot_reply).publish_state(radio_pilot::to_hex(data, size));
+            }
+
+text_sensor:
+  - platform: template
+    id: pilot_reply
+    name: Pilot Reply
+    update_interval: never
+    disabled_by_default: true
