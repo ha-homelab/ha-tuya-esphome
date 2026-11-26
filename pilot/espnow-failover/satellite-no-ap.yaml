@@ -1,0 +1,10 @@
+# Fixed-channel ESP-NOW and optional host BLE recovery with no Wi-Fi association.
+packages:
+  satellite: !include satellite-ble.yaml
+
+wifi: !remove
+api: !remove
+ota: !remove
+
+espnow:
+  channel: 6

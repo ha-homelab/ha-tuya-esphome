@@ -64,6 +64,15 @@ jobs:
         run: |
           c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Iexamples tests/test_energy_state.cpp -o /tmp/test-energy
           /tmp/test-energy
+      - name: Test authenticated failover pilot
+        shell: bash
+        run: |
+          python3 -m unittest discover -s pilot/espnow-failover -p test_controller.py -v
+          crypto_args=$(pkg-config --cflags --libs libcrypto)
+          read -r -a crypto_flags <<< "$crypto_args"
+          c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer \
+            pilot/espnow-failover/test_protocol.cpp "${crypto_flags[@]}" -o /tmp/test-radio-pilot
+          /tmp/test-radio-pilot
       - name: Fuzz energy samples and day rollover
         env:
           CXX: clang++

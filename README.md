@@ -9,6 +9,8 @@ Amazon Alexa.
 
 For new provisioning, use the [trusted USB and encrypted ESPHome profile](docs/security-profile.md) after verifying the hardware and safe serial access. This is the recommended security profile. Legacy Wi-Fi conversion is an explicit compatibility option: the launcher refuses to operate without `--allow-insecure-legacy-protocol`. It retains the disclosed upstream MD5/CBC weaknesses.
 
+The [ESP-NOW failover bench](pilot/espnow-failover/README.md) exercises a virtual relay via a wired gateway, direct Wi-Fi or optional BLE on ESP32. It is separate from the outlet migration profiles.
+
 The current batch consists of old, unboxed plugs reported by the owner to use
 ESP8266/“ESP-01” hardware. Similar-looking plugs were converted previously.
 The first unit reports 1 MB flash and is marked **XS-SSA01**. Its observed button
